@@ -78,7 +78,7 @@ public class Station {
 	}
 
 	void setPosition(Scanner scanner) throws IOException {
-		System.out.println("Entrez un nom de rue Ã  Paris :");
+		System.out.println("Entrez un nom de rue a  Paris :");
 		String streetName = scanner.nextLine();
 		String encodedStreetName = URLEncoder.encode(streetName, StandardCharsets.UTF_8.toString());
 		String urlString = "https://nominatim.openstreetmap.org/search?street=" + encodedStreetName
