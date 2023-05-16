@@ -13,7 +13,6 @@ public class Main {
 		do {
 			System.out.println("\n---- Menu ----");
 			System.out.println("1. Trouver la station la plus proche");
-			System.out.println("2. Fixer la position");
 			System.out.println("0. Quitter");
 			System.out.print("Choisissez une option : ");
 			while (!scanner.hasNextInt()) {
@@ -24,10 +23,11 @@ public class Main {
 			scanner.nextLine();
 			switch (choice) {
 			case 1:
-				Station.findNearestStation(r.stationsListe, actuel.latitude, actuel.longitude);
+				actuel.setPosition(scanner);
+				Station.findNearestStation(r.listeStations, actuel.latitude, actuel.longitude);
 				break;
 			case 2:
-				actuel.setPosition(scanner);
+				
 				break;
 			case 0:
 				System.out.println("Au revoir !");
