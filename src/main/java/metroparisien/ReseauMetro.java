@@ -64,7 +64,6 @@ public class ReseauMetro {
 		listeStations.add(berault);
 		listeStations.add(chateauDeVincennes);
 
-
 		Voie defense_esplanadeDeLaDefense = new Voie(defense, esplanadeDeLaDefense, 1, false);
 		Voie esplanadeDeLaDefense_pontDeNeuilly = new Voie(esplanadeDeLaDefense, pontDeNeuilly, 2, false);
 		Voie pontDeNeuilly_lesSablons = new Voie(pontDeNeuilly, lesSablons, 1, false);
