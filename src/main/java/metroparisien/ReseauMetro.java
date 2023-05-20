@@ -8,7 +8,8 @@ public class ReseauMetro {
 
 	public static List<Ligne> lignes;
 	public static Map<String, Station> stations;
-	public List<Station> listeStations= new ArrayList<>();
+	public List<Station> listeStations = new ArrayList<>();
+
 	public ReseauMetro() {
 
 		// Création des stations
@@ -22,7 +23,8 @@ public class ReseauMetro {
 		Station charlesDeGaulleEtoile = new Station("Charles de Gaulle — Étoile", 1, false, 48.873962, 2.295167);
 		Station georgeV = new Station("George V", 1, false, 48.872074, 2.300816);
 		Station franklinDRoosevelt = new Station("Franklin D. Roosevelt", 1, false, 48.869263, 2.307766);
-		Station champsElyseesClemenceau = new Station("Champs-Élysées — Clemenceau (Grand Palais)", 1, false, 48.867603, 2.312631);
+		Station champsElyseesClemenceau = new Station("Champs-Élysées — Clemenceau (Grand Palais)", 1, false, 48.867603,
+				2.312631);
 		Station concorde = new Station("Concorde", 1, false, 48.865165, 2.321428);
 		Station tuileries = new Station("Tuileries", 1, false, 48.863788, 2.327102);
 		Station palaisRoyalMuseeDuLouvre = new Station("Palais Royal - Musée du Louvre", 1, false, 48.862508, 2.336204);
@@ -121,7 +123,8 @@ public class ReseauMetro {
 		Ligne ligne1 = new Ligne("ligne 1", voiesLigne1);
 
 		// ligne 2
-		Station porteDauphine = new Station("Porte Dauphine (Maréchal de Lattre de Tassigny)", 1, false, 48.8715, 2.2745);
+		Station porteDauphine = new Station("Porte Dauphine (Maréchal de Lattre de Tassigny)", 1, false, 48.8715,
+				2.2745);
 		Station victorHugo = new Station("Victor Hugo", 1, false, 48.8692, 2.2849);
 		Station ternes = new Station("Ternes", 1, false, 48.8785, 2.2984);
 		Station courcelles = new Station("Courcelles", 1, false, 48.8792, 2.3066);
@@ -466,8 +469,10 @@ public class ReseauMetro {
 		// Ligne 7
 		Station courneuve8Mai1945 = new Station("La Courneuve — 8 Mai 1945", 1, false, 48.9244, 2.4008);
 		Station fortdaubervilliers = new Station("Fort d'Aubervilliers", 1, false, 48.9163, 2.3839);
-		Station aubervilliersPantinQuatreChemins = new Station("Aubervilliers — Pantin — Quatre Chemins", 1, false, 48.9057, 2.3821);
-		Station porteDeLaVillette = new Station("Porte de la Villette (Cité des Sciences et de l'Industrie)", 1, false, 48.8966, 2.3853);
+		Station aubervilliersPantinQuatreChemins = new Station("Aubervilliers — Pantin — Quatre Chemins", 1, false,
+				48.9057, 2.3821);
+		Station porteDeLaVillette = new Station("Porte de la Villette (Cité des Sciences et de l'Industrie)", 1, false,
+				48.8966, 2.3853);
 		Station corentinCariou = new Station("Corentin Cariou", 1, false, 48.8935, 2.3817);
 		Station crimee = new Station("Crimée", 1, false, 48.8895, 2.3785);
 		Station riquet = new Station("Riquet", 1, false, 48.8848, 2.3741);
@@ -483,9 +488,10 @@ public class ReseauMetro {
 		Station pontMarie = new Station("Pont Marie (Cité des Arts)", 1, false, 48.8534, 2.3571);
 		Station sullyMorland = new Station("Sully — Morland", 1, false, 48.8505, 2.3615);
 		Station jussieu = new Station("Jussieu", 1, false, 48.8461, 2.3546);
-		Station placeMonge = new Station("Place Monge (Jardin des Plantes - Arènes de Lutèce)", 1, false, 48.8433, 2.3523);
+		Station placeMonge = new Station("Place Monge (Jardin des Plantes - Arènes de Lutèce)", 1, false, 48.8433,
+				2.3523);
 		Station censierDaubenton = new Station("Censier — Daubenton", 1, false, 48.8396, 2.3522);
-		Station lesGobelins = new Station("Les Gobelins",1, false, 48.8355, 2.3521);
+		Station lesGobelins = new Station("Les Gobelins", 1, false, 48.8355, 2.3521);
 		Station placeDItalie = new Station("Place d'Italie", 1, false, 48.8318, 2.3557);
 		Station tolbiac = new Station("Tolbiac", 1, false, 48.8267, 2.3572);
 		Station maisonBlanche = new Station("Maison Blanche", 1, false, 48.8223, 2.3581);
