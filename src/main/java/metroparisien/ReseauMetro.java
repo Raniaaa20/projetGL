@@ -589,4 +589,61 @@ public class ReseauMetro {
 
 	}
 
+	
+	public List<Voie> trouverVoiesEntreStations(Ligne ligne, Station stationDepart, Station stationArrivee) {
+		List<Voie> voiesEntreStations = new ArrayList<>();
+		boolean enregistrement = false;
+
+		for (Voie voie : ligne.getVoies()) {
+			if (voie.getStationDepart() == stationDepart) {
+				enregistrement = true;
+			}
+
+			if (enregistrement) {
+				voiesEntreStations.add(voie);
+			}
+
+			if (voie.getStationArrivee() == stationArrivee) {
+				break;
+			}
+		}
+
+		return voiesEntreStations;
+	}
+
+	public int calculerTempsTrajet(List<Voie> voies) {
+		int tempsTrajetTotal = 0;
+
+		for (int i = 0; i < voies.size(); i++) {
+			Voie voie = voies.get(i);
+			Station stationDepart = voie.getStationDepart();
+			Station stationArrivee = voie.getStationArrivee();
+
+			int tempsParcours = voie.getTempsParcours();
+			int tempsArretDepart = stationDepart.getTempsArret();
+			int tempsArretArrivee = stationArrivee.getTempsArret();
+
+			tempsTrajetTotal += tempsArretDepart + tempsParcours;
+
+			// Si ce n'est pas la dernière voie, ajouter le temps d'arrêt à la station
+			// d'arrivée
+			if (i < voies.size() - 1) {
+				tempsTrajetTotal += tempsArretArrivee;
+			}
+		}
+
+		return tempsTrajetTotal;
+	}
+
+	public double calculerTempsMarche(Station station, double latitude, double longitude) {
+		// Calculer la distance entre la position de l'utilisateur et la position de la
+		// station
+		double distance = station.distanceTo(latitude, longitude);
+
+		// Supposer une vitesse de marche moyenne de 5 km/h (environ 1.4 m/s)
+		double vitesseMarche = 1.4;
+		int tempsMarche = (int) Math.ceil(distance / (vitesseMarche * 60));
+
+		return tempsMarche;
+	}
 }
