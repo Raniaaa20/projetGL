@@ -589,7 +589,64 @@ public class ReseauMetro {
 
 	}
 
-	
+	public List<Voie> trouverCheminOptimal(double longitudeUtil, double latitudeUtil, double longitudeDestination,
+			double latitudeDestination) {
+		// Variables pour stocker les informations du chemin optimal
+		List<List<Voie>> cheminsOptimaux = new ArrayList<>();
+		int tempsTrajetOptimal = Integer.MAX_VALUE;
+
+		// Parcourir toutes les lignes du réseau
+		for (Ligne ligne : lignes) {
+			// Trouver la station de départ la plus proche de la position de l'utilisateur
+			Station stationDepartPlusProche = null;
+			double distanceDepartMin = Integer.MAX_VALUE;
+
+			for (Voie voie : ligne.getVoies()) {
+				Station station = voie.getStationDepart();
+				double distanceDepart = station.distanceTo(latitudeUtil, longitudeUtil);
+
+				if (distanceDepart < distanceDepartMin) {
+					distanceDepartMin = distanceDepart;
+					stationDepartPlusProche = station;
+				}
+			}
+
+			// Trouver la station d'arrivée la plus proche de la destination
+			Station stationArriveePlusProche = null;
+			double distanceArriveeMin = Integer.MAX_VALUE;
+
+			for (Voie voie : ligne.getVoies()) {
+				Station station = voie.getStationDepart();
+				double distanceArrivee = station.distanceTo(longitudeDestination, latitudeDestination);
+
+				if (distanceArrivee < distanceArriveeMin) {
+					distanceArriveeMin = distanceArrivee;
+					stationArriveePlusProche = station;
+				}
+			}
+
+			// Calculer le temps de trajet
+
+			List<Voie> voiesParcourus = trouverVoiesEntreStations(ligne, stationDepartPlusProche,
+					stationArriveePlusProche);
+
+			int tempsTrajet = calculerTempsTrajet(voiesParcourus);
+			tempsTrajet += calculerTempsMarche(stationDepartPlusProche, latitudeUtil, longitudeUtil);
+			tempsTrajet += calculerTempsMarche(stationArriveePlusProche, latitudeUtil, longitudeUtil);
+
+			// Vérifier si le chemin est optimal
+			if (tempsTrajet < tempsTrajetOptimal) {
+
+				tempsTrajetOptimal = tempsTrajet;
+
+				cheminsOptimaux.clear();
+				cheminsOptimaux.add(voiesParcourus);
+			}
+
+		}
+		return cheminsOptimaux.get(0);
+	}
+
 	public List<Voie> trouverVoiesEntreStations(Ligne ligne, Station stationDepart, Station stationArrivee) {
 		List<Voie> voiesEntreStations = new ArrayList<>();
 		boolean enregistrement = false;
