@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="679.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <SplitPane dividerPositions="0.10882352941176471" layoutX="1.0" layoutY="-1.0" orientation="VERTICAL" prefHeight="456.0" prefWidth="679.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="47.0" prefWidth="677.0" style="-fx-background-color: #C0D2D9;">
+               <children>
+                  <Text layoutX="208.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Se déplacer dans Métro Parisien ">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <Button fx:id="deplacer1" layoutX="30.0" layoutY="43.0" mnemonicParsing="false" text="Je connais ma station de départ &amp; d'arrivée">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="deplacer2" layoutX="360.0" layoutY="43.0" mnemonicParsing="false" text="Je veux me déplacer d'une adresse à une autre ">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="valider" layoutX="307.0" layoutY="347.0" mnemonicParsing="false" text="Je valide" />
+                  <Pane fx:id="paneOp1" layoutX="33.0" layoutY="82.0" prefHeight="92.0" prefWidth="258.0">
+                     <children>
+                        <TextField fx:id="adresseD" layoutX="27.0" layoutY="12.0" prefHeight="25.0" prefWidth="193.0" promptText="Adresse départ" />
+                        <TextField layoutX="27.0" layoutY="51.0" prefHeight="25.0" prefWidth="193.0" promptText="Adresse d'arrivée" />
+                     </children>
+                  </Pane>
+                  <Pane fx:id="paneIti" layoutX="33.0" layoutY="174.0" prefHeight="149.0" prefWidth="409.0">
+                     <children>
+                        <Text layoutX="9.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Veuillez choisir des options pour votre itinéraire :" />
+                        <CheckBox layoutX="14.0" layoutY="51.0" mnemonicParsing="false" text="Itinéraire le plus rapide " />
+                        <CheckBox layoutX="14.0" layoutY="83.0" mnemonicParsing="false" text="Itinéraire avec le moins de correspondances" />
+                        <CheckBox layoutX="14.0" layoutY="113.0" mnemonicParsing="false" text="Passer par une station particulière" />
+                        <TextField layoutX="232.0" layoutY="109.0" promptText="Passer par..." />
+                     </children>
+                  </Pane>
+                  <Pane layoutX="366.0" layoutY="82.0" prefHeight="92.0" prefWidth="276.0">
+                     <children>
+                        <TextField fx:id="statD" layoutX="14.0" layoutY="14.0" promptText="Station départ" />
+                        <TextField fx:id="statA" layoutX="14.0" layoutY="46.0" promptText="Station d'arrivée" />
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</Pane>
