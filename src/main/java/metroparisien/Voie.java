@@ -4,7 +4,7 @@ public class Voie {
 	
 	Station stationDepart;
 	Station stationArrivee;
-	int tempsParcours;
+	int tempsParcours; // Représente le "coût" de la voie dans l'algorithme
 	boolean accident;
 	private Incident incident;
 	
@@ -15,7 +15,7 @@ public class Voie {
 		this.stationArrivee = stationArrivee;
 		this.tempsParcours = tempsParcours;
 		this.accident = accident;
-		this.incident = null; // Pas d'incident � l'initialisation
+		this.incident = null; // Pas d'incident à l'initialisation
 	}
 
 
@@ -39,8 +39,8 @@ public class Voie {
 		this.stationArrivee = stationArrivee;
 	}
 
-
-	public int getTempsParcours() {
+    // Méthode renommée pour être plus conforme à son utilisation dans l'algorithme de recherche de chemin
+	public int getDistance() {
 		return tempsParcours;
 	}
 
@@ -66,9 +66,6 @@ public class Voie {
     public void setIncident(Incident incident) {
         this.incident = incident;
     }
-	
-	
-	
-	
-
+    
+    
 }

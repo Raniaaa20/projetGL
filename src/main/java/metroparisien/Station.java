@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,6 +20,8 @@ public class Station {
 	boolean accident;
 	double latitude;
 	double longitude;
+	    List<Voie> voies;
+	
 
 	// Constructeur
 	public Station(String nom, int tempsArret, boolean accident) {
@@ -26,6 +29,7 @@ public class Station {
 		this.nom = nom;
 		this.tempsArret = tempsArret;
 		this.accident = accident;
+		
 
 	}
 
@@ -33,6 +37,7 @@ public class Station {
 		this.nom = nom;
 		this.latitude = latitude;
 		this.longitude = longitude;
+	        this.voies = new ArrayList<>(); // Initialisation de la liste des voies
 	}
 
 	// Getters et setters
@@ -117,8 +122,19 @@ public class Station {
 		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		return R * c;
 	}
+	public List<Voie> getVoies() {
+	        return voies;
+	    }
 
-
+	    // Méthode pour ajouter une voie à la liste des voies
+	    public void addVoie(Voie voie) {
+	        voies.add(voie);
+	    }
 }
+
+
+
+
+
 
 
