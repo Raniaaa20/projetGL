@@ -15,6 +15,7 @@ public class Main {
         Station actuel = new Station(null, 0, false, 48.8924, 2.2356);
 
         ReseauMetro r = new ReseauMetro();
+        r.initialiserReseau();
         // Création des stations
         // ...
 
@@ -103,7 +104,7 @@ public class Main {
                         if (reponse.equalsIgnoreCase("oui")) {
                             System.out.println("Choisissez le nom de la voie (format: 'nomStationDepart - nomStationArrivee')");
                             String nomVoie = sc.nextLine();
-                            for (Voie voie : ReseauMetro.getLignes().get(0).getVoies()) {
+                            for (Voie voie : r.getLignes().get(0).getVoies()) {
                                 if ((voie.getStationDepart().getNom() + " - " + voie.getStationArrivee().getNom())
                                         .equals(nomVoie)) {
                                     if (voie.isAccident()) {

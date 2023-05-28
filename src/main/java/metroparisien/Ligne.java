@@ -35,15 +35,14 @@ public class Ligne {
         return stations;
     }
 
-    // Méthode pour ajouter une voie à la ligne
-    public void addVoie(Voie voie) {
-        voies.add(voie);
-    }
-
-    // Méthode pour ajouter une station à la ligne
     public void addStation(Station station) {
-        stations.add(station);
-    }
+	    this.stations.add(station);
+	}
+
+	public void addVoie(Voie voie) {
+	    this.voies.add(voie);
+	}
+
     
     public void afficherLigne() {
 	    System.out.println("Stations de la ligne " + numero + ":");

@@ -1,9 +1,8 @@
-metroparisien\Launcher.class
-metroparisien\Ligne.class
 metroparisien\Main.class
 metroparisien\App.class
-metroparisien\Incident.class
-metroparisien\Menu.class
 metroparisien\ReseauMetro.class
 metroparisien\Station.class
 metroparisien\Voie.class
+metroparisien\Launcher.class
+metroparisien\Ligne.class
+metroparisien\Incident.class
