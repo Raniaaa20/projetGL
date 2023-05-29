@@ -1,4 +1,4 @@
-package metroparisien;
+package fr.ul.miage;
 
 import java.io.IOException;
 import java.util.List;
