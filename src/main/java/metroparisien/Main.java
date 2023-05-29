@@ -47,7 +47,7 @@ public class Main {
                 System.out.println("4. Afficher l'incident");
             }
             System.out.println("0. Quitter");
-            // Demander à l'utilisateur de faire un choix avant d'entrer dans le switch
+            // Demander a l'utilisateur de faire un choix avant d'entrer dans le switch
             System.out.print("Choisissez une option : ");
             while (!scanner.hasNextInt()) {
                 System.out.println("Veuillez entrer un nombre pour votre choix");
