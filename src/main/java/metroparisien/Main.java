@@ -72,6 +72,8 @@ public class Main {
                         System.out.println("Station de départ ou d'arrivée inconnue");
                     } else {
                         List<Station> itineraire = r.trouverItineraireLePlusRapide(stationDepart, stationArrivee);
+                        //List<Station> itineraire = r.trouverItineraire(stationDepart, stationArrivee);
+
                         if (itineraire != null) {
                             System.out.println("L'itinéraire le plus rapide est :");
                             for (Station station : itineraire) {

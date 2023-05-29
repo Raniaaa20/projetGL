@@ -3,9 +3,11 @@ package metroparisien;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class ReseauMetro {
 
@@ -65,52 +67,68 @@ public class ReseauMetro {
     }
 
     public List<Station> trouverItineraireLePlusRapide(Station depart, Station arrivee) {
-	// Implementation de l'algorithme de Dijkstra ou A*
-	// Cette méthode retournerait une liste de stations représentant l'itinéraire le
-	// plus rapide entre "depart" et "arrivee"
-	// Vous pouvez utiliser la distance entre les stations comme le "coût" de chaque
-	// voie
+	    List<Station> itineraire = new ArrayList<>();
+	    List<Station> stationsVisitees = new ArrayList<>();
+	    Queue<Station> aVisiter = new LinkedList<>();
+	    aVisiter.add(depart);
 
-	Map<Station, Station> precedenteStation = new HashMap<>();
-	Map<Station, Integer> distances = new HashMap<>();
-	PriorityQueue<Station> stationsNonVisitees = new PriorityQueue<>(Comparator.comparingInt(distances::get));
+	    while (!aVisiter.isEmpty()) {
+	        Station stationActuelle = aVisiter.remove();
+	        System.out.println("Station courante : " + stationActuelle.getNom());
+	        stationsVisitees.add(stationActuelle);
+	        itineraire.add(stationActuelle);
 
-	for (Station station : listeStations) {
-	    distances.put(station, station.equals(depart) ? 0 : Integer.MAX_VALUE);
-	    stationsNonVisitees.add(station);
-	}
+	        if (stationActuelle.equals(arrivee)) {
+	            break;
+	        }
 
-	while (!stationsNonVisitees.isEmpty()) {
-	    Station current = stationsNonVisitees.poll();
-
-	    if (current.equals(arrivee)) {
-		break;
+	        List<Voie> voies = stationActuelle.getVoies();
+	        for (Voie voie : voies) {
+	            Station prochaineStation = voie.getStationArrivee();
+	            if (!stationsVisitees.contains(prochaineStation)) {
+	                aVisiter.add(prochaineStation);
+	            }
+	        }
 	    }
-
-	    for (Voie voie : current.getVoies()) {
-		Station voisin = voie.getStationArrivee();
-		int nouvelleDistance = distances.get(current) + voie.getDistance();
-
-		if (nouvelleDistance < distances.get(voisin)) {
-		    distances.put(voisin, nouvelleDistance);
-		    precedenteStation.put(voisin, current);
-		    stationsNonVisitees.remove(voisin);
-		    stationsNonVisitees.add(voisin);
-		}
-	    }
-	}
-
-	List<Station> itineraire = new ArrayList<>();
-	for (Station station = arrivee; station != null; station = precedenteStation.get(station)) {
-	    itineraire.add(0, station);
-	}
-
-	if (itineraire.get(0).equals(depart)) {
 	    return itineraire;
-	} else {
-	    return null; // Il n'y a pas d'itinéraire entre "depart" et "arrivee"
 	}
-    }
+
+
+    
+    public List<Station> trouverItineraire(Station depart, Station arrivee) {
+	    Queue<Station> aVisiter = new LinkedList<>();
+	    Map<Station, Station> vientDe = new HashMap<>();
+	    aVisiter.add(depart);
+
+	    while (!aVisiter.isEmpty()) {
+	        Station actuelle = aVisiter.remove();
+
+	        // Si nous avons atteint la station d'arrivée, reconstruisons le chemin
+	        if (actuelle.equals(arrivee)) {
+	            List<Station> chemin = new LinkedList<>();
+	            while (actuelle != null) {
+	                chemin.add(0, actuelle);
+	                actuelle = vientDe.get(actuelle);
+	            }
+	            return chemin;
+	        }
+
+	        // Sinon, ajoutez tous les voisins à la file d'attente
+	        for (Voie voie : actuelle.getVoies()) {
+	            Station prochaine = voie.getStationArrivee();
+	            if (!vientDe.containsKey(prochaine)) {
+	                aVisiter.add(prochaine);
+	                vientDe.put(prochaine, actuelle);
+	            }
+	        }
+	    }
+
+	    // S'il n'y a aucun chemin possible, retournez une liste vide
+	    return new LinkedList<>();
+	}
+
+
+
 
     public List<Ligne> getLignes() {
 	return this.lignes;
@@ -180,6 +198,7 @@ public class ReseauMetro {
 	Voie voie22 = new Voie(porteDeVincennes, saintMande, 5, false);
 	Voie voie23 = new Voie(saintMande, berault, 5, false);
 	Voie voie24 = new Voie(berault, chateauDeVincennes, 5, false);
+	Voie voie1B = new Voie(chateauDeVincennes, defense, 5, false);
 
 	defense.addVoie(voie1);
 	esplanadeDeLaDefense.addVoie(voie1);
@@ -253,6 +272,9 @@ public class ReseauMetro {
 	berault.addVoie(voie24);
 	chateauDeVincennes.addVoie(voie24);
 
+	chateauDeVincennes.addVoie(voie1B);
+	defense.addVoie(voie1B);
+
 	ligne1.addVoie(voie1);
 	ligne1.addVoie(voie2);
 	ligne1.addVoie(voie3);
@@ -277,6 +299,7 @@ public class ReseauMetro {
 	ligne1.addVoie(voie22);
 	ligne1.addVoie(voie23);
 	ligne1.addVoie(voie24);
+	ligne1.addVoie(voie1B);
 
 	ligne1.addStation(defense);
 	ligne1.addStation(esplanadeDeLaDefense);
@@ -334,8 +357,7 @@ public class ReseauMetro {
 
 	Ligne ligne2 = new Ligne(2, "Ligne 2");
 
-	Station porteDauphine = new Station("Porte Dauphine (Marechal de Lattre de Tassigny)", 2, false, 48.8715,
-		2.2745);
+	Station porteDauphine = new Station("Porte Dauphine", 2, false, 48.8715, 2.2745);
 	Station victorHugo = new Station("Victor Hugo", 2, false, 48.8692, 2.2849);
 	Station ternes = new Station("Ternes", 2, false, 48.8785, 2.2984);
 	Station courcelles = new Station("Courcelles", 2, false, 48.8792, 2.3066);
@@ -358,7 +380,7 @@ public class ReseauMetro {
 	Station philippeAuguste = new Station("Philippe Auguste", 2, false, 48.8565, 2.3893);
 	Station alexandreDumas = new Station("Alexandre Dumas", 2, false, 48.8533, 2.3922);
 	Station avron = new Station("Avron", 2, false, 48.8524, 2.4007);
-	Station nation2 = new Station("Nation", 2, false, 48.8482, 2.3972);
+	// Station nation2 = new Station("Nation", 2, false, 48.8482, 2.3972);
 
 	Voie voie25 = new Voie(porteDauphine, victorHugo, 5, false);
 	Voie voie26 = new Voie(victorHugo, ternes, 5, false);
@@ -382,7 +404,8 @@ public class ReseauMetro {
 	Voie voie44 = new Voie(pereLachaise, philippeAuguste, 5, false);
 	Voie voie45 = new Voie(philippeAuguste, alexandreDumas, 5, false);
 	Voie voie46 = new Voie(alexandreDumas, avron, 5, false);
-	Voie voie47 = new Voie(avron, nation2, 5, false);
+	Voie voie47 = new Voie(avron, nation, 5, false);
+	Voie voie25B = new Voie(nation, porteDauphine, 5, false);
 
 	victorHugo.addVoie(voie25);
 	ternes.addVoie(voie26);
@@ -448,7 +471,10 @@ public class ReseauMetro {
 	avron.addVoie(voie46);
 
 	avron.addVoie(voie47);
-	nation2.addVoie(voie47);
+	nation.addVoie(voie47);
+
+	nation.addVoie(voie25B);
+	porteDauphine.addVoie(voie25B);
 
 	ligne2.addVoie(voie25);
 	ligne2.addVoie(voie26);
@@ -473,7 +499,8 @@ public class ReseauMetro {
 	ligne2.addVoie(voie45);
 	ligne2.addVoie(voie46);
 	ligne2.addVoie(voie47);
-	
+	ligne2.addVoie(voie25B);
+
 	ligne2.addStation(porteDauphine);
 	ligne2.addStation(victorHugo);
 	ligne2.addStation(ternes);
@@ -497,9 +524,9 @@ public class ReseauMetro {
 	ligne2.addStation(philippeAuguste);
 	ligne2.addStation(alexandreDumas);
 	ligne2.addStation(avron);
-	ligne2.addStation(nation2);
-	
-	this.ajouterStation("Porte Dauphine (Marechal de Lattre de Tassigny)", porteDauphine);
+	ligne2.addStation(nation);
+
+	this.ajouterStation("Porte Dauphine", porteDauphine);
 	this.ajouterStation("Victor Hugo", victorHugo);
 	this.ajouterStation("Ternes", ternes);
 	this.ajouterStation("Courcelles", courcelles);
@@ -522,10 +549,8 @@ public class ReseauMetro {
 	this.ajouterStation("Philippe Auguste", philippeAuguste);
 	this.ajouterStation("Alexandre Dumas", alexandreDumas);
 	this.ajouterStation("Avron", avron);
-	this.ajouterStation("Nation", nation2);
 
 	this.ajouterLigne(ligne2);
-
 
     }
 
