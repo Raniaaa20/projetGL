@@ -1,4 +1,4 @@
-package metroparisien;
+package fr.ul.miage;
 
 import java.util.ArrayList;
 import java.util.Comparator;

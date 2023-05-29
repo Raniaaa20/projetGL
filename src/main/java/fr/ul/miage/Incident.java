@@ -1,4 +1,4 @@
-package metroparisien;
+package fr.ul.miage;
 
 
 public class Incident {
