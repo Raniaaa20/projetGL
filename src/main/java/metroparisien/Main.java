@@ -10,7 +10,7 @@ public class Main {
     private static final String MDP_ADMIN = "2023";
     private static final String MDP_USER = "2024";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
         Scanner scanner = new Scanner(System.in);
         Station actuel = new Station(null, 0, false, 48.8924, 2.2356);
 
