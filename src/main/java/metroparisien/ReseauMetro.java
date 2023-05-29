@@ -3,11 +3,13 @@ package metroparisien;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Set;
 
 public class ReseauMetro {
 
@@ -38,7 +40,7 @@ public class ReseauMetro {
 	    Station stationArrivee = voie.getStationArrivee();
 
 	    System.out.println("Voie de " + stationDepart.getNom() + " a " + stationArrivee.getNom() + " (Distance "
-		    + voie.getDistance() + " minutes)");
+		    + voie.gettempsParcours() + " minutes)");
 	}
     }
 
@@ -68,68 +70,48 @@ public class ReseauMetro {
 
     public List<Station> trouverItineraireLePlusRapide(Station depart, Station arrivee) {
 	    List<Station> itineraire = new ArrayList<>();
-	    List<Station> stationsVisitees = new ArrayList<>();
+	    Map<Station, Station> stationPrecedente = new HashMap<>();
+	    Set<Station> stationsVisitees = new HashSet<>();
 	    Queue<Station> aVisiter = new LinkedList<>();
 	    aVisiter.add(depart);
 
 	    while (!aVisiter.isEmpty()) {
 	        Station stationActuelle = aVisiter.remove();
-	        System.out.println("Station courante : " + stationActuelle.getNom());
 	        stationsVisitees.add(stationActuelle);
-	        itineraire.add(stationActuelle);
+
+	        // Affiche toujours la station actuelle
+	       // System.out.println("Station courante : " + stationActuelle.getNom());
 
 	        if (stationActuelle.equals(arrivee)) {
-	            break;
+	            while (stationActuelle != null) {
+	                itineraire.add(0, stationActuelle);
+	                stationActuelle = stationPrecedente.get(stationActuelle);
+	            }
+	            return itineraire;
 	        }
 
-	        List<Voie> voies = stationActuelle.getVoies();
-	        for (Voie voie : voies) {
-	            Station prochaineStation = voie.getStationArrivee();
-	            if (!stationsVisitees.contains(prochaineStation)) {
-	                aVisiter.add(prochaineStation);
+	        for (Ligne ligne : stationActuelle.getLignes()) {
+	            for (Voie voie : ligne.getVoies()) {
+	                if (voie.getStationDepart().equals(stationActuelle)) {
+	                    Station prochaineStation = voie.getStationArrivee();
+	                    if (!stationsVisitees.contains(prochaineStation)) {
+	                        aVisiter.add(prochaineStation);
+	                        if (!stationPrecedente.containsKey(prochaineStation)) {
+	                            stationPrecedente.put(prochaineStation, stationActuelle);
+	                        }
+	                    }
+	                }
 	            }
 	        }
 	    }
-	    return itineraire;
-	}
 
+	    // Si nous atteignons ce point, aucun itinéraire n'a été trouvé
+	    System.out.println("Aucun itinéraire trouvé.");
+	    return new ArrayList<>();
+	}
 
     
-    public List<Station> trouverItineraire(Station depart, Station arrivee) {
-	    Queue<Station> aVisiter = new LinkedList<>();
-	    Map<Station, Station> vientDe = new HashMap<>();
-	    aVisiter.add(depart);
-
-	    while (!aVisiter.isEmpty()) {
-	        Station actuelle = aVisiter.remove();
-
-	        // Si nous avons atteint la station d'arrivée, reconstruisons le chemin
-	        if (actuelle.equals(arrivee)) {
-	            List<Station> chemin = new LinkedList<>();
-	            while (actuelle != null) {
-	                chemin.add(0, actuelle);
-	                actuelle = vientDe.get(actuelle);
-	            }
-	            return chemin;
-	        }
-
-	        // Sinon, ajoutez tous les voisins à la file d'attente
-	        for (Voie voie : actuelle.getVoies()) {
-	            Station prochaine = voie.getStationArrivee();
-	            if (!vientDe.containsKey(prochaine)) {
-	                aVisiter.add(prochaine);
-	                vientDe.put(prochaine, actuelle);
-	            }
-	        }
-	    }
-
-	    // S'il n'y a aucun chemin possible, retournez une liste vide
-	    return new LinkedList<>();
-	}
-
-
-
-
+    
     public List<Ligne> getLignes() {
 	return this.lignes;
     }
@@ -200,77 +182,77 @@ public class ReseauMetro {
 	Voie voie24 = new Voie(berault, chateauDeVincennes, 5, false);
 	Voie voie1B = new Voie(chateauDeVincennes, defense, 5, false);
 
-	defense.addVoie(voie1);
-	esplanadeDeLaDefense.addVoie(voie1);
+	defense.addVoie(voie1); defense.setLigne(ligne1);
+	esplanadeDeLaDefense.addVoie(voie1); esplanadeDeLaDefense.setLigne(ligne1);
 
 	esplanadeDeLaDefense.addVoie(voie2);
-	pontDeNeuilly.addVoie(voie2);
+	pontDeNeuilly.addVoie(voie2); pontDeNeuilly.setLigne(ligne1);
 
 	pontDeNeuilly.addVoie(voie3);
-	lesSablons.addVoie(voie3);
+	lesSablons.addVoie(voie3);lesSablons.setLigne(ligne1);
 
 	lesSablons.addVoie(voie4);
-	porteMaillot.addVoie(voie4);
+	porteMaillot.addVoie(voie4);porteMaillot.setLigne(ligne1);
 
 	porteMaillot.addVoie(voie5);
-	argentine.addVoie(voie5);
+	argentine.addVoie(voie5);argentine.setLigne(ligne1);
 
 	argentine.addVoie(voie6);
-	charlesDeGaulleEtoile.addVoie(voie6);
+	charlesDeGaulleEtoile.addVoie(voie6);charlesDeGaulleEtoile.setLigne(ligne1);
 
 	charlesDeGaulleEtoile.addVoie(voie7);
-	georgeV.addVoie(voie7);
+	georgeV.addVoie(voie7);georgeV.setLigne(ligne1);
 
 	georgeV.addVoie(voie8);
-	franklinDRoosevelt.addVoie(voie8);
+	franklinDRoosevelt.addVoie(voie8);franklinDRoosevelt.setLigne(ligne1);
 
 	franklinDRoosevelt.addVoie(voie9);
-	champsElyseesClemenceau.addVoie(voie9);
+	champsElyseesClemenceau.addVoie(voie9);champsElyseesClemenceau.setLigne(ligne1);
 
 	champsElyseesClemenceau.addVoie(voie10);
-	concorde.addVoie(voie10);
+	concorde.addVoie(voie10);concorde.setLigne(ligne1);
 
 	concorde.addVoie(voie11);
-	tuileries.addVoie(voie11);
+	tuileries.addVoie(voie11);tuileries.setLigne(ligne1);
 
 	tuileries.addVoie(voie12);
-	palaisRoyalMuseeDuLouvre.addVoie(voie12);
+	palaisRoyalMuseeDuLouvre.addVoie(voie12);palaisRoyalMuseeDuLouvre.setLigne(ligne1);
 
 	palaisRoyalMuseeDuLouvre.addVoie(voie13);
-	louvreRivoli.addVoie(voie13);
+	louvreRivoli.addVoie(voie13);louvreRivoli.setLigne(ligne1);
 
 	louvreRivoli.addVoie(voie14);
-	chatelet.addVoie(voie14);
+	chatelet.addVoie(voie14);chatelet.setLigne(ligne1);
 
 	chatelet.addVoie(voie15);
-	hotelDeVille.addVoie(voie15);
+	hotelDeVille.addVoie(voie15);hotelDeVille.setLigne(ligne1);
 
 	hotelDeVille.addVoie(voie16);
-	saintPaul.addVoie(voie16);
+	saintPaul.addVoie(voie16);saintPaul.setLigne(ligne1);
 
 	saintPaul.addVoie(voie17);
-	bastille.addVoie(voie17);
+	bastille.addVoie(voie17);bastille.setLigne(ligne1);
 
 	bastille.addVoie(voie18);
-	gareDeLyon.addVoie(voie18);
+	gareDeLyon.addVoie(voie18);gareDeLyon.setLigne(ligne1);
 
 	gareDeLyon.addVoie(voie19);
-	reuillyDiderot.addVoie(voie19);
+	reuillyDiderot.addVoie(voie19);reuillyDiderot.setLigne(ligne1);
 
 	reuillyDiderot.addVoie(voie20);
-	nation.addVoie(voie20);
+	nation.addVoie(voie20);nation.setLigne(ligne1);
 
 	nation.addVoie(voie21);
-	porteDeVincennes.addVoie(voie21);
+	porteDeVincennes.addVoie(voie21);porteDeVincennes.setLigne(ligne1);
 
 	porteDeVincennes.addVoie(voie22);
-	saintMande.addVoie(voie22);
+	saintMande.addVoie(voie22);saintMande.setLigne(ligne1);
 
 	saintMande.addVoie(voie23);
-	berault.addVoie(voie23);
+	berault.addVoie(voie23);berault.setLigne(ligne1);
 
 	berault.addVoie(voie24);
-	chateauDeVincennes.addVoie(voie24);
+	chateauDeVincennes.addVoie(voie24);chateauDeVincennes.setLigne(ligne1);
 
 	chateauDeVincennes.addVoie(voie1B);
 	defense.addVoie(voie1B);
@@ -407,74 +389,78 @@ public class ReseauMetro {
 	Voie voie47 = new Voie(avron, nation, 5, false);
 	Voie voie25B = new Voie(nation, porteDauphine, 5, false);
 
-	victorHugo.addVoie(voie25);
-	ternes.addVoie(voie26);
+	porteDauphine.addVoie(voie25);porteDauphine.setLigne(ligne2);
+	victorHugo.addVoie(voie25);victorHugo.setLigne(ligne2);
+	
+	victorHugo.addVoie(voie26);
+	ternes.addVoie(voie26);ternes.setLigne(ligne2);
 
 	ternes.addVoie(voie27);
-	courcelles.addVoie(voie27);
+	courcelles.addVoie(voie27);courcelles.setLigne(ligne2);
 
 	courcelles.addVoie(voie28);
-	monceau.addVoie(voie28);
+	monceau.addVoie(voie28);monceau.setLigne(ligne2);
 
 	monceau.addVoie(voie29);
-	villiers.addVoie(voie29);
+	villiers.addVoie(voie29);villiers.setLigne(ligne2);
 
 	villiers.addVoie(voie30);
-	rome.addVoie(voie30);
+	rome.addVoie(voie30);rome.setLigne(ligne2);
 
 	rome.addVoie(voie31);
-	placeDeClichy.addVoie(voie31);
+	placeDeClichy.addVoie(voie31);placeDeClichy.setLigne(ligne2);
 
 	placeDeClichy.addVoie(voie32);
-	blanche.addVoie(voie32);
+	blanche.addVoie(voie32);blanche.setLigne(ligne2);
 
 	blanche.addVoie(voie33);
-	pigalle.addVoie(voie33);
+	pigalle.addVoie(voie33);pigalle.setLigne(ligne2);
 
 	pigalle.addVoie(voie34);
-	anvers.addVoie(voie34);
+	anvers.addVoie(voie34);anvers.setLigne(ligne2);
 
 	anvers.addVoie(voie35);
-	barbesRochechouart.addVoie(voie35);
+	barbesRochechouart.addVoie(voie35);barbesRochechouart.setLigne(ligne2);
 
 	barbesRochechouart.addVoie(voie36);
-	laChapelle.addVoie(voie36);
+	laChapelle.addVoie(voie36);laChapelle.setLigne(ligne2);
 
 	laChapelle.addVoie(voie37);
-	stalingrad.addVoie(voie37);
+	stalingrad.addVoie(voie37);stalingrad.setLigne(ligne2);
 
 	stalingrad.addVoie(voie38);
-	jaures.addVoie(voie38);
+	jaures.addVoie(voie38);jaures.setLigne(ligne2);
 
 	jaures.addVoie(voie39);
-	colonelFabien.addVoie(voie39);
+	colonelFabien.addVoie(voie39);colonelFabien.setLigne(ligne2);
 
 	colonelFabien.addVoie(voie40);
-	belleville.addVoie(voie40);
+	belleville.addVoie(voie40);belleville.setLigne(ligne2);
 
 	belleville.addVoie(voie41);
-	couronnes.addVoie(voie41);
+	couronnes.addVoie(voie41);couronnes.setLigne(ligne2);
 
 	couronnes.addVoie(voie42);
-	menilmontant.addVoie(voie42);
+	menilmontant.addVoie(voie42);menilmontant.setLigne(ligne2);
 
 	menilmontant.addVoie(voie43);
-	pereLachaise.addVoie(voie43);
+	pereLachaise.addVoie(voie43);pereLachaise.setLigne(ligne2);
 
 	pereLachaise.addVoie(voie44);
-	philippeAuguste.addVoie(voie44);
+	philippeAuguste.addVoie(voie44);philippeAuguste.setLigne(ligne2);
 
 	philippeAuguste.addVoie(voie45);
-	alexandreDumas.addVoie(voie45);
+	alexandreDumas.addVoie(voie45);alexandreDumas.setLigne(ligne2);
 
 	alexandreDumas.addVoie(voie46);
-	avron.addVoie(voie46);
+	avron.addVoie(voie46);avron.setLigne(ligne2);
 
 	avron.addVoie(voie47);
-	nation.addVoie(voie47);
+	nation.addVoie(voie47);nation.setLigne(ligne2);
 
 	nation.addVoie(voie25B);
 	porteDauphine.addVoie(voie25B);
+	porteDauphine.setLigne(ligne2);
 
 	ligne2.addVoie(voie25);
 	ligne2.addVoie(voie26);

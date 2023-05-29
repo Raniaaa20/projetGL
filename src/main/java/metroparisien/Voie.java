@@ -40,7 +40,7 @@ public class Voie {
 	}
 
     // Méthode renommée pour être plus conforme à son utilisation dans l'algorithme de recherche de chemin
-	public int getDistance() {
+	public int gettempsParcours() {
 		return tempsParcours;
 	}
 

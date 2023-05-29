@@ -21,6 +21,7 @@ public class Station {
     double latitude;
     double longitude;
     List<Voie> voies;
+    private List<Ligne> lignes;
 
     // Constructeur
     public Station(String nom, int tempsArret, boolean accident) {
@@ -28,7 +29,6 @@ public class Station {
 	this.nom = nom;
 	this.tempsArret = tempsArret;
 	this.accident = accident;
-
     }
 
     public Station(String nom, int tempsArret, boolean accident, double latitude, double longitude) {
@@ -36,6 +36,8 @@ public class Station {
 	this.latitude = latitude;
 	this.longitude = longitude;
 	this.voies = new ArrayList<>(); // Initialisation de la liste des voies
+	this.lignes = new ArrayList<>();
+
     }
 
     // Getters et setters
@@ -127,6 +129,17 @@ public class Station {
 
     public void addVoie(Voie voie) {
 	this.voies.add(voie);
+    }
+
+    public Ligne[] getLignes() {
+	// Convertir la liste de lignes en tableau
+	Ligne[] lignesArray = new Ligne[lignes.size()];
+	lignesArray = lignes.toArray(lignesArray);
+	return lignesArray;
+    }
+
+    public void setLigne(Ligne l) {
+	this.lignes.add(l);
     }
 
 }
