@@ -53,9 +53,65 @@ public class Controlleur {
 	@FXML 
 	private TextArea result;
 	
+	@FXML 
+	private Button admin;
+	
+	@FXML 
+	private Button util;
+	
+	@FXML 
+	private Button ok;
+	
+	@FXML 
+	private TextField mdp;
+	
 	@FXML
 	public void initialize() {
 		// Afficher seulement les boutons deplacer1 et deplacer2 au départ
+		admin.setVisible(true);
+		util.setVisible(true);
+		mdp.setVisible(false);
+		ok.setVisible(false);
+		deplacer1.setVisible(false);
+		deplacer2.setVisible(false);
+		paneOptions.setVisible(false);
+		rapide.setVisible(false);
+		corresp.setVisible(false);
+		stop.setVisible(false);
+		saisieStop.setVisible(false);
+		valider.setVisible(false);
+		result.setVisible(false);
+		adresseD.setVisible(false);
+		adresseA.setVisible(false);
+		statA.setVisible(false);
+		statD.setVisible(false);
+	}
+	
+	@FXML 
+	public void connexionADMIN() {
+		mdp.setVisible(true);
+		ok.setVisible(true);
+		deplacer1.setVisible(false);
+		deplacer2.setVisible(false);
+		paneOptions.setVisible(false);
+		rapide.setVisible(false);
+		corresp.setVisible(false);
+		stop.setVisible(false);
+		saisieStop.setVisible(false);
+		valider.setVisible(false);
+		result.setVisible(false);
+		adresseD.setVisible(false);
+		adresseA.setVisible(false);
+		statA.setVisible(false);
+		statD.setVisible(false);
+		
+	}
+	
+	@FXML 
+	public void connexionUtilisateur() {
+		// Afficher seulement les boutons deplacer1 et deplacer2 au départ
+		mdp.setVisible(false);
+		ok.setVisible(false);
 		deplacer1.setVisible(true);
 		deplacer2.setVisible(true);
 		paneOptions.setVisible(false);
@@ -71,6 +127,22 @@ public class Controlleur {
 		statD.setVisible(false);
 	}
 	
+	@FXML 
+	public void connectAdmin() {
+		String password = mdp.getText(); // Récupérer le champ saisi dans "mdp"
+
+	    if (password.equals("2023")) {
+	        interfaceAdmin(); 
+	    } else {
+	        erreur.setText("Mot de passe incorrect"); 
+	    }
+	}
+	
+	private void interfaceAdmin() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	@FXML
 	public void onDeplacer1Clicked() {
 		// Afficher paneOp1 si l'utilisateur choisit deplacer1
