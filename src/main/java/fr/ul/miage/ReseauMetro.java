@@ -54,15 +54,9 @@ public class ReseauMetro {
     }
 
     public Station getStation(String nomStation) {
-	for (Ligne ligne : lignes) {
-	    for (Station station : ligne.getStations()) {
-		if (station.getNom().equals(nomStation)) {
-		    return station;
-		}
-	    }
+	    return this.stations.get(nomStation);
 	}
-	return null; // Aucune station trouvée avec le nom donné
-    }
+
 
     public Voie getVoie(String nom) {
 	return this.voies.get(nom);

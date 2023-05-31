@@ -35,6 +35,7 @@ public class Station {
 	this.nom = nom;
 	this.latitude = latitude;
 	this.longitude = longitude;
+	this.tempsArret=tempsArret;
 	this.voies = new ArrayList<>(); // Initialisation de la liste des voies
 	this.lignes = new ArrayList<>();
 
