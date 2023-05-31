@@ -73,7 +73,7 @@ public class ReseauMetro {
 	    stationsVisitees.add(stationActuelle);
 
 	    // Affiche la station actuelle et le nombre de voies
-	    System.out.println("Station courante : " + stationActuelle.getNom());
+	    System.out.println("Station courante : " + stationActuelle.getNom() + "; "+stationActuelle.getVoies().size()+" voies");
 	    // System.out.println("Nombre de voies : " +
 	    // stationActuelle.getLignes().length);
 
@@ -92,26 +92,26 @@ public class ReseauMetro {
 	    }
 
 	    for (Ligne ligne : stationActuelle.getLignes()) {
-		    for (Voie voie : ligne.getVoies()) {
-		        if (voie.getStationDepart().equals(stationActuelle)) {
-		            Station prochaineStation = voie.getStationArrivee();
-		            if (!stationsVisitees.contains(prochaineStation)) {
-		                aVisiter.add(prochaineStation);
-		                if (!stationPrecedente.containsKey(prochaineStation)) {
-		                    stationPrecedente.put(prochaineStation, stationActuelle);
-		                }
-		            }
+		for (Voie voie : ligne.getVoies()) {
+		    if (voie.getStationDepart().equals(stationActuelle)) {
+			Station prochaineStation = voie.getStationArrivee();
+			if (!stationsVisitees.contains(prochaineStation)) {
+			    aVisiter.add(prochaineStation);
+			    if (!stationPrecedente.containsKey(prochaineStation)) {
+				stationPrecedente.put(prochaineStation, stationActuelle);
+			    }
+			}
 
-		            // Vérifier si la prochaine station a un accident
-		            if (prochaineStation.isAccident()) {
-		                System.out.println("Suivante : " + prochaineStation.getNom() + " : ACCIDENT.");
-		            }else {System.out.println("Suivante : " + prochaineStation.getNom() + " : pas d'accident.");
+			// Vérifier si la prochaine station a un accident
+			if (prochaineStation.isAccident()) {
+			    System.out.println("Suivante : " + prochaineStation.getNom() + " : ACCIDENT.");
+			} else {
+			    System.out.println("Suivante : " + prochaineStation.getNom() + " : pas d'accident.");
 
-		        	
-		            }
-		        }
+			}
 		    }
 		}
+	    }
 	}
 
 	// Si nous atteignons ce point, aucun itinéraire n'a été trouvé
@@ -145,8 +145,7 @@ public class ReseauMetro {
 	Station charlesDeGaulleEtoile = new Station("Charles de Gaulle — etoile", 1, false, 48.873962, 2.295167);
 	Station georgeV = new Station("George V", 1, true, 48.872074, 2.300816);
 	Station franklinDRoosevelt = new Station("Franklin D. Roosevelt", 1, false, 48.869263, 2.307766);
-	Station champsElyseesClemenceau = new Station("Champs-elysees — Clemenceau", 1, false, 48.867603,
-		2.312631);
+	Station champsElyseesClemenceau = new Station("Champs-elysees — Clemenceau", 1, false, 48.867603, 2.312631);
 	Station concorde = new Station("Concorde", 1, false, 48.865165, 2.321428);
 	Station tuileries = new Station("Tuileries", 1, false, 48.863788, 2.327102);
 	Station palaisRoyalMuseeDuLouvre = new Station("Palais Royal", 1, false, 48.862508, 2.336204);
