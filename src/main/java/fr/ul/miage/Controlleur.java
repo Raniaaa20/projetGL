@@ -162,8 +162,38 @@ public class Controlleur {
 		result.setText("Vous allez passez par les stations suivantes : \n");
 		result.setText("Temps de trajet estimé : \n");
 	}
-	
-	
-	
+
+	public void getCheminOptimal() {
+		String Depart = adresseD.getText();
+		String Arrivee = adresseA.getText();
+		try {
+
+			// ---------------Récupération des coordonnées de départ et
+			// d'arrivée-------------//
+
+			List<Double> coordonnéesDepart = Station.setPosition(Depart);
+			latitudeDep = coordonnéesDepart.get(0);
+			longitudeDep = coordonnéesDepart.get(1);
+			List<Double> coordonnéesDest = Station.setPosition(Arrivee);
+			latitudeDes = coordonnéesDest.get(0);
+			longitudeDes = coordonnéesDest.get(1);
+
+			// -----------Calcul du chemin avec les méthodes de la classe RéseauMetro-----//
+			ReseauMetro.trouverCheminOptimal(latitudeDep, longitudeDep, latitudeDes, longitudeDes);
+			result.setVisible(true);
+			result.setWrapText(true);
+
+			result.appendText("Ligne : " + ReseauMetro.ligneOptimale + "\n");
+
+			result.setText("Vous allez passez par les stations suivantes : \n");
+			for (Voie voie : ReseauMetro.voiesOptimalesParcourus) {
+				result.appendText(voie.getStationDepart().getNom() + "\n");
+			}
+			result.setText("Temps de trajet estimé :" + ReseauMetro.tempsTrajetOptimal + "\n");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
