@@ -1,0 +1,40 @@
+package metroparisien.test;
+
+import metroparisien.*;
+import org.junit.jupiter.api.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class MetroParisienTest {
+    @Test
+    public void testLigneNom() {
+        Ligne ligne1 = new Ligne("Ligne1", new ArrayList<>());
+        assertEquals("Ligne1", ligne1.getNom());
+        ligne1.setNom("Ligne2");
+        assertEquals("Ligne2", ligne1.getNom());
+    }
+
+    @Test
+    public void testLigneVoies() {
+        Station station1 = new Station("Station1", 5, false);
+        Station station2 = new Station("Station2", 10, false);
+        Voie voie1 = new Voie(station1, station2, 15, false);
+        List<Voie> voiesLigne1 = new ArrayList<>(Arrays.asList(voie1));
+        Ligne ligne1 = new Ligne("Ligne1", voiesLigne1);
+        assertEquals(voiesLigne1, ligne1.getVoies());
+        Voie voie2 = new Voie(station2, station1, 20, false);
+        voiesLigne1.add(voie2);
+        ligne1.setVoies((ArrayList<Voie>) voiesLigne1);
+        assertEquals(voiesLigne1, ligne1.getVoies());
+    }
+
+    @Test
+    public void testStationAccident() {
+        Station station1 = new Station("Station1", 5, false);
+        assertFalse(station1.isAccident());
+        station1.setAccident(true);
+        assertTrue(station1.isAccident());
+    }
+}

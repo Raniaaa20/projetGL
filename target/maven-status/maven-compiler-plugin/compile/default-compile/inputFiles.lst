@@ -1,10 +1,9 @@
-<<<<<<< HEAD
-C:\Users\acait\Documents\Semestre2\programmation\metroparisien\src\main\java\metroparisien\Ligne.java
-C:\Users\acait\Documents\Semestre2\programmation\metroparisien\src\main\java\metroparisien\Station.java
-C:\Users\acait\Documents\Semestre2\programmation\metroparisien\src\main\java\metroparisien\Main.java
-C:\Users\acait\Documents\Semestre2\programmation\metroparisien\src\main\java\metroparisien\Menu.java
-C:\Users\acait\Documents\Semestre2\programmation\metroparisien\src\main\java\metroparisien\ReseauMetro.java
-C:\Users\acait\Documents\Semestre2\programmation\metroparisien\src\main\java\metroparisien\Voie.java
-=======
-C:\Users\roman\eclipse-workspace\metro_parisien\src\main\java\metro_parisien\MetroStation.java
->>>>>>> 78d83838fe678a15993ebc0bbb641edc3fa79004
+C:\Users\roman\eclipse-workspace\projetGL\src\main\java\fr\ul\miage\Launcher.java
+C:\Users\roman\eclipse-workspace\projetGL\src\main\java\fr\ul\miage\App.java
+C:\Users\roman\eclipse-workspace\projetGL\src\main\java\fr\ul\miage\Incident.java
+C:\Users\roman\eclipse-workspace\projetGL\src\main\java\fr\ul\miage\Ligne.java
+C:\Users\roman\eclipse-workspace\projetGL\src\main\java\fr\ul\miage\ReseauMetro.java
+C:\Users\roman\eclipse-workspace\projetGL\src\main\java\fr\ul\miage\Voie.java
+C:\Users\roman\eclipse-workspace\projetGL\src\main\java\fr\ul\miage\Controlleur.java
+C:\Users\roman\eclipse-workspace\projetGL\src\main\java\fr\ul\miage\Main.java
+C:\Users\roman\eclipse-workspace\projetGL\src\main\java\fr\ul\miage\Station.java
