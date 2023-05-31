@@ -16,8 +16,39 @@ public class ReseauMetro {
     public List<Ligne> lignes;
     public Map<String, Station> stations;
     public List<Station> listeStations = new ArrayList<>();
+    
+    public Ligne ligneOptimale;
+    public List<Voie> voiesOptimalesParcourus;
+    public int tempsTrajetOptimal;
 
-    private Map<String, Voie> voies;
+  
+
+    public Ligne getLigneOptimale() {
+		return ligneOptimale;
+	}
+
+	public void setLigneOptimale(Ligne ligneOptimale) {
+		this.ligneOptimale = ligneOptimale;
+	}
+
+	public List<Voie> getVoiesOptimalesParcourus() {
+		return voiesOptimalesParcourus;
+	}
+
+	public void setVoiesOptimalesParcourus(List<Voie> voiesOptimalesParcourus) {
+		this.voiesOptimalesParcourus = voiesOptimalesParcourus;
+	}
+
+	public int getTempsTrajetOptimal() {
+		return tempsTrajetOptimal;
+	}
+
+	public void setTempsTrajetOptimal(int tempsTrajetOptimal) {
+		this.tempsTrajetOptimal = tempsTrajetOptimal;
+	}
+
+
+	private Map<String, Voie> voies;
 
     public ReseauMetro() {
 	this.stations = new HashMap<>();
@@ -806,6 +837,7 @@ public class ReseauMetro {
 	this.ajouterLigne(ligne3);
 
     }
+
     /*
      * 
      * // Creation des stations pour la ligne 4 Station porteDeClignancourt = new
@@ -906,3 +938,218 @@ public class ReseauMetro {
      * }
      */
 }
+
+	public void trouverCheminOptimal(double longitudeUtil, double latitudeUtil, double longitudeDestination,
+			double latitudeDestination) {
+		// Variables pour stocker les informations du chemin optimal
+		List<List<Voie>> cheminsOptimaux = new ArrayList<>();
+		int tempsTrajetOptimal = Integer.MAX_VALUE;
+
+		// Parcourir toutes les lignes du réseau
+		for (Ligne ligne : lignes) {
+			// Trouver la station de départ la plus proche de la position de l'utilisateur
+			Station stationDepartPlusProche = null;
+			double distanceDepartMin = Integer.MAX_VALUE;
+
+			for (Voie voie : ligne.getVoies()) {
+				Station station = voie.getStationDepart();
+				double distanceDepart = station.distanceTo(latitudeUtil, longitudeUtil);
+
+				if (distanceDepart < distanceDepartMin) {
+					distanceDepartMin = distanceDepart;
+					stationDepartPlusProche = station;
+				}
+			}
+
+			// Trouver la station d'arrivée la plus proche de la destination
+			Station stationArriveePlusProche = null;
+			double distanceArriveeMin = Integer.MAX_VALUE;
+
+			for (Voie voie : ligne.getVoies()) {
+				Station station = voie.getStationDepart();
+				double distanceArrivee = station.distanceTo(longitudeDestination, latitudeDestination);
+
+				if (distanceArrivee < distanceArriveeMin) {
+					distanceArriveeMin = distanceArrivee;
+					stationArriveePlusProche = station;
+				}
+			}
+
+			// Calculer le temps de trajet
+
+			List<Voie> voiesParcourus = trouverVoiesEntreStations(ligne, stationDepartPlusProche,
+					stationArriveePlusProche);
+
+			int tempsTrajet = calculerTempsTrajet(voiesParcourus);
+			tempsTrajet += calculerTempsMarche(stationDepartPlusProche, latitudeUtil, longitudeUtil);
+			tempsTrajet += calculerTempsMarche(stationArriveePlusProche, latitudeDestination, longitudeDestination);
+
+			// Vérifier si le chemin est optimal
+			if (tempsTrajet < tempsTrajetOptimal) {
+
+				tempsTrajetOptimal = tempsTrajet;
+
+				cheminsOptimaux.clear();
+				cheminsOptimaux.add(voiesParcourus);
+				
+				voiesOptimalesParcourus = cheminsOptimaux.get(0);
+				ligneOptimale= ligne;
+				tempsTrajetOptimal=tempsTrajet;
+			}
+
+		}
+		
+	}
+
+	public List<Voie> trouverVoiesEntreStations(Ligne ligne, Station stationDepart, Station stationArrivee) {
+		List<Voie> voiesEntreStations = new ArrayList<>();
+		boolean enregistrement = false;
+		for (Voie voie : ligne.getVoies()) {
+			if (voie.getStationDepart() == stationDepart) {
+				enregistrement = true;
+			}
+			if (enregistrement) {
+				voiesEntreStations.add(voie);
+			}
+			if (voie.getStationArrivee() == stationArrivee) {
+				break;
+			}
+		}
+		return voiesEntreStations;
+	}
+	public int calculerTempsTrajet(List<Voie> voies) {
+		int tempsTrajetTotal = 0;
+		for (int i = 0; i < voies.size(); i++) {
+			Voie voie = voies.get(i);
+			Station stationDepart = voie.getStationDepart();
+			Station stationArrivee = voie.getStationArrivee();
+			int tempsParcours = voie.gettempsParcours();
+			int tempsArretDepart = stationDepart.getTempsArret();
+			int tempsArretArrivee = stationArrivee.getTempsArret();
+			tempsTrajetTotal += tempsArretDepart + tempsParcours;
+			// Si ce n'est pas la dernière voie, ajouter le temps d'arrêt à la station
+			// d'arrivée
+			if (i < voies.size() - 1) {
+				tempsTrajetTotal += tempsArretArrivee;
+			}
+		}
+		return tempsTrajetTotal;
+	}
+	public double calculerTempsMarche(Station station, double latitude, double longitude) {
+		// Calculer la distance entre la position de l'utilisateur et la position de la
+		// station
+		double distance = station.distanceTo(latitude, longitude);
+		// Supposer une vitesse de marche moyenne de 5 km/h (environ 1.4 m/s)
+		double vitesseMarche = 1.4;
+		int tempsMarche = (int) Math.ceil(distance / (vitesseMarche * 60));
+		return tempsMarche;
+	}
+	
+	
+	//-------------------Méthode Trajet Intermediaire----------------//
+	
+	public List<Voie> passerParUneStation(double longitudeUtil, double latitudeUtil, double longitudeDestination,
+			double latitudeDestination, Station stationIntermediaire){
+		
+		
+			//------------Chemin Optimal 1 jusqu'à la station Intermédiaire-------------//
+		
+		// Variables pour stocker les informations du chemin optimal
+		List<List<Voie>> cheminsOptimaux = new ArrayList<>();
+		
+		List <Voie> TrajetFinal = new ArrayList<>();
+		int tempsTrajetOptimal = Integer.MAX_VALUE;
+
+		// Parcourir toutes les lignes du réseau
+		for (Ligne ligne : lignes) {
+			// Trouver la station de départ la plus proche de la position de l'utilisateur
+			Station stationDepartPlusProche = null;
+			double distanceDepartMin = Integer.MAX_VALUE;
+
+			for (Voie voie : ligne.getVoies()) {
+				Station station = voie.getStationDepart();
+				double distanceDepart = station.distanceTo(latitudeUtil, longitudeUtil);
+
+				if (distanceDepart < distanceDepartMin) {
+					distanceDepartMin = distanceDepart;
+					stationDepartPlusProche = station;
+				}
+			}
+			
+			List<Voie> voiesParcourus = trouverVoiesEntreStations(ligne, stationDepartPlusProche,
+					stationIntermediaire);
+
+			int tempsTrajet = calculerTempsTrajet(voiesParcourus);
+			tempsTrajet += calculerTempsMarche(stationDepartPlusProche, latitudeUtil, longitudeUtil);
+
+			// Vérifier si le chemin est optimal
+			if (tempsTrajet < tempsTrajetOptimal) {
+
+				tempsTrajetOptimal = tempsTrajet;
+
+				cheminsOptimaux.clear();
+				cheminsOptimaux.add(voiesParcourus);
+			}
+			
+		}
+			
+		
+		
+			TrajetFinal.addAll(cheminsOptimaux.get(0));
+			
+			
+			//------------Chemin Optimal 2 de la station Intermédiaire jusqu'à destination-------------//
+
+			
+			List<List<Voie>> cheminsOptimauxBis = new ArrayList<>();
+			int tempsTrajetOptimalBis = Integer.MAX_VALUE;
+			
+			for (Ligne ligneBis : lignes) {
+				
+				// Trouver la station d'arrivée la plus proche de la destination
+				Station stationArriveePlusProche = null;
+				double distanceArriveeMin = Integer.MAX_VALUE;
+
+				for (Voie voie : ligneBis.getVoies()) {
+					Station station = voie.getStationDepart();
+					double distanceArrivee = station.distanceTo(longitudeDestination, latitudeDestination);
+
+					if (distanceArrivee < distanceArriveeMin) {
+						distanceArriveeMin = distanceArrivee;
+						stationArriveePlusProche = station;
+					}
+				}
+
+				// Calculer le temps de trajet
+
+				List<Voie> voiesParcourusBis = trouverVoiesEntreStations(ligneBis, stationIntermediaire,
+						stationArriveePlusProche);
+
+				int tempsTrajetBis = calculerTempsTrajet(voiesParcourusBis);
+				tempsTrajetBis += calculerTempsMarche(stationArriveePlusProche, latitudeDestination, longitudeDestination);
+
+				// Vérifier si le chemin est optimal
+				if (tempsTrajetBis < tempsTrajetOptimalBis) {
+
+					tempsTrajetOptimalBis = tempsTrajetBis;
+
+					cheminsOptimaux.clear();
+					cheminsOptimaux.add(voiesParcourusBis);
+				}
+				TrajetFinal.addAll(cheminsOptimauxBis.get(0));
+
+
+			}
+			
+			return TrajetFinal;
+			
+			
+			
+	}
+	
+	
+
+
+
+}
+
