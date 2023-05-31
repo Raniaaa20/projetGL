@@ -54,65 +54,71 @@ public class ReseauMetro {
     }
 
     public Station getStation(String nomStation) {
-	    return this.stations.get(nomStation);
-	}
-
+	return this.stations.get(nomStation);
+    }
 
     public Voie getVoie(String nom) {
 	return this.voies.get(nom);
     }
 
     public List<Station> trouverItineraireLePlusRapide(Station depart, Station arrivee) {
-	    List<Station> itineraire = new ArrayList<>();
-	    Map<Station, Station> stationPrecedente = new HashMap<>();
-	    Set<Station> stationsVisitees = new HashSet<>();
-	    Queue<Station> aVisiter = new LinkedList<>();
-	    aVisiter.add(depart);
+	List<Station> itineraire = new ArrayList<>();
+	Map<Station, Station> stationPrecedente = new HashMap<>();
+	Set<Station> stationsVisitees = new HashSet<>();
+	Queue<Station> aVisiter = new LinkedList<>();
+	aVisiter.add(depart);
 
-	    while (!aVisiter.isEmpty()) {
-	        Station stationActuelle = aVisiter.remove();
-	        stationsVisitees.add(stationActuelle);
+	while (!aVisiter.isEmpty()) {
+	    Station stationActuelle = aVisiter.remove();
+	    stationsVisitees.add(stationActuelle);
 
-	     // Affiche la station actuelle et le nombre de voies
-	        System.out.println("Station courante : " + stationActuelle.getNom());
-	        //System.out.println("Nombre de voies : " + stationActuelle.getLignes().length);
+	    // Affiche la station actuelle et le nombre de voies
+	    System.out.println("Station courante : " + stationActuelle.getNom());
+	    // System.out.println("Nombre de voies : " +
+	    // stationActuelle.getLignes().length);
 
-	        try {
-	            Thread.sleep(100);
-	        } catch (InterruptedException e) {
-	            e.printStackTrace();
-	        }
-
-	        if (stationActuelle.equals(arrivee)) {
-	            while (stationActuelle != null) {
-	                itineraire.add(0, stationActuelle);
-	                stationActuelle = stationPrecedente.get(stationActuelle);
-	            }
-	            return itineraire;
-	        }
-
-	        for (Ligne ligne : stationActuelle.getLignes()) {
-	            for (Voie voie : ligne.getVoies()) {
-	                if (voie.getStationDepart().equals(stationActuelle)) {
-	                    Station prochaineStation = voie.getStationArrivee();
-	                    if (!stationsVisitees.contains(prochaineStation)) {
-	                        aVisiter.add(prochaineStation);
-	                        if (!stationPrecedente.containsKey(prochaineStation)) {
-	                            stationPrecedente.put(prochaineStation, stationActuelle);
-	                        }
-	                    }
-	                }
-	            }
-	        }
+	    try {
+		Thread.sleep(10);
+	    } catch (InterruptedException e) {
+		e.printStackTrace();
 	    }
 
-	    // Si nous atteignons ce point, aucun itinéraire n'a été trouvé
-	    System.out.println("Aucun itinéraire trouvé.");
-	    return new ArrayList<>();
+	    if (stationActuelle.equals(arrivee)) {
+		while (stationActuelle != null) {
+		    itineraire.add(0, stationActuelle);
+		    stationActuelle = stationPrecedente.get(stationActuelle);
+		}
+		return itineraire;
+	    }
+
+	    for (Ligne ligne : stationActuelle.getLignes()) {
+		    for (Voie voie : ligne.getVoies()) {
+		        if (voie.getStationDepart().equals(stationActuelle)) {
+		            Station prochaineStation = voie.getStationArrivee();
+		            if (!stationsVisitees.contains(prochaineStation)) {
+		                aVisiter.add(prochaineStation);
+		                if (!stationPrecedente.containsKey(prochaineStation)) {
+		                    stationPrecedente.put(prochaineStation, stationActuelle);
+		                }
+		            }
+
+		            // Vérifier si la prochaine station a un accident
+		            if (prochaineStation.isAccident()) {
+		                System.out.println("Suivante : " + prochaineStation.getNom() + " : ACCIDENT.");
+		            }else {System.out.println("Suivante : " + prochaineStation.getNom() + " : pas d'accident.");
+
+		        	
+		            }
+		        }
+		    }
+		}
 	}
 
-    
-    
+	// Si nous atteignons ce point, aucun itinéraire n'a été trouvé
+	System.out.println("Aucun itinéraire trouvé.");
+	return new ArrayList<>();
+    }
+
     public List<Ligne> getLignes() {
 	return this.lignes;
     }
@@ -137,17 +143,17 @@ public class ReseauMetro {
 	Station porteMaillot = new Station("Porte Maillot (Palais des Congres)", 1, false, 48.877461, 2.282395);
 	Station argentine = new Station("Argentine", 1, false, 48.875377, 2.291282);
 	Station charlesDeGaulleEtoile = new Station("Charles de Gaulle — etoile", 1, false, 48.873962, 2.295167);
-	Station georgeV = new Station("George V", 1, false, 48.872074, 2.300816);
+	Station georgeV = new Station("George V", 1, true, 48.872074, 2.300816);
 	Station franklinDRoosevelt = new Station("Franklin D. Roosevelt", 1, false, 48.869263, 2.307766);
-	Station champsElyseesClemenceau = new Station("Champs-elysees — Clemenceau (Grand Palais)", 1, false, 48.867603,
+	Station champsElyseesClemenceau = new Station("Champs-elysees — Clemenceau", 1, false, 48.867603,
 		2.312631);
 	Station concorde = new Station("Concorde", 1, false, 48.865165, 2.321428);
 	Station tuileries = new Station("Tuileries", 1, false, 48.863788, 2.327102);
-	Station palaisRoyalMuseeDuLouvre = new Station("Palais Royal - Musee du Louvre", 1, false, 48.862508, 2.336204);
+	Station palaisRoyalMuseeDuLouvre = new Station("Palais Royal", 1, false, 48.862508, 2.336204);
 	Station louvreRivoli = new Station("Louvre — Rivoli", 1, false, 48.860647, 2.340474);
 	Station chatelet = new Station("Châtelet", 1, false, 48.858747, 2.347079);
 	Station hotelDeVille = new Station("Hôtel de Ville", 1, false, 48.857368, 2.351816);
-	Station saintPaul = new Station("Saint-Paul (Le Marais)", 1, false, 48.855452, 2.360816);
+	Station saintPaul = new Station("Saint-Paul", 1, false, 48.855452, 2.360816);
 	Station bastille = new Station("Bastille", 1, false, 48.853299, 2.369553);
 	Station gareDeLyon = new Station("Gare de Lyon", 1, false, 48.844945, 2.374570);
 	Station reuillyDiderot = new Station("Reuilly — Diderot", 1, false, 48.847222, 2.387222);
@@ -183,77 +189,102 @@ public class ReseauMetro {
 	Voie voie24 = new Voie(berault, chateauDeVincennes, 5, false);
 	Voie voie1B = new Voie(chateauDeVincennes, defense, 5, false);
 
-	defense.addVoie(voie1); defense.setLigne(ligne1);
-	esplanadeDeLaDefense.addVoie(voie1); esplanadeDeLaDefense.setLigne(ligne1);
+	defense.addVoie(voie1);
+	defense.setLigne(ligne1);
+	esplanadeDeLaDefense.addVoie(voie1);
+	esplanadeDeLaDefense.setLigne(ligne1);
 
 	esplanadeDeLaDefense.addVoie(voie2);
-	pontDeNeuilly.addVoie(voie2); pontDeNeuilly.setLigne(ligne1);
+	pontDeNeuilly.addVoie(voie2);
+	pontDeNeuilly.setLigne(ligne1);
 
 	pontDeNeuilly.addVoie(voie3);
-	lesSablons.addVoie(voie3);lesSablons.setLigne(ligne1);
+	lesSablons.addVoie(voie3);
+	lesSablons.setLigne(ligne1);
 
 	lesSablons.addVoie(voie4);
-	porteMaillot.addVoie(voie4);porteMaillot.setLigne(ligne1);
+	porteMaillot.addVoie(voie4);
+	porteMaillot.setLigne(ligne1);
 
 	porteMaillot.addVoie(voie5);
-	argentine.addVoie(voie5);argentine.setLigne(ligne1);
+	argentine.addVoie(voie5);
+	argentine.setLigne(ligne1);
 
 	argentine.addVoie(voie6);
-	charlesDeGaulleEtoile.addVoie(voie6);charlesDeGaulleEtoile.setLigne(ligne1);
+	charlesDeGaulleEtoile.addVoie(voie6);
+	charlesDeGaulleEtoile.setLigne(ligne1);
 
 	charlesDeGaulleEtoile.addVoie(voie7);
-	georgeV.addVoie(voie7);georgeV.setLigne(ligne1);
+	georgeV.addVoie(voie7);
+	georgeV.setLigne(ligne1);
 
 	georgeV.addVoie(voie8);
-	franklinDRoosevelt.addVoie(voie8);franklinDRoosevelt.setLigne(ligne1);
+	franklinDRoosevelt.addVoie(voie8);
+	franklinDRoosevelt.setLigne(ligne1);
 
 	franklinDRoosevelt.addVoie(voie9);
-	champsElyseesClemenceau.addVoie(voie9);champsElyseesClemenceau.setLigne(ligne1);
+	champsElyseesClemenceau.addVoie(voie9);
+	champsElyseesClemenceau.setLigne(ligne1);
 
 	champsElyseesClemenceau.addVoie(voie10);
-	concorde.addVoie(voie10);concorde.setLigne(ligne1);
+	concorde.addVoie(voie10);
+	concorde.setLigne(ligne1);
 
 	concorde.addVoie(voie11);
-	tuileries.addVoie(voie11);tuileries.setLigne(ligne1);
+	tuileries.addVoie(voie11);
+	tuileries.setLigne(ligne1);
 
 	tuileries.addVoie(voie12);
-	palaisRoyalMuseeDuLouvre.addVoie(voie12);palaisRoyalMuseeDuLouvre.setLigne(ligne1);
+	palaisRoyalMuseeDuLouvre.addVoie(voie12);
+	palaisRoyalMuseeDuLouvre.setLigne(ligne1);
 
 	palaisRoyalMuseeDuLouvre.addVoie(voie13);
-	louvreRivoli.addVoie(voie13);louvreRivoli.setLigne(ligne1);
+	louvreRivoli.addVoie(voie13);
+	louvreRivoli.setLigne(ligne1);
 
 	louvreRivoli.addVoie(voie14);
-	chatelet.addVoie(voie14);chatelet.setLigne(ligne1);
+	chatelet.addVoie(voie14);
+	chatelet.setLigne(ligne1);
 
 	chatelet.addVoie(voie15);
-	hotelDeVille.addVoie(voie15);hotelDeVille.setLigne(ligne1);
+	hotelDeVille.addVoie(voie15);
+	hotelDeVille.setLigne(ligne1);
 
 	hotelDeVille.addVoie(voie16);
-	saintPaul.addVoie(voie16);saintPaul.setLigne(ligne1);
+	saintPaul.addVoie(voie16);
+	saintPaul.setLigne(ligne1);
 
 	saintPaul.addVoie(voie17);
-	bastille.addVoie(voie17);bastille.setLigne(ligne1);
+	bastille.addVoie(voie17);
+	bastille.setLigne(ligne1);
 
 	bastille.addVoie(voie18);
-	gareDeLyon.addVoie(voie18);gareDeLyon.setLigne(ligne1);
+	gareDeLyon.addVoie(voie18);
+	gareDeLyon.setLigne(ligne1);
 
 	gareDeLyon.addVoie(voie19);
-	reuillyDiderot.addVoie(voie19);reuillyDiderot.setLigne(ligne1);
+	reuillyDiderot.addVoie(voie19);
+	reuillyDiderot.setLigne(ligne1);
 
 	reuillyDiderot.addVoie(voie20);
-	nation.addVoie(voie20);nation.setLigne(ligne1);
+	nation.addVoie(voie20);
+	nation.setLigne(ligne1);
 
 	nation.addVoie(voie21);
-	porteDeVincennes.addVoie(voie21);porteDeVincennes.setLigne(ligne1);
+	porteDeVincennes.addVoie(voie21);
+	porteDeVincennes.setLigne(ligne1);
 
 	porteDeVincennes.addVoie(voie22);
-	saintMande.addVoie(voie22);saintMande.setLigne(ligne1);
+	saintMande.addVoie(voie22);
+	saintMande.setLigne(ligne1);
 
 	saintMande.addVoie(voie23);
-	berault.addVoie(voie23);berault.setLigne(ligne1);
+	berault.addVoie(voie23);
+	berault.setLigne(ligne1);
 
 	berault.addVoie(voie24);
-	chateauDeVincennes.addVoie(voie24);chateauDeVincennes.setLigne(ligne1);
+	chateauDeVincennes.addVoie(voie24);
+	chateauDeVincennes.setLigne(ligne1);
 
 	chateauDeVincennes.addVoie(voie1B);
 	defense.addVoie(voie1B);
@@ -389,74 +420,98 @@ public class ReseauMetro {
 	Voie voie47 = new Voie(avron, nation, 5, false);
 	Voie voie25B = new Voie(nation, porteDauphine, 5, false);
 
-	porteDauphine.addVoie(voie25);porteDauphine.setLigne(ligne2);
-	victorHugo.addVoie(voie25);victorHugo.setLigne(ligne2);
-	
+	porteDauphine.addVoie(voie25);
+	porteDauphine.setLigne(ligne2);
+	victorHugo.addVoie(voie25);
+	victorHugo.setLigne(ligne2);
+
 	victorHugo.addVoie(voie26);
-	ternes.addVoie(voie26);ternes.setLigne(ligne2);
+	ternes.addVoie(voie26);
+	ternes.setLigne(ligne2);
 
 	ternes.addVoie(voie27);
-	courcelles.addVoie(voie27);courcelles.setLigne(ligne2);
+	courcelles.addVoie(voie27);
+	courcelles.setLigne(ligne2);
 
 	courcelles.addVoie(voie28);
-	monceau.addVoie(voie28);monceau.setLigne(ligne2);
+	monceau.addVoie(voie28);
+	monceau.setLigne(ligne2);
 
 	monceau.addVoie(voie29);
-	villiers.addVoie(voie29);villiers.setLigne(ligne2);
+	villiers.addVoie(voie29);
+	villiers.setLigne(ligne2);
 
 	villiers.addVoie(voie30);
-	rome.addVoie(voie30);rome.setLigne(ligne2);
+	rome.addVoie(voie30);
+	rome.setLigne(ligne2);
 
 	rome.addVoie(voie31);
-	placeDeClichy.addVoie(voie31);placeDeClichy.setLigne(ligne2);
+	placeDeClichy.addVoie(voie31);
+	placeDeClichy.setLigne(ligne2);
 
 	placeDeClichy.addVoie(voie32);
-	blanche.addVoie(voie32);blanche.setLigne(ligne2);
+	blanche.addVoie(voie32);
+	blanche.setLigne(ligne2);
 
 	blanche.addVoie(voie33);
-	pigalle.addVoie(voie33);pigalle.setLigne(ligne2);
+	pigalle.addVoie(voie33);
+	pigalle.setLigne(ligne2);
 
 	pigalle.addVoie(voie34);
-	anvers.addVoie(voie34);anvers.setLigne(ligne2);
+	anvers.addVoie(voie34);
+	anvers.setLigne(ligne2);
 
 	anvers.addVoie(voie35);
-	barbesRochechouart.addVoie(voie35);barbesRochechouart.setLigne(ligne2);
+	barbesRochechouart.addVoie(voie35);
+	barbesRochechouart.setLigne(ligne2);
 
 	barbesRochechouart.addVoie(voie36);
-	laChapelle.addVoie(voie36);laChapelle.setLigne(ligne2);
+	laChapelle.addVoie(voie36);
+	laChapelle.setLigne(ligne2);
 
 	laChapelle.addVoie(voie37);
-	stalingrad.addVoie(voie37);stalingrad.setLigne(ligne2);
+	stalingrad.addVoie(voie37);
+	stalingrad.setLigne(ligne2);
 
 	stalingrad.addVoie(voie38);
-	jaures.addVoie(voie38);jaures.setLigne(ligne2);
+	jaures.addVoie(voie38);
+	jaures.setLigne(ligne2);
 
 	jaures.addVoie(voie39);
-	colonelFabien.addVoie(voie39);colonelFabien.setLigne(ligne2);
+	colonelFabien.addVoie(voie39);
+	colonelFabien.setLigne(ligne2);
 
 	colonelFabien.addVoie(voie40);
-	belleville.addVoie(voie40);belleville.setLigne(ligne2);
+	belleville.addVoie(voie40);
+	belleville.setLigne(ligne2);
 
 	belleville.addVoie(voie41);
-	couronnes.addVoie(voie41);couronnes.setLigne(ligne2);
+	couronnes.addVoie(voie41);
+	couronnes.setLigne(ligne2);
 
 	couronnes.addVoie(voie42);
-	menilmontant.addVoie(voie42);menilmontant.setLigne(ligne2);
+	menilmontant.addVoie(voie42);
+	menilmontant.setLigne(ligne2);
 
 	menilmontant.addVoie(voie43);
-	pereLachaise.addVoie(voie43);pereLachaise.setLigne(ligne2);
+	pereLachaise.addVoie(voie43);
+	pereLachaise.setLigne(ligne2);
 
 	pereLachaise.addVoie(voie44);
-	philippeAuguste.addVoie(voie44);philippeAuguste.setLigne(ligne2);
+	philippeAuguste.addVoie(voie44);
+	philippeAuguste.setLigne(ligne2);
 
 	philippeAuguste.addVoie(voie45);
-	alexandreDumas.addVoie(voie45);alexandreDumas.setLigne(ligne2);
+	alexandreDumas.addVoie(voie45);
+	alexandreDumas.setLigne(ligne2);
 
 	alexandreDumas.addVoie(voie46);
-	avron.addVoie(voie46);avron.setLigne(ligne2);
+	avron.addVoie(voie46);
+	avron.setLigne(ligne2);
 
 	avron.addVoie(voie47);
-	nation.addVoie(voie47);nation.setLigne(ligne2);
+	nation.addVoie(voie47);
+	nation.setLigne(ligne2);
 
 	nation.addVoie(voie25B);
 	porteDauphine.addVoie(voie25B);
@@ -536,12 +591,9 @@ public class ReseauMetro {
 	this.ajouterStation("Avron", avron);
 
 	this.ajouterLigne(ligne2);
-	
-	
-	
+
 	Ligne ligne3 = new Ligne(3, "Ligne 3");
 
-	
 	Station pontDeLevalloisBecon = new Station("Pont de Levallois", 1, false, 48.8978, 2.2832);
 	Station anatoleFrance = new Station("Anatole France", 1, false, 48.8928, 2.2852);
 	Station louiseMichel = new Station("Louise Michel", 1, false, 48.8884, 2.2871);
@@ -589,76 +641,98 @@ public class ReseauMetro {
 	Voie voie69 = new Voie(porteDeBagnolet, gallieni, 5, false);
 	Voie voie48B = new Voie(gallieni, pontDeLevalloisBecon, 5, false);
 
-	
-	pontDeLevalloisBecon.addVoie(voie48);pontDeLevalloisBecon.setLigne(ligne3);
-	anatoleFrance.addVoie(voie48);anatoleFrance.setLigne(ligne3);
-	
+	pontDeLevalloisBecon.addVoie(voie48);
+	pontDeLevalloisBecon.setLigne(ligne3);
+	anatoleFrance.addVoie(voie48);
+	anatoleFrance.setLigne(ligne3);
+
 	anatoleFrance.addVoie(voie49);
-	louiseMichel.addVoie(voie49);louiseMichel.setLigne(ligne3);
-	
+	louiseMichel.addVoie(voie49);
+	louiseMichel.setLigne(ligne3);
+
 	louiseMichel.addVoie(voie50);
-	porteDeChamperret.addVoie(voie50);porteDeChamperret.setLigne(ligne3);
+	porteDeChamperret.addVoie(voie50);
+	porteDeChamperret.setLigne(ligne3);
 
 	porteDeChamperret.addVoie(voie51);
-	pereireMarJ.addVoie(voie51);pereireMarJ.setLigne(ligne3);
+	pereireMarJ.addVoie(voie51);
+	pereireMarJ.setLigne(ligne3);
 
 	pereireMarJ.addVoie(voie52);
-	wagram.addVoie(voie52);wagram.setLigne(ligne3);
+	wagram.addVoie(voie52);
+	wagram.setLigne(ligne3);
 
 	wagram.addVoie(voie53);
-	malesherbes.addVoie(voie53);malesherbes.setLigne(ligne3);
+	malesherbes.addVoie(voie53);
+	malesherbes.setLigne(ligne3);
 
 	malesherbes.addVoie(voie54);
-	europe.addVoie(voie54);europe.setLigne(ligne3);
+	europe.addVoie(voie54);
+	europe.setLigne(ligne3);
 
 	europe.addVoie(voie55);
-	stLazare.addVoie(voie55);stLazare.setLigne(ligne3);
+	stLazare.addVoie(voie55);
+	stLazare.setLigne(ligne3);
 
 	stLazare.addVoie(voie56);
-	jaures.addVoie(voie56);jaures.setLigne(ligne3);
+	jaures.addVoie(voie56);
+	jaures.setLigne(ligne3);
 
 	jaures.addVoie(voie57);
-	opera.addVoie(voie57);opera.setLigne(ligne3);
+	opera.addVoie(voie57);
+	opera.setLigne(ligne3);
 
 	opera.addVoie(voie58);
-	quatreSeptembre.addVoie(voie58);quatreSeptembre.setLigne(ligne3);
+	quatreSeptembre.addVoie(voie58);
+	quatreSeptembre.setLigne(ligne3);
 
 	quatreSeptembre.addVoie(voie59);
-	bourse.addVoie(voie59);bourse.setLigne(ligne3);
+	bourse.addVoie(voie59);
+	bourse.setLigne(ligne3);
 
 	bourse.addVoie(voie60);
-	sentier.addVoie(voie60);sentier.setLigne(ligne3);
+	sentier.addVoie(voie60);
+	sentier.setLigne(ligne3);
 
 	sentier.addVoie(voie61);
-	reaumurSebastopol.addVoie(voie61);reaumurSebastopol.setLigne(ligne3);
+	reaumurSebastopol.addVoie(voie61);
+	reaumurSebastopol.setLigne(ligne3);
 
 	reaumurSebastopol.addVoie(voie62);
-	artsMetiers.addVoie(voie62);artsMetiers.setLigne(ligne3);
+	artsMetiers.addVoie(voie62);
+	artsMetiers.setLigne(ligne3);
 
 	artsMetiers.addVoie(voie63);
-	temple.addVoie(voie63);temple.setLigne(ligne3);
+	temple.addVoie(voie63);
+	temple.setLigne(ligne3);
 
 	temple.addVoie(voie64);
-	republique.addVoie(voie64);republique.setLigne(ligne3);
+	republique.addVoie(voie64);
+	republique.setLigne(ligne3);
 
 	republique.addVoie(voie65);
-	parmentier.addVoie(voie65);parmentier.setLigne(ligne3);
+	parmentier.addVoie(voie65);
+	parmentier.setLigne(ligne3);
 
 	parmentier.addVoie(voie66);
-	rueStMaur.addVoie(voie66);rueStMaur.setLigne(ligne3);
+	rueStMaur.addVoie(voie66);
+	rueStMaur.setLigne(ligne3);
 
 	rueStMaur.addVoie(voie67);
-	gambetta.addVoie(voie67);gambetta.setLigne(ligne3);
+	gambetta.addVoie(voie67);
+	gambetta.setLigne(ligne3);
 
 	gambetta.addVoie(voie68);
-	porteDeBagnolet.addVoie(voie68);porteDeBagnolet.setLigne(ligne3);
+	porteDeBagnolet.addVoie(voie68);
+	porteDeBagnolet.setLigne(ligne3);
 
 	porteDeBagnolet.addVoie(voie69);
-	gallieni.addVoie(voie69);gallieni.setLigne(ligne3);
-	
+	gallieni.addVoie(voie69);
+	gallieni.setLigne(ligne3);
+
 	gallieni.addVoie(voie48B);
 	pontDeLevalloisBecon.addVoie(voie48B);
-	
+
 	ligne3.addVoie(voie48);
 	ligne3.addVoie(voie49);
 	ligne3.addVoie(voie50);
@@ -715,7 +789,8 @@ public class ReseauMetro {
 	this.ajouterStation("Wagram", wagram);
 	this.ajouterStation("Malesherbes", malesherbes);
 	this.ajouterStation("Europe", europe);
-	this.ajouterStation("Saint-Lazare", stLazare);	this.ajouterStation("Opera", opera);
+	this.ajouterStation("Saint-Lazare", stLazare);
+	this.ajouterStation("Opera", opera);
 	this.ajouterStation("Quatre-Septembre", quatreSeptembre);
 	this.ajouterStation("Bourse", bourse);
 	this.ajouterStation("Sentier", sentier);
@@ -731,11 +806,9 @@ public class ReseauMetro {
 
 	this.ajouterLigne(ligne3);
 
-
-
     }
-/*
-    
+    /*
+     * 
      * // Creation des stations pour la ligne 4 Station porteDeClignancourt = new
      * Station("Porte de Clignancourt", 4, false, 48.8998, 2.3446); Station simplon
      * = new Station("Simplon", 4, false, 48.8921, 2.3483); Station
