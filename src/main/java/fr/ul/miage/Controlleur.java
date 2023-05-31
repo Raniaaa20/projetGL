@@ -259,13 +259,15 @@ public class Controlleur {
 		statD.setVisible(true);
 		adresseD.setVisible(false);
 		adresseA.setVisible(false);
-		adresseD.textProperty().addListener((observable, oldValue, newValue) -> {
+		
+		statD.textProperty().addListener((observable, oldValue, newValue) -> {
 		    updateOptionsVisibility();
 		});
 
-		adresseA.textProperty().addListener((observable, oldValue, newValue) -> {
+		statA.textProperty().addListener((observable, oldValue, newValue) -> {
 		    updateOptionsVisibility();
 		});
+		
 		
 		
 	}
@@ -280,15 +282,15 @@ public class Controlleur {
 		statA.setVisible(false);
 		statD.setVisible(false);
 		
-		
-		
-		statD.textProperty().addListener((observable, oldValue, newValue) -> {
+		adresseD.textProperty().addListener((observable, oldValue, newValue) -> {
 		    updateOptionsVisibility();
 		});
 
-		statA.textProperty().addListener((observable, oldValue, newValue) -> {
+		adresseA.textProperty().addListener((observable, oldValue, newValue) -> {
 		    updateOptionsVisibility();
 		});
+		
+		
 		
 		
 		
@@ -314,7 +316,6 @@ public class Controlleur {
 	        corresp.setVisible(false);
 	        stop.setVisible(false);
 	    }
-	    
 	    
 	}
 	
