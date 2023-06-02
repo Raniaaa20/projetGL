@@ -13,9 +13,14 @@ import java.util.Set;
 
 public class ReseauMetro {
 
-    static List<Ligne> lignes;
-    static Map<String, Station> stations;
-    static List<Station> listeStations = new ArrayList<>();
+
+    public static List<Ligne> lignes = new ArrayList<Ligne>();;
+    public static Map<String, Station> stations = new HashMap<String, Station>();
+    public static List<Station> listeStations = new ArrayList<Station>();
+
+    public static List<Voie> voies = new ArrayList<Voie>();
+
+   
     
     static Ligne ligneOptimale;
     static List<Voie> voiesOptimalesParcourus;
@@ -44,15 +49,12 @@ public class ReseauMetro {
 
 	private Map<String, Voie> voies;
 
-    public ReseauMetro() {
-	this.stations = new HashMap<>();
-	this.voies = new HashMap<>();
-	this.lignes = new ArrayList<>(); // Initialisation de la liste de lignes
-	// Creation des stations
 
+    public ReseauMetro() {
+	
     }
 
-    public void ajouterLigne(Ligne ligne) {
+    public static void ajouterLigne(Ligne ligne) {
 	lignes.add(ligne);
     }
 
@@ -69,22 +71,20 @@ public class ReseauMetro {
 	}
     }
 
-    public void ajouterStation(String nom, Station station) {
-	this.stations.put(nom, station);
-	this.listeStations.add(station);
+    public static void ajouterStation(String nom, Station station) {
+		stations.put(nom, station);
+		listeStations.add(station);
     }
 
     public void ajouterVoie(String nom, Voie voie) {
-	this.voies.put(nom, voie);
+    	voies.add(voie);
     }
 
     public Station getStation(String nomStation) {
 	return this.stations.get(nomStation);
     }
 
-    public Voie getVoie(String nom) {
-	return this.voies.get(nom);
-    }
+    
 
     public List<Station> trouverItineraireLePlusRapide(Station depart, Station arrivee) {
 	List<Station> itineraire = new ArrayList<>();
@@ -136,6 +136,7 @@ public class ReseauMetro {
 			}
 		    }
 		}
+      
 	    }
 	}
 
@@ -157,7 +158,7 @@ public class ReseauMetro {
 	return null; // Si aucune ligne ne correspond au numero specifie
     }
 
-    void initialiserReseau() {
+    public static void initialiserReseau() {
 
 	Ligne ligne1 = new Ligne(1, "Ligne 1");
 
@@ -212,6 +213,33 @@ public class ReseauMetro {
 	Voie voie23 = new Voie(saintMande, berault, 5, false);
 	Voie voie24 = new Voie(berault, chateauDeVincennes, 5, false);
 	Voie voie1B = new Voie(chateauDeVincennes, defense, 5, false);
+	
+	voies.add(voie1);
+	voies.add(voie2);
+	voies.add(voie3);
+	voies.add(voie4);
+	voies.add(voie5);
+	voies.add(voie6);
+	voies.add(voie7);
+	voies.add(voie8);
+	voies.add(voie9);
+	voies.add(voie10);
+	voies.add(voie11);
+	voies.add(voie12);
+	voies.add(voie13);
+	voies.add(voie14);
+	voies.add(voie15);
+	voies.add(voie16);
+	voies.add(voie17);
+	voies.add(voie18);
+	voies.add(voie19);
+	voies.add(voie20);
+	voies.add(voie21);
+	voies.add(voie22);
+	voies.add(voie23);
+	voies.add(voie24);
+	voies.add(voie1B);
+
 
 	defense.addVoie(voie1);
 	defense.setLigne(ligne1);
@@ -365,33 +393,33 @@ public class ReseauMetro {
 	ligne1.addStation(berault);
 	ligne1.addStation(chateauDeVincennes);
 
-	this.ajouterStation("La Defense - Grande Arche", defense);
-	this.ajouterStation("Esplanade de la Defense", esplanadeDeLaDefense);
-	this.ajouterStation("Pont de Neuilly", pontDeNeuilly);
-	this.ajouterStation("Les Sablons (Jardin d'Acclimatation)", lesSablons);
-	this.ajouterStation("Porte Maillot (Palais des Congres)", porteMaillot);
-	this.ajouterStation("Argentine", argentine);
-	this.ajouterStation("Charles de Gaulle — etoile", charlesDeGaulleEtoile);
-	this.ajouterStation("George V", georgeV);
-	this.ajouterStation("Franklin D. Roosevelt", franklinDRoosevelt);
-	this.ajouterStation("Champs-elysees — Clemenceau (Grand Palais)", champsElyseesClemenceau);
-	this.ajouterStation("Concorde", concorde);
-	this.ajouterStation("Tuileries", tuileries);
-	this.ajouterStation("Palais Royal - Musee du Louvre", palaisRoyalMuseeDuLouvre);
-	this.ajouterStation("Louvre — Rivoli", louvreRivoli);
-	this.ajouterStation("Châtelet", chatelet);
-	this.ajouterStation("Hôtel de Ville", hotelDeVille);
-	this.ajouterStation("Saint-Paul (Le Marais)", saintPaul);
-	this.ajouterStation("Bastille", bastille);
-	this.ajouterStation("Gare de Lyon", gareDeLyon);
-	this.ajouterStation("Reuilly — Diderot", reuillyDiderot);
-	this.ajouterStation("Nation", nation);
-	this.ajouterStation("Porte de Vincennes", porteDeVincennes);
-	this.ajouterStation("Saint-Mande", saintMande);
-	this.ajouterStation("Berault", berault);
-	this.ajouterStation("Château de Vincennes", chateauDeVincennes);
+	ajouterStation("La Defense - Grande Arche", defense);
+	ajouterStation("Esplanade de la Defense", esplanadeDeLaDefense);
+	ajouterStation("Pont de Neuilly", pontDeNeuilly);
+	ajouterStation("Les Sablons (Jardin d'Acclimatation)", lesSablons);
+	ajouterStation("Porte Maillot (Palais des Congres)", porteMaillot);
+	ajouterStation("Argentine", argentine);
+	ajouterStation("Charles de Gaulle — etoile", charlesDeGaulleEtoile);
+	ajouterStation("George V", georgeV);
+	ajouterStation("Franklin D. Roosevelt", franklinDRoosevelt);
+	ajouterStation("Champs-elysees — Clemenceau (Grand Palais)", champsElyseesClemenceau);
+	ajouterStation("Concorde", concorde);
+	ajouterStation("Tuileries", tuileries);
+	ajouterStation("Palais Royal - Musee du Louvre", palaisRoyalMuseeDuLouvre);
+	ajouterStation("Louvre — Rivoli", louvreRivoli);
+	ajouterStation("Châtelet", chatelet);
+	ajouterStation("Hôtel de Ville", hotelDeVille);
+	ajouterStation("Saint-Paul (Le Marais)", saintPaul);
+	ajouterStation("Bastille", bastille);
+	ajouterStation("Gare de Lyon", gareDeLyon);
+	ajouterStation("Reuilly — Diderot", reuillyDiderot);
+	ajouterStation("Nation", nation);
+	ajouterStation("Porte de Vincennes", porteDeVincennes);
+	ajouterStation("Saint-Mande", saintMande);
+	ajouterStation("Berault", berault);
+	ajouterStation("Château de Vincennes", chateauDeVincennes);
 
-	this.ajouterLigne(ligne1);
+	ajouterLigne(ligne1);
 
 	Ligne ligne2 = new Ligne(2, "Ligne 2");
 
@@ -444,10 +472,37 @@ public class ReseauMetro {
 	Voie voie47 = new Voie(avron, nation, 5, false);
 	Voie voie25B = new Voie(nation, porteDauphine, 5, false);
 
-	porteDauphine.addVoie(voie25);
-	porteDauphine.setLigne(ligne2);
-	victorHugo.addVoie(voie25);
-	victorHugo.setLigne(ligne2);
+
+	voies.add(voie25);
+	voies.add(voie26);
+	voies.add(voie27);
+	voies.add(voie28);
+	voies.add(voie29);
+	voies.add(voie30);
+	voies.add(voie31);
+	voies.add(voie32);
+	voies.add(voie33);
+	voies.add(voie34);
+	voies.add(voie35);
+	voies.add(voie36);
+	voies.add(voie37);
+	voies.add(voie38);
+	voies.add(voie39);
+	voies.add(voie40);
+	voies.add(voie41);
+	voies.add(voie42);
+	voies.add(voie43);
+	voies.add(voie44);
+	voies.add(voie45);
+	voies.add(voie46);
+	voies.add(voie47);
+	voies.add(voie25B);
+
+	porteDauphine.addVoie(voie25);porteDauphine.setLigne(ligne2);
+	victorHugo.addVoie(voie25);victorHugo.setLigne(ligne2);
+	
+
+
 
 	victorHugo.addVoie(voie26);
 	ternes.addVoie(voie26);
@@ -590,31 +645,36 @@ public class ReseauMetro {
 	ligne2.addStation(avron);
 	ligne2.addStation(nation);
 
-	this.ajouterStation("Porte Dauphine", porteDauphine);
-	this.ajouterStation("Victor Hugo", victorHugo);
-	this.ajouterStation("Ternes", ternes);
-	this.ajouterStation("Courcelles", courcelles);
-	this.ajouterStation("Monceau", monceau);
-	this.ajouterStation("Villiers", villiers);
-	this.ajouterStation("Rome", rome);
-	this.ajouterStation("Place de Clichy", placeDeClichy);
-	this.ajouterStation("Blanche", blanche);
-	this.ajouterStation("Pigalle", pigalle);
-	this.ajouterStation("Anvers (Sacre-Cœur)", anvers);
-	this.ajouterStation("Barbes - Rochechouart", barbesRochechouart);
-	this.ajouterStation("La Chapelle", laChapelle);
-	this.ajouterStation("Stalingrad", stalingrad);
-	this.ajouterStation("Jaures", jaures);
-	this.ajouterStation("Colonel Fabien", colonelFabien);
-	this.ajouterStation("Belleville", belleville);
-	this.ajouterStation("Couronnes", couronnes);
-	this.ajouterStation("Menilmontant", menilmontant);
-	this.ajouterStation("Pere Lachaise", pereLachaise);
-	this.ajouterStation("Philippe Auguste", philippeAuguste);
-	this.ajouterStation("Alexandre Dumas", alexandreDumas);
-	this.ajouterStation("Avron", avron);
 
-	this.ajouterLigne(ligne2);
+	ajouterStation("Porte Dauphine", porteDauphine);
+	ajouterStation("Victor Hugo", victorHugo);
+	ajouterStation("Ternes", ternes);
+	ajouterStation("Courcelles", courcelles);
+	ajouterStation("Monceau", monceau);
+	ajouterStation("Villiers", villiers);
+	ajouterStation("Rome", rome);
+	ajouterStation("Place de Clichy", placeDeClichy);
+	ajouterStation("Blanche", blanche);
+	ajouterStation("Pigalle", pigalle);
+	ajouterStation("Anvers (Sacre-Cœur)", anvers);
+	ajouterStation("Barbes - Rochechouart", barbesRochechouart);
+	ajouterStation("La Chapelle", laChapelle);
+	ajouterStation("Stalingrad", stalingrad);
+	ajouterStation("Jaures", jaures);
+	ajouterStation("Colonel Fabien", colonelFabien);
+	ajouterStation("Belleville", belleville);
+	ajouterStation("Couronnes", couronnes);
+	ajouterStation("Menilmontant", menilmontant);
+	ajouterStation("Pere Lachaise", pereLachaise);
+	ajouterStation("Philippe Auguste", philippeAuguste);
+	ajouterStation("Alexandre Dumas", alexandreDumas);
+	ajouterStation("Avron", avron);
+
+
+	ajouterLigne(ligne2);
+	
+	
+	
 
 	Ligne ligne3 = new Ligne(3, "Ligne 3");
 
@@ -665,10 +725,37 @@ public class ReseauMetro {
 	Voie voie69 = new Voie(porteDeBagnolet, gallieni, 5, false);
 	Voie voie48B = new Voie(gallieni, pontDeLevalloisBecon, 5, false);
 
-	pontDeLevalloisBecon.addVoie(voie48);
-	pontDeLevalloisBecon.setLigne(ligne3);
-	anatoleFrance.addVoie(voie48);
-	anatoleFrance.setLigne(ligne3);
+
+	voies.add(voie48);
+	voies.add(voie49);
+	voies.add(voie50);
+	voies.add(voie51);
+	voies.add(voie52);
+	voies.add(voie53);
+	voies.add(voie54);
+	voies.add(voie55);
+	voies.add(voie56);
+	voies.add(voie57);
+	voies.add(voie58);
+	voies.add(voie59);
+	voies.add(voie60);
+	voies.add(voie61);
+	voies.add(voie62);
+	voies.add(voie63);
+	voies.add(voie64);
+	voies.add(voie65);
+	voies.add(voie66);
+	voies.add(voie67);
+	voies.add(voie68);
+	voies.add(voie69);
+	voies.add(voie48B);
+
+	
+	pontDeLevalloisBecon.addVoie(voie48);pontDeLevalloisBecon.setLigne(ligne3);
+	anatoleFrance.addVoie(voie48);anatoleFrance.setLigne(ligne3);
+	
+
+
 
 	anatoleFrance.addVoie(voie49);
 	louiseMichel.addVoie(voie49);
@@ -805,34 +892,137 @@ public class ReseauMetro {
 	ligne3.addStation(porteDeBagnolet);
 	ligne3.addStation(gallieni);
 
-	this.ajouterStation("Pont de Levallois — Becon", pontDeLevalloisBecon);
-	this.ajouterStation("Anatole France", anatoleFrance);
-	this.ajouterStation("Louise Michel", louiseMichel);
-	this.ajouterStation("Porte de Champerret", porteDeChamperret);
-	this.ajouterStation("Pereire (Marechal Juin)", pereireMarJ);
-	this.ajouterStation("Wagram", wagram);
-	this.ajouterStation("Malesherbes", malesherbes);
-	this.ajouterStation("Europe", europe);
-	this.ajouterStation("Saint-Lazare", stLazare);
-	this.ajouterStation("Opera", opera);
-	this.ajouterStation("Quatre-Septembre", quatreSeptembre);
-	this.ajouterStation("Bourse", bourse);
-	this.ajouterStation("Sentier", sentier);
-	this.ajouterStation("Reaumur — Sebastopol", reaumurSebastopol);
-	this.ajouterStation("Arts et Metiers", artsMetiers);
-	this.ajouterStation("Temple", temple);
-	this.ajouterStation("Republique", republique);
-	this.ajouterStation("Parmentier", parmentier);
-	this.ajouterStation("Rue Saint-Maur", rueStMaur);
-	this.ajouterStation("Gambetta", gambetta);
-	this.ajouterStation("Porte de Bagnolet", porteDeBagnolet);
-	this.ajouterStation("Gallieni", gallieni);
 
-	this.ajouterLigne(ligne3);
+	ajouterStation("Pont de Levallois — Becon", pontDeLevalloisBecon);
+	ajouterStation("Anatole France", anatoleFrance);
+	ajouterStation("Louise Michel", louiseMichel);
+	ajouterStation("Porte de Champerret", porteDeChamperret);
+	ajouterStation("Pereire (Marechal Juin)", pereireMarJ);
+	ajouterStation("Wagram", wagram);
+	ajouterStation("Malesherbes", malesherbes);
+	ajouterStation("Europe", europe);
+	ajouterStation("Saint-Lazare", stLazare);
+	ajouterStation("Opera", opera);
+	ajouterStation("Quatre-Septembre", quatreSeptembre);
+	ajouterStation("Bourse", bourse);
+	ajouterStation("Sentier", sentier);
+	ajouterStation("Reaumur — Sebastopol", reaumurSebastopol);
+	ajouterStation("Arts et Metiers", artsMetiers);
+	ajouterStation("Temple", temple);
+	ajouterStation("Republique", republique);
+	ajouterStation("Parmentier", parmentier);
+	ajouterStation("Rue Saint-Maur", rueStMaur);
+	ajouterStation("Gambetta", gambetta);
+	ajouterStation("Porte de Bagnolet", porteDeBagnolet);
+	ajouterStation("Gallieni", gallieni);
+
+	ajouterLigne(ligne3);
+
+
 
     }
+/*
+    
+     * // Creation des stations pour la ligne 4 Station porteDeClignancourt = new
+     * Station("Porte de Clignancourt", 4, false, 48.8998, 2.3446); Station simplon
+     * = new Station("Simplon", 4, false, 48.8921, 2.3483); Station
+     * marcadetPoissonniers = new Station("Marcadet - Poissonniers", 4, false,
+     * 48.8902, 2.3495); Station chateauRouge = new Station("Château Rouge", 4,
+     * false, 48.8885, 2.3507); Station gareDuNord = new Station("Gare du Nord", 4,
+     * false, 48.8805, 2.3553); Station gareDeLEstVerdun = new
+     * Station("Gare de l'Est (Verdun)", 4, false, 48.8772, 2.3582); Station
+     * chateauDEau = new Station("Château d'Eau", 4, false, 48.8728, 2.3542);
+     * Station strasbourgSaintDenis = new Station("Strasbourg - Saint-Denis", 4,
+     * false, 48.8696, 2.3543); Station etienneMarcel = new
+     * Station("etienne Marcel", 4, false, 48.8638, 2.3485); Station lesHalles = new
+     * Station("Les Halles", 4, false, 48.8616, 2.3471); Station cite = new
+     * Station("Cite", 4, false, 48.8554, 2.3474); Station saintMichel = new
+     * Station("Saint-Michel", 4, false, 48.8534, 2.3444); Station odeon = new
+     * Station("Odeon", 4, false, 48.8516, 2.3398); Station saintGermainDesPres =
+     * new Station("Saint-Germain-des-Pres", 4, false, 48.8516, 2.3333); Station
+     * saintSulpice = new Station("Saint-Sulpice", 4, false, 48.8507, 2.3332);
+     * Station saintPlacide = new Station("Saint-Placide", 4, false, 48.8465,
+     * 2.3279); Station montparnasseBienvenue = new
+     * Station("Montparnasse - Bienvenue", 4, false, 48.8421, 2.3219); Station vavin
+     * = new Station("Vavin", 4, false, 48.8405, 2.3329); Station raspail = new
+     * Station("Raspail", 4, false, 48.8381, 2.3314); Station denfertRochereau = new
+     * Station("Denfert-Rochereau (Colonel Rol-Tanguy)", 4, false, 48.8338, 2.3324);
+     * Station moutonDuvernet = new Station("Mouton-Duvernet", 4, false, 48.8317,
+     * 2.3306); Station alesia = new Station("Alesia", 4, false, 48.8284, 2.3285);
+     * Station porteDOrleansLeclerc = new
+     * Station("Porte d'Orleans (General Leclerc)", 4, false, 48.8231, 2.3257);
+     * Station mairieDeMontrouge = new Station("Mairie de Montrouge", 4, false,
+     * 48.8199, 2.3198);
+     * 
+     * // Creation des voies pour la ligne 4 Voie voie93 = new
+     * Voie(porteDeClignancourt, simplon, 4, false); Voie voie94 = new Voie(simplon,
+     * marcadetPoissonniers, 4, false); Voie voie95 = new Voie(marcadetPoissonniers,
+     * chateauRouge, 4, false); Voie voie96 = new Voie(chateauRouge, gareDuNord, 4,
+     * false); Voie voie97 = new Voie(gareDuNord, gareDeLEstVerdun, 4, false); Voie
+     * voie98 = new Voie(gareDeLEstVerdun, chateauDEau, 4, false); Voie voie99 = new
+     * Voie(chateauDEau, strasbourgSaintDenis, 4, false); Voie voie100 = new
+     * Voie(strasbourgSaintDenis, etienneMarcel, 4, false); Voie voie101 = new
+     * Voie(etienneMarcel, lesHalles, 4, false); Voie voie102 = new Voie(lesHalles,
+     * cite, 4, false); Voie voie103 = new Voie(cite, saintMichel, 4, false); Voie
+     * voie104 = new Voie(saintMichel, odeon, 4, false); Voie voie105 = new
+     * Voie(odeon, saintGermainDesPres, 4, false); Voie voie106 = new
+     * Voie(saintGermainDesPres, saintSulpice, 4, false); Voie voie107 = new
+     * Voie(saintSulpice, saintPlacide, 4, false); Voie voie108 = new
+     * Voie(saintPlacide, montparnasseBienvenue, 4, false); Voie voie109 = new
+     * Voie(montparnasseBienvenue, vavin, 4, false); Voie voie110 = new Voie(vavin,
+     * raspail, 4, false); Voie voie111 = new Voie(raspail, denfertRochereau, 4,
+     * false); Voie voie112 = new Voie(denfertRochereau, moutonDuvernet, 4, false);
+     * Voie voie113 = new Voie(moutonDuvernet, alesia, 4, false); Voie voie114 = new
+     * Voie(alesia, porteDOrleansLeclerc, 4, false); Voie voie115 = new
+     * Voie(porteDOrleansLeclerc, mairieDeMontrouge, 4, false);
+     * 
+     * // Ajout des voies aux stations porteDeClignancourt.addVoie(voie93);
+     * simplon.addVoie(voie93); simplon.addVoie(voie94);
+     * marcadetPoissonniers.addVoie(voie94); marcadetPoissonniers.addVoie(voie95);
+     * chateauRouge.addVoie(voie95); chateauRouge.addVoie(voie96);
+     * gareDuNord.addVoie(voie96); gareDuNord.addVoie(voie97);
+     * gareDeLEstVerdun.addVoie(voie97); gareDeLEstVerdun.addVoie(voie98);
+     * chateauDEau.addVoie(voie98); chateauDEau.addVoie(voie99);
+     * strasbourgSaintDenis.addVoie(voie99); strasbourgSaintDenis.addVoie(voie100);
+     * etienneMarcel.addVoie(voie100); etienneMarcel.addVoie(voie101);
+     * lesHalles.addVoie(voie101); lesHalles.addVoie(voie102);
+     * cite.addVoie(voie102); cite.addVoie(voie103); saintMichel.addVoie(voie103);
+     * saintMichel.addVoie(voie104); odeon.addVoie(voie104); odeon.addVoie(voie105);
+     * saintGermainDesPres.addVoie(voie105); saintGermainDesPres.addVoie(voie106);
+     * saintSulpice.addVoie(voie106); saintSulpice.addVoie(voie107);
+     * saintPlacide.addVoie(voie107); saintPlacide.addVoie(voie108);
+     * montparnasseBienvenue.addVoie(voie108);
+     * montparnasseBienvenue.addVoie(voie109); vavin.addVoie(voie109);
+     * vavin.addVoie(voie110); raspail.addVoie(voie110); raspail.addVoie(voie111);
+     * denfertRochereau.addVoie(voie111); denfertRochereau.addVoie(voie112);
+     * moutonDuvernet.addVoie(voie112); moutonDuvernet.addVoie(voie113);
+     * alesia.addVoie(voie113); alesia.addVoie(voie114);
+     * porteDOrleansLeclerc.addVoie(voie114); porteDOrleansLeclerc.addVoie(voie115);
+     * mairieDeMontrouge.addVoie(voie115);
+     * 
+     * // Ajout des stations a la ligne 4 ligne4.addStation(porteDeClignancourt);
+     * ligne4.addStation(simplon); ligne4.addStation(marcadetPoissonniers);
+     * ligne4.addStation(chateauRouge); ligne4.addStation(gareDuNord);
+     * ligne4.addStation(gareDeLEstVerdun); ligne4.addStation(chateauDEau);
+     * ligne4.addStation(strasbourgSaintDenis); ligne4.addStation(etienneMarcel);
+     * ligne4.addStation(lesHalles); ligne4.addStation(cite);
+     * ligne4.addStation(saintMichel); ligne4.addStation(odeon);
+     * ligne4.addStation(saintGermainDesPres); ligne4.addStation(saintSulpice);
+     * ligne4.addStation(saintPlacide); ligne4.addStation(montparnasseBienvenue);
+     * ligne4.addStation(vavin); ligne4.addStation(raspail);
+     * ligne4.addStation(denfertRochereau); ligne4.addStation(moutonDuvernet);
+     * ligne4.addStation(alesia); ligne4.addStation(porteDOrleansLeclerc);
+     * ligne4.addStation(mairieDeMontrouge);
+     * 
+     * // Ajout de la ligne au reseau metro this.ajouterLigne(ligne1);
+     * this.ajouterLigne(ligne2); this.ajouterLigne(ligne3);
+     * this.ajouterLigne(ligne4);
+     * 
+     * }
+     */
 
-
+	
+}
 
 	static void trouverCheminOptimal(double longitudeUtil, double latitudeUtil, double longitudeDestination,
 			double latitudeDestination) {
@@ -1047,4 +1237,5 @@ public class ReseauMetro {
 
 
 }
+
 
