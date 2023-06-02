@@ -44,10 +44,6 @@ public class ReseauMetro {
 		return tempsTrajetOptimal;
 	}
 
-	
-
-
-	private Map<String, Voie> voies;
 
 
     public ReseauMetro() {
@@ -1022,7 +1018,7 @@ public class ReseauMetro {
      */
 
 	
-}
+
 
 	static void trouverCheminOptimal(double longitudeUtil, double latitudeUtil, double longitudeDestination,
 			double latitudeDestination) {

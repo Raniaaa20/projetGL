@@ -272,33 +272,6 @@ public class Controlleur {
 	}
 
 
-		paneOptions.setVisible(false);
-		rapide.setVisible(false);
-		corresp.setVisible(false);
-		stop.setVisible(false);
-		saisieStop.setVisible(false);
-		valider.setVisible(false);
-		result.setVisible(false);
-		adresseD.setVisible(false);
-		adresseA.setVisible(false);
-		statA.setVisible(false);
-		statD.setVisible(false);
-		adresseD.textProperty().addListener((observable, oldValue, newValue) -> {
-			updateOptionsVisibility();
-		});
-
-		adresseA.textProperty().addListener((observable, oldValue, newValue) -> {
-			updateOptionsVisibility();
-		});
-
-		statD.textProperty().addListener((observable, oldValue, newValue) -> {
-			updateOptionsVisibility();
-		});
-
-		statA.textProperty().addListener((observable, oldValue, newValue) -> {
-			updateOptionsVisibility();
-		});
-	}
 
 
 	@FXML
@@ -414,7 +387,7 @@ public class Controlleur {
 		majIncidentsVoie.setVisible(false);
 	}
 
-	public void getCheminOptimal() {
+	/*public void getCheminOptimal() {
 		String Depart = adresseD.getText();
 		String Arrivee = adresseA.getText();
 		try {
@@ -445,7 +418,7 @@ public class Controlleur {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 
 }
