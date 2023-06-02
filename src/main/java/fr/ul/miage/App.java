@@ -1,6 +1,8 @@
 package fr.ul.miage;
 
 import java.io.IOException;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,6 +23,7 @@ public class App extends Application {
 
 	public static void main(String[] args) {
 		ReseauMetro.initialiserReseau();
+		
 		launch(args);
 	}
 }
