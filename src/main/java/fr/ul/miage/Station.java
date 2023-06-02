@@ -45,51 +45,6 @@ public class Station {
 
 
    
-    public static Station findNearestStation(List<Station> stations, double latitude, double longitude) {
-
-    // Getters et setters
-    public String getNom() {
-	return nom;
-    }
-
-    public void setNom(String nom) {
-	this.nom = nom;
-    }
-
-    public boolean isAccident() {
-	return accident;
-    }
-
-    public void setAccident(boolean accident) {
-	this.accident = accident;
-    }
-
-    public int getTempsArret() {
-	return tempsArret;
-    }
-
-    public void setTempsArret(int tempsArret) {
-	this.tempsArret = tempsArret;
-    }
-    
-    
-
-    public double getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
-	public double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
-
 	public static Station findNearestStation(List<Station> stations, double latitude, double longitude) {
 
 	Station nearestStation = null;
