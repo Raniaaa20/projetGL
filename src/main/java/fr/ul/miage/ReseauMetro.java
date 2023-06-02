@@ -13,21 +13,48 @@ import java.util.Set;
 
 public class ReseauMetro {
 
-    public List<Ligne> lignes;
-    public Map<String, Station> stations;
-    public List<Station> listeStations = new ArrayList<>();
 
-    private Map<String, Voie> voies;
+    public static List<Ligne> lignes = new ArrayList<Ligne>();;
+    public static Map<String, Station> stations = new HashMap<String, Station>();
+    public static List<Station> listeStations = new ArrayList<Station>();
+
+    public static List<Voie> voies = new ArrayList<Voie>();
+
+   
+    
+    static Ligne ligneOptimale;
+    static List<Voie> voiesOptimalesParcourus;
+    static int tempsTrajetOptimal;
+
+  
+
+    public Ligne getLigneOptimale() {
+		return ligneOptimale;
+	}
+
+	
+
+	public List<Voie> getVoiesOptimalesParcourus() {
+		return voiesOptimalesParcourus;
+	}
+
+	
+
+	public int getTempsTrajetOptimal() {
+		return tempsTrajetOptimal;
+	}
+
+	
+
+
+	private Map<String, Voie> voies;
+
 
     public ReseauMetro() {
-	this.stations = new HashMap<>();
-	this.voies = new HashMap<>();
-	this.lignes = new ArrayList<>(); // Initialisation de la liste de lignes
-	// Creation des stations
-
+	
     }
 
-    public void ajouterLigne(Ligne ligne) {
+    public static void ajouterLigne(Ligne ligne) {
 	lignes.add(ligne);
     }
 
@@ -44,22 +71,20 @@ public class ReseauMetro {
 	}
     }
 
-    public void ajouterStation(String nom, Station station) {
-	this.stations.put(nom, station);
-	this.listeStations.add(station);
+    public static void ajouterStation(String nom, Station station) {
+		stations.put(nom, station);
+		listeStations.add(station);
     }
 
     public void ajouterVoie(String nom, Voie voie) {
-	this.voies.put(nom, voie);
+    	voies.add(voie);
     }
 
     public Station getStation(String nomStation) {
 	return this.stations.get(nomStation);
     }
 
-    public Voie getVoie(String nom) {
-	return this.voies.get(nom);
-    }
+    
 
     public List<Station> trouverItineraireLePlusRapide(Station depart, Station arrivee) {
 	List<Station> itineraire = new ArrayList<>();
@@ -111,6 +136,7 @@ public class ReseauMetro {
 			}
 		    }
 		}
+      
 	    }
 	}
 
@@ -132,7 +158,7 @@ public class ReseauMetro {
 	return null; // Si aucune ligne ne correspond au numero specifie
     }
 
-    void initialiserReseau() {
+    public static void initialiserReseau() {
 
 	Ligne ligne1 = new Ligne(1, "Ligne 1");
 
@@ -187,6 +213,33 @@ public class ReseauMetro {
 	Voie voie23 = new Voie(saintMande, berault, 5, false);
 	Voie voie24 = new Voie(berault, chateauDeVincennes, 5, false);
 	Voie voie1B = new Voie(chateauDeVincennes, defense, 5, false);
+	
+	voies.add(voie1);
+	voies.add(voie2);
+	voies.add(voie3);
+	voies.add(voie4);
+	voies.add(voie5);
+	voies.add(voie6);
+	voies.add(voie7);
+	voies.add(voie8);
+	voies.add(voie9);
+	voies.add(voie10);
+	voies.add(voie11);
+	voies.add(voie12);
+	voies.add(voie13);
+	voies.add(voie14);
+	voies.add(voie15);
+	voies.add(voie16);
+	voies.add(voie17);
+	voies.add(voie18);
+	voies.add(voie19);
+	voies.add(voie20);
+	voies.add(voie21);
+	voies.add(voie22);
+	voies.add(voie23);
+	voies.add(voie24);
+	voies.add(voie1B);
+
 
 	defense.addVoie(voie1);
 	defense.setLigne(ligne1);
@@ -340,33 +393,33 @@ public class ReseauMetro {
 	ligne1.addStation(berault);
 	ligne1.addStation(chateauDeVincennes);
 
-	this.ajouterStation("La Defense - Grande Arche", defense);
-	this.ajouterStation("Esplanade de la Defense", esplanadeDeLaDefense);
-	this.ajouterStation("Pont de Neuilly", pontDeNeuilly);
-	this.ajouterStation("Les Sablons (Jardin d'Acclimatation)", lesSablons);
-	this.ajouterStation("Porte Maillot (Palais des Congres)", porteMaillot);
-	this.ajouterStation("Argentine", argentine);
-	this.ajouterStation("Charles de Gaulle — etoile", charlesDeGaulleEtoile);
-	this.ajouterStation("George V", georgeV);
-	this.ajouterStation("Franklin D. Roosevelt", franklinDRoosevelt);
-	this.ajouterStation("Champs-elysees — Clemenceau (Grand Palais)", champsElyseesClemenceau);
-	this.ajouterStation("Concorde", concorde);
-	this.ajouterStation("Tuileries", tuileries);
-	this.ajouterStation("Palais Royal - Musee du Louvre", palaisRoyalMuseeDuLouvre);
-	this.ajouterStation("Louvre — Rivoli", louvreRivoli);
-	this.ajouterStation("Châtelet", chatelet);
-	this.ajouterStation("Hôtel de Ville", hotelDeVille);
-	this.ajouterStation("Saint-Paul (Le Marais)", saintPaul);
-	this.ajouterStation("Bastille", bastille);
-	this.ajouterStation("Gare de Lyon", gareDeLyon);
-	this.ajouterStation("Reuilly — Diderot", reuillyDiderot);
-	this.ajouterStation("Nation", nation);
-	this.ajouterStation("Porte de Vincennes", porteDeVincennes);
-	this.ajouterStation("Saint-Mande", saintMande);
-	this.ajouterStation("Berault", berault);
-	this.ajouterStation("Château de Vincennes", chateauDeVincennes);
+	ajouterStation("La Defense - Grande Arche", defense);
+	ajouterStation("Esplanade de la Defense", esplanadeDeLaDefense);
+	ajouterStation("Pont de Neuilly", pontDeNeuilly);
+	ajouterStation("Les Sablons (Jardin d'Acclimatation)", lesSablons);
+	ajouterStation("Porte Maillot (Palais des Congres)", porteMaillot);
+	ajouterStation("Argentine", argentine);
+	ajouterStation("Charles de Gaulle — etoile", charlesDeGaulleEtoile);
+	ajouterStation("George V", georgeV);
+	ajouterStation("Franklin D. Roosevelt", franklinDRoosevelt);
+	ajouterStation("Champs-elysees — Clemenceau (Grand Palais)", champsElyseesClemenceau);
+	ajouterStation("Concorde", concorde);
+	ajouterStation("Tuileries", tuileries);
+	ajouterStation("Palais Royal - Musee du Louvre", palaisRoyalMuseeDuLouvre);
+	ajouterStation("Louvre — Rivoli", louvreRivoli);
+	ajouterStation("Châtelet", chatelet);
+	ajouterStation("Hôtel de Ville", hotelDeVille);
+	ajouterStation("Saint-Paul (Le Marais)", saintPaul);
+	ajouterStation("Bastille", bastille);
+	ajouterStation("Gare de Lyon", gareDeLyon);
+	ajouterStation("Reuilly — Diderot", reuillyDiderot);
+	ajouterStation("Nation", nation);
+	ajouterStation("Porte de Vincennes", porteDeVincennes);
+	ajouterStation("Saint-Mande", saintMande);
+	ajouterStation("Berault", berault);
+	ajouterStation("Château de Vincennes", chateauDeVincennes);
 
-	this.ajouterLigne(ligne1);
+	ajouterLigne(ligne1);
 
 	Ligne ligne2 = new Ligne(2, "Ligne 2");
 
@@ -419,10 +472,37 @@ public class ReseauMetro {
 	Voie voie47 = new Voie(avron, nation, 5, false);
 	Voie voie25B = new Voie(nation, porteDauphine, 5, false);
 
-	porteDauphine.addVoie(voie25);
-	porteDauphine.setLigne(ligne2);
-	victorHugo.addVoie(voie25);
-	victorHugo.setLigne(ligne2);
+
+	voies.add(voie25);
+	voies.add(voie26);
+	voies.add(voie27);
+	voies.add(voie28);
+	voies.add(voie29);
+	voies.add(voie30);
+	voies.add(voie31);
+	voies.add(voie32);
+	voies.add(voie33);
+	voies.add(voie34);
+	voies.add(voie35);
+	voies.add(voie36);
+	voies.add(voie37);
+	voies.add(voie38);
+	voies.add(voie39);
+	voies.add(voie40);
+	voies.add(voie41);
+	voies.add(voie42);
+	voies.add(voie43);
+	voies.add(voie44);
+	voies.add(voie45);
+	voies.add(voie46);
+	voies.add(voie47);
+	voies.add(voie25B);
+
+	porteDauphine.addVoie(voie25);porteDauphine.setLigne(ligne2);
+	victorHugo.addVoie(voie25);victorHugo.setLigne(ligne2);
+	
+
+
 
 	victorHugo.addVoie(voie26);
 	ternes.addVoie(voie26);
@@ -565,31 +645,36 @@ public class ReseauMetro {
 	ligne2.addStation(avron);
 	ligne2.addStation(nation);
 
-	this.ajouterStation("Porte Dauphine", porteDauphine);
-	this.ajouterStation("Victor Hugo", victorHugo);
-	this.ajouterStation("Ternes", ternes);
-	this.ajouterStation("Courcelles", courcelles);
-	this.ajouterStation("Monceau", monceau);
-	this.ajouterStation("Villiers", villiers);
-	this.ajouterStation("Rome", rome);
-	this.ajouterStation("Place de Clichy", placeDeClichy);
-	this.ajouterStation("Blanche", blanche);
-	this.ajouterStation("Pigalle", pigalle);
-	this.ajouterStation("Anvers (Sacre-Cœur)", anvers);
-	this.ajouterStation("Barbes - Rochechouart", barbesRochechouart);
-	this.ajouterStation("La Chapelle", laChapelle);
-	this.ajouterStation("Stalingrad", stalingrad);
-	this.ajouterStation("Jaures", jaures);
-	this.ajouterStation("Colonel Fabien", colonelFabien);
-	this.ajouterStation("Belleville", belleville);
-	this.ajouterStation("Couronnes", couronnes);
-	this.ajouterStation("Menilmontant", menilmontant);
-	this.ajouterStation("Pere Lachaise", pereLachaise);
-	this.ajouterStation("Philippe Auguste", philippeAuguste);
-	this.ajouterStation("Alexandre Dumas", alexandreDumas);
-	this.ajouterStation("Avron", avron);
 
-	this.ajouterLigne(ligne2);
+	ajouterStation("Porte Dauphine", porteDauphine);
+	ajouterStation("Victor Hugo", victorHugo);
+	ajouterStation("Ternes", ternes);
+	ajouterStation("Courcelles", courcelles);
+	ajouterStation("Monceau", monceau);
+	ajouterStation("Villiers", villiers);
+	ajouterStation("Rome", rome);
+	ajouterStation("Place de Clichy", placeDeClichy);
+	ajouterStation("Blanche", blanche);
+	ajouterStation("Pigalle", pigalle);
+	ajouterStation("Anvers (Sacre-Cœur)", anvers);
+	ajouterStation("Barbes - Rochechouart", barbesRochechouart);
+	ajouterStation("La Chapelle", laChapelle);
+	ajouterStation("Stalingrad", stalingrad);
+	ajouterStation("Jaures", jaures);
+	ajouterStation("Colonel Fabien", colonelFabien);
+	ajouterStation("Belleville", belleville);
+	ajouterStation("Couronnes", couronnes);
+	ajouterStation("Menilmontant", menilmontant);
+	ajouterStation("Pere Lachaise", pereLachaise);
+	ajouterStation("Philippe Auguste", philippeAuguste);
+	ajouterStation("Alexandre Dumas", alexandreDumas);
+	ajouterStation("Avron", avron);
+
+
+	ajouterLigne(ligne2);
+	
+	
+	
 
 	Ligne ligne3 = new Ligne(3, "Ligne 3");
 
@@ -640,10 +725,37 @@ public class ReseauMetro {
 	Voie voie69 = new Voie(porteDeBagnolet, gallieni, 5, false);
 	Voie voie48B = new Voie(gallieni, pontDeLevalloisBecon, 5, false);
 
-	pontDeLevalloisBecon.addVoie(voie48);
-	pontDeLevalloisBecon.setLigne(ligne3);
-	anatoleFrance.addVoie(voie48);
-	anatoleFrance.setLigne(ligne3);
+
+	voies.add(voie48);
+	voies.add(voie49);
+	voies.add(voie50);
+	voies.add(voie51);
+	voies.add(voie52);
+	voies.add(voie53);
+	voies.add(voie54);
+	voies.add(voie55);
+	voies.add(voie56);
+	voies.add(voie57);
+	voies.add(voie58);
+	voies.add(voie59);
+	voies.add(voie60);
+	voies.add(voie61);
+	voies.add(voie62);
+	voies.add(voie63);
+	voies.add(voie64);
+	voies.add(voie65);
+	voies.add(voie66);
+	voies.add(voie67);
+	voies.add(voie68);
+	voies.add(voie69);
+	voies.add(voie48B);
+
+	
+	pontDeLevalloisBecon.addVoie(voie48);pontDeLevalloisBecon.setLigne(ligne3);
+	anatoleFrance.addVoie(voie48);anatoleFrance.setLigne(ligne3);
+	
+
+
 
 	anatoleFrance.addVoie(voie49);
 	louiseMichel.addVoie(voie49);
@@ -780,34 +892,37 @@ public class ReseauMetro {
 	ligne3.addStation(porteDeBagnolet);
 	ligne3.addStation(gallieni);
 
-	this.ajouterStation("Pont de Levallois — Becon", pontDeLevalloisBecon);
-	this.ajouterStation("Anatole France", anatoleFrance);
-	this.ajouterStation("Louise Michel", louiseMichel);
-	this.ajouterStation("Porte de Champerret", porteDeChamperret);
-	this.ajouterStation("Pereire (Marechal Juin)", pereireMarJ);
-	this.ajouterStation("Wagram", wagram);
-	this.ajouterStation("Malesherbes", malesherbes);
-	this.ajouterStation("Europe", europe);
-	this.ajouterStation("Saint-Lazare", stLazare);
-	this.ajouterStation("Opera", opera);
-	this.ajouterStation("Quatre-Septembre", quatreSeptembre);
-	this.ajouterStation("Bourse", bourse);
-	this.ajouterStation("Sentier", sentier);
-	this.ajouterStation("Reaumur — Sebastopol", reaumurSebastopol);
-	this.ajouterStation("Arts et Metiers", artsMetiers);
-	this.ajouterStation("Temple", temple);
-	this.ajouterStation("Republique", republique);
-	this.ajouterStation("Parmentier", parmentier);
-	this.ajouterStation("Rue Saint-Maur", rueStMaur);
-	this.ajouterStation("Gambetta", gambetta);
-	this.ajouterStation("Porte de Bagnolet", porteDeBagnolet);
-	this.ajouterStation("Gallieni", gallieni);
 
-	this.ajouterLigne(ligne3);
+	ajouterStation("Pont de Levallois — Becon", pontDeLevalloisBecon);
+	ajouterStation("Anatole France", anatoleFrance);
+	ajouterStation("Louise Michel", louiseMichel);
+	ajouterStation("Porte de Champerret", porteDeChamperret);
+	ajouterStation("Pereire (Marechal Juin)", pereireMarJ);
+	ajouterStation("Wagram", wagram);
+	ajouterStation("Malesherbes", malesherbes);
+	ajouterStation("Europe", europe);
+	ajouterStation("Saint-Lazare", stLazare);
+	ajouterStation("Opera", opera);
+	ajouterStation("Quatre-Septembre", quatreSeptembre);
+	ajouterStation("Bourse", bourse);
+	ajouterStation("Sentier", sentier);
+	ajouterStation("Reaumur — Sebastopol", reaumurSebastopol);
+	ajouterStation("Arts et Metiers", artsMetiers);
+	ajouterStation("Temple", temple);
+	ajouterStation("Republique", republique);
+	ajouterStation("Parmentier", parmentier);
+	ajouterStation("Rue Saint-Maur", rueStMaur);
+	ajouterStation("Gambetta", gambetta);
+	ajouterStation("Porte de Bagnolet", porteDeBagnolet);
+	ajouterStation("Gallieni", gallieni);
+
+	ajouterLigne(ligne3);
+
+
 
     }
-    /*
-     * 
+/*
+    
      * // Creation des stations pour la ligne 4 Station porteDeClignancourt = new
      * Station("Porte de Clignancourt", 4, false, 48.8998, 2.3446); Station simplon
      * = new Station("Simplon", 4, false, 48.8921, 2.3483); Station
@@ -905,4 +1020,222 @@ public class ReseauMetro {
      * 
      * }
      */
+
+	
 }
+
+	static void trouverCheminOptimal(double longitudeUtil, double latitudeUtil, double longitudeDestination,
+			double latitudeDestination) {
+		// Variables pour stocker les informations du chemin optimal
+		List<List<Voie>> cheminsOptimaux = new ArrayList<>();
+		int tempsTrajetOptimal = Integer.MAX_VALUE;
+
+		// Parcourir toutes les lignes du réseau
+		for (Ligne ligne : lignes) {
+			// Trouver la station de départ la plus proche de la position de l'utilisateur
+			Station stationDepartPlusProche = null;
+			double distanceDepartMin = Integer.MAX_VALUE;
+
+			for (Voie voie : ligne.getVoies()) {
+				Station station = voie.getStationDepart();
+				double distanceDepart = station.distanceTo(latitudeUtil, longitudeUtil);
+
+				if (distanceDepart < distanceDepartMin) {
+					distanceDepartMin = distanceDepart;
+					stationDepartPlusProche = station;
+				}
+			}
+
+			// Trouver la station d'arrivée la plus proche de la destination
+			Station stationArriveePlusProche = null;
+			double distanceArriveeMin = Integer.MAX_VALUE;
+
+			for (Voie voie : ligne.getVoies()) {
+				Station station = voie.getStationDepart();
+				double distanceArrivee = station.distanceTo(longitudeDestination, latitudeDestination);
+
+				if (distanceArrivee < distanceArriveeMin) {
+					distanceArriveeMin = distanceArrivee;
+					stationArriveePlusProche = station;
+				}
+			}
+
+			// Calculer le temps de trajet
+
+			List<Voie> voiesParcourus = trouverVoiesEntreStations(ligne, stationDepartPlusProche,
+					stationArriveePlusProche);
+
+			int tempsTrajet = calculerTempsTrajet(voiesParcourus);
+			tempsTrajet += calculerTempsMarche(stationDepartPlusProche, latitudeUtil, longitudeUtil);
+			tempsTrajet += calculerTempsMarche(stationArriveePlusProche, latitudeDestination, longitudeDestination);
+
+			// Vérifier si le chemin est optimal
+			if (tempsTrajet < tempsTrajetOptimal) {
+
+				tempsTrajetOptimal = tempsTrajet;
+
+				cheminsOptimaux.clear();
+				cheminsOptimaux.add(voiesParcourus);
+				
+				voiesOptimalesParcourus = cheminsOptimaux.get(0);
+				ligneOptimale= ligne;
+				tempsTrajetOptimal=tempsTrajet;
+			}
+
+		}
+		
+	}
+
+	static List<Voie> trouverVoiesEntreStations(Ligne ligne, Station stationDepart, Station stationArrivee) {
+		List<Voie> voiesEntreStations = new ArrayList<>();
+		boolean enregistrement = false;
+		for (Voie voie : ligne.getVoies()) {
+			if (voie.getStationDepart() == stationDepart) {
+				enregistrement = true;
+			}
+			if (enregistrement) {
+				voiesEntreStations.add(voie);
+			}
+			if (voie.getStationArrivee() == stationArrivee) {
+				break;
+			}
+		}
+		return voiesEntreStations;
+	}
+	static int calculerTempsTrajet(List<Voie> voies) {
+		int tempsTrajetTotal = 0;
+		for (int i = 0; i < voies.size(); i++) {
+			Voie voie = voies.get(i);
+			Station stationDepart = voie.getStationDepart();
+			Station stationArrivee = voie.getStationArrivee();
+			int tempsParcours = voie.gettempsParcours();
+			int tempsArretDepart = stationDepart.getTempsArret();
+			int tempsArretArrivee = stationArrivee.getTempsArret();
+			tempsTrajetTotal += tempsArretDepart + tempsParcours;
+			// Si ce n'est pas la dernière voie, ajouter le temps d'arrêt à la station
+			// d'arrivée
+			if (i < voies.size() - 1) {
+				tempsTrajetTotal += tempsArretArrivee;
+			}
+		}
+		return tempsTrajetTotal;
+	}
+	static double calculerTempsMarche(Station station, double latitude, double longitude) {
+		// Calculer la distance entre la position de l'utilisateur et la position de la
+		// station
+		double distance = station.distanceTo(latitude, longitude);
+		// Supposer une vitesse de marche moyenne de 5 km/h (environ 1.4 m/s)
+		double vitesseMarche = 1.4;
+		int tempsMarche = (int) Math.ceil(distance / (vitesseMarche * 60));
+		return tempsMarche;
+	}
+	
+	
+	//-------------------Méthode Trajet Intermediaire----------------//
+	
+	public List<Voie> passerParUneStation(double longitudeUtil, double latitudeUtil, double longitudeDestination,
+			double latitudeDestination, Station stationIntermediaire){
+		
+		
+			//------------Chemin Optimal 1 jusqu'à la station Intermédiaire-------------//
+		
+		// Variables pour stocker les informations du chemin optimal
+		List<List<Voie>> cheminsOptimaux = new ArrayList<>();
+		
+		List <Voie> TrajetFinal = new ArrayList<>();
+		int tempsTrajetOptimal = Integer.MAX_VALUE;
+
+		// Parcourir toutes les lignes du réseau
+		for (Ligne ligne : lignes) {
+			// Trouver la station de départ la plus proche de la position de l'utilisateur
+			Station stationDepartPlusProche = null;
+			double distanceDepartMin = Integer.MAX_VALUE;
+
+			for (Voie voie : ligne.getVoies()) {
+				Station station = voie.getStationDepart();
+				double distanceDepart = station.distanceTo(latitudeUtil, longitudeUtil);
+
+				if (distanceDepart < distanceDepartMin) {
+					distanceDepartMin = distanceDepart;
+					stationDepartPlusProche = station;
+				}
+			}
+			
+			List<Voie> voiesParcourus = trouverVoiesEntreStations(ligne, stationDepartPlusProche,
+					stationIntermediaire);
+
+			int tempsTrajet = calculerTempsTrajet(voiesParcourus);
+			tempsTrajet += calculerTempsMarche(stationDepartPlusProche, latitudeUtil, longitudeUtil);
+
+			// Vérifier si le chemin est optimal
+			if (tempsTrajet < tempsTrajetOptimal) {
+
+				tempsTrajetOptimal = tempsTrajet;
+
+				cheminsOptimaux.clear();
+				cheminsOptimaux.add(voiesParcourus);
+			}
+			
+		}
+			
+		
+		
+			TrajetFinal.addAll(cheminsOptimaux.get(0));
+			
+			
+			//------------Chemin Optimal 2 de la station Intermédiaire jusqu'à destination-------------//
+
+			
+			List<List<Voie>> cheminsOptimauxBis = new ArrayList<>();
+			int tempsTrajetOptimalBis = Integer.MAX_VALUE;
+			
+			for (Ligne ligneBis : lignes) {
+				
+				// Trouver la station d'arrivée la plus proche de la destination
+				Station stationArriveePlusProche = null;
+				double distanceArriveeMin = Integer.MAX_VALUE;
+
+				for (Voie voie : ligneBis.getVoies()) {
+					Station station = voie.getStationDepart();
+					double distanceArrivee = station.distanceTo(longitudeDestination, latitudeDestination);
+
+					if (distanceArrivee < distanceArriveeMin) {
+						distanceArriveeMin = distanceArrivee;
+						stationArriveePlusProche = station;
+					}
+				}
+
+				// Calculer le temps de trajet
+
+				List<Voie> voiesParcourusBis = trouverVoiesEntreStations(ligneBis, stationIntermediaire,
+						stationArriveePlusProche);
+
+				int tempsTrajetBis = calculerTempsTrajet(voiesParcourusBis);
+				tempsTrajetBis += calculerTempsMarche(stationArriveePlusProche, latitudeDestination, longitudeDestination);
+
+				// Vérifier si le chemin est optimal
+				if (tempsTrajetBis < tempsTrajetOptimalBis) {
+
+					tempsTrajetOptimalBis = tempsTrajetBis;
+
+					cheminsOptimaux.clear();
+					cheminsOptimaux.add(voiesParcourusBis);
+				}
+				TrajetFinal.addAll(cheminsOptimauxBis.get(0));
+
+
+			}
+			
+			return TrajetFinal;
+			
+			
+			
+	}
+	
+	
+
+
+
+}
+
+
