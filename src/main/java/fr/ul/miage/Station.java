@@ -22,6 +22,7 @@ public class Station {
     double longitude;
     List<Voie> voies;
     private List<Ligne> lignes;
+    static List<Double> coordonnées;
 
     // Constructeur
     public Station(String nom, int tempsArret, boolean accident) {
@@ -35,13 +36,62 @@ public class Station {
 	this.nom = nom;
 	this.latitude = latitude;
 	this.longitude = longitude;
+	this.tempsArret=tempsArret;
+	this.accident=accident;
 	this.voies = new ArrayList<>(); // Initialisation de la liste des voies
 	this.lignes = new ArrayList<>();
 
     }
 
+
    
     public static Station findNearestStation(List<Station> stations, double latitude, double longitude) {
+
+    // Getters et setters
+    public String getNom() {
+	return nom;
+    }
+
+    public void setNom(String nom) {
+	this.nom = nom;
+    }
+
+    public boolean isAccident() {
+	return accident;
+    }
+
+    public void setAccident(boolean accident) {
+	this.accident = accident;
+    }
+
+    public int getTempsArret() {
+	return tempsArret;
+    }
+
+    public void setTempsArret(int tempsArret) {
+	this.tempsArret = tempsArret;
+    }
+    
+    
+
+    public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public static Station findNearestStation(List<Station> stations, double latitude, double longitude) {
+
 	Station nearestStation = null;
 	double minDistance = Double.MAX_VALUE;
 	for (Station station : stations) {
@@ -58,9 +108,8 @@ public class Station {
 		return nearestStation;
     }
 
-    void setPosition(Scanner scanner) throws IOException {
+    static List<Double> setPosition(String streetName) throws IOException {
 	System.out.println("Entrez un nom de rue a Paris :");
-	String streetName = scanner.nextLine();
 	String encodedStreetName = URLEncoder.encode(streetName, StandardCharsets.UTF_8.toString());
 	String urlString = "https://nominatim.openstreetmap.org/search?street=" + encodedStreetName
 		+ "&city=Paris&country=France&format=json";
@@ -79,13 +128,15 @@ public class Station {
 	    JSONObject jsonObject = jsonArray.getJSONObject(0);
 	    Double latitude = jsonObject.getDouble("lat");
 	    Double longitude = jsonObject.getDouble("lon");
-	    this.latitude = latitude;
-	    this.longitude = longitude;
+	    coordonnées.add(latitude);
+	    coordonnées.add(longitude);
 	    System.out.println("Votre position actuelle est :");
 	    System.out.printf("Latitude: %.6f, Longitude: %.6f\n", latitude, longitude);
+	    return coordonnées;
 	} else {
 	    System.out.println(
 		    "La rue que vous avez saisie n'a pas ete trouvee. Veuillez verifier votre saisie et reessayer.");
+	    return coordonnées;
 	}
     }
 
