@@ -6,7 +6,6 @@ public class Voie {
 	Station stationArrivee;
 	int tempsParcours; // Représente le "coût" de la voie dans l'algorithme
 	boolean accident;
-	private Incident incident;
 	
 	//Constructeur
 	public Voie(Station stationDepart, Station stationArrivee, int tempsParcours, boolean accident) {
@@ -15,7 +14,6 @@ public class Voie {
 		this.stationArrivee = stationArrivee;
 		this.tempsParcours = tempsParcours;
 		this.accident = accident;
-		this.incident = null; // Pas d'incident à l'initialisation
 	}
 
 
@@ -59,13 +57,6 @@ public class Voie {
 		this.accident = accident;
 	}
 	
-	public Incident getIncident() {
-        return incident;
-    }
-
-    public void setIncident(Incident incident) {
-        this.incident = incident;
-    }
     
     
 }
