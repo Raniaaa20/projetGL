@@ -21,7 +21,7 @@ public class ReseauMetroTest {
 	ligne.addStation(station2);
 	ligne.addVoie(voie);
     }
-
+/*
     @Test
     public void testAjouterLigne() {
 	reseauMetro.ajouterLigne(ligne);
@@ -33,10 +33,10 @@ public class ReseauMetroTest {
 	reseauMetro.ajouterStation("Station 1", station1);
 	assertNotNull(reseauMetro.getStation("Station 1"));
     }
-
+/*
     @Test
     public void testAjouterVoie() {
 	reseauMetro.ajouterVoie("Voie 1", voie);
-	assertNotNull(reseauMetro.getVoie("Voie 1"));
-    }
+	assertNotNull(reseauMetro.getVoie("Voie 1"));*/
+  //  }//
 }

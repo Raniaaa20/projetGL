@@ -44,6 +44,7 @@
                         <CheckBox fx:id="corresp" layoutX="14.0" layoutY="83.0" mnemonicParsing="false" text="Itinéraire avec le moins de correspondances" />
                         <CheckBox fx:id="stop" layoutX="14.0" layoutY="113.0" mnemonicParsing="false" onAction="#onStopClicked" text="Passer par une station particulière" />
                         <javafx.scene.control.TextField fx:id="saisieStop" layoutX="99.0" layoutY="138.0" promptText="Passer par..." />
+                        <Button fx:id="validerCh1" layoutX="154.0" layoutY="19.0" mnemonicParsing="false" onAction="#getCheminOptimal" text="Je valide" />
                      </children>
                   </Pane>
                   <Label fx:id="erreur" layoutX="47.0" layoutY="339.0" textFill="RED" />

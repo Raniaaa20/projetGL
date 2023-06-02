@@ -22,7 +22,7 @@ public class Station {
     double longitude;
     List<Voie> voies;
     private List<Ligne> lignes;
-    static List<Double> coordonnées;
+    static List<Double> coordonnées = new ArrayList<>();
 
     // Constructeur
     public Station(String nom, int tempsArret, boolean accident) {

@@ -1,6 +1,7 @@
 package fr.ul.miage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.fxml.FXML;
@@ -21,7 +22,8 @@ public class Controlleur {
 
 	@FXML
 	private Button valider;
-
+	@FXML
+	private Button validerCh1;
 	@FXML
 	private TextField adresseD;
 
@@ -63,6 +65,7 @@ public class Controlleur {
 	@FXML
 	public void initialize() {
 		// Afficher seulement les boutons deplacer1 et deplacer2 au départ
+		validerCh1.setVisible(false);
 		deplacer1.setVisible(true);
 		deplacer2.setVisible(true);
 		paneOptions.setVisible(false);
@@ -105,13 +108,12 @@ public class Controlleur {
 		adresseA.setVisible(false);
 		String adresseDText = adresseD.getText();
 		String adresseAText = adresseA.getText();
-
 	}
 
 	@FXML
 	public void onDeplacer2Clicked() {
 		// Afficher paneOp2 si l'utilisateur choisit deplacer2
-
+		validerCh1.setVisible(true);
 		paneOptions.setVisible(false);
 		adresseD.setVisible(true);
 		adresseA.setVisible(true);
@@ -164,36 +166,48 @@ public class Controlleur {
 	}
 
 	public void getCheminOptimal() {
-		String Depart = adresseD.getText();
-		String Arrivee = adresseA.getText();
-		try {
+	    String Depart = adresseD.getText();
+	    String Arrivee = adresseA.getText();
+	    try {
 
-			// ---------------Récupération des coordonnées de départ et
-			// d'arrivée-------------//
+	        // ---------------Récupération des coordonnées de départ et d'arrivée-------------//
 
-			List<Double> coordonnéesDepart = Station.setPosition(Depart);
-			latitudeDep = coordonnéesDepart.get(0);
-			longitudeDep = coordonnéesDepart.get(1);
-			List<Double> coordonnéesDest = Station.setPosition(Arrivee);
-			latitudeDes = coordonnéesDest.get(0);
-			longitudeDes = coordonnéesDest.get(1);
+	        List<Double> coordonnéesDepart = Station.setPosition(Depart);
+	        double latitudeDep = coordonnéesDepart.get(0);
+	        double longitudeDep = coordonnéesDepart.get(1);
+	        List<Double> coordonnéesDest = Station.setPosition(Arrivee);
+	        double latitudeDes = coordonnéesDest.get(0);
+	        double longitudeDes = coordonnéesDest.get(1);
 
-			// -----------Calcul du chemin avec les méthodes de la classe RéseauMetro-----//
-			ReseauMetro.trouverCheminOptimal(latitudeDep, longitudeDep, latitudeDes, longitudeDes);
-			result.setVisible(true);
-			result.setWrapText(true);
+	        // -----------Calcul du chemin avec les méthodes de la classe RéseauMetro-----//
+	        ReseauMetro.trouverCheminOptimal(longitudeDep, latitudeDep, longitudeDes, latitudeDes);
+	        result.setVisible(true);
+	        result.setWrapText(true);
 
-			result.appendText("Ligne : " + ReseauMetro.ligneOptimale + "\n");
+	        List<String> lignesOptimales = ReseauMetro.lignesOptimalesParcourues;
+	        List<Station> stationsOptimales = ReseauMetro.stationsOptimalesParcourues;
+	        double tempsTrajetOptimal = ReseauMetro.tempsTrajetOptimal;
 
-			result.setText("Vous allez passez par les stations suivantes : \n");
-			for (Voie voie : ReseauMetro.voiesOptimalesParcourus) {
-				result.appendText(voie.getStationDepart().getNom() + "\n");
-			}
-			result.setText("Temps de trajet estimé :" + ReseauMetro.tempsTrajetOptimal + "\n");
+	        if (lignesOptimales != null && stationsOptimales != null) {
+	            result.appendText("Lignes par lesquelles vous allez passer : \n");
+	            for (String ligne : lignesOptimales) {
+	                result.appendText(ligne + "\n");
+	            }
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	            result.appendText("Stations par lesquelles vous allez passer : \n");
+	            for (Station station : stationsOptimales) {
+	                result.appendText(station.getNom() + "\n");
+	            }
+
+	            result.appendText("Temps de trajet estimé : " + tempsTrajetOptimal + "\n");
+	        } else {
+	            result.setText("Aucun chemin optimal trouvé.");
+	        }
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
+
 
 }
