@@ -1,99 +1,118 @@
 package fr.ul.miage;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import com.gluonhq.charm.glisten.control.AutoCompleteTextField;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 public class Controlleur {
-	
-	@FXML
-	private Button deplacer1;
-	
-	@FXML
-	private Button deplacer2;
-	
-	@FXML
-	private Button valider;
-	
-	@FXML
-	private TextField adresseD;
-	
-	@FXML
-	private TextField adresseA;
-	
-	@FXML
-	private TextField statD;
-	
-	@FXML
-	private TextField statA;
-	
-	@FXML
-	private Pane paneOptions;
-	
-	@FXML
-	private CheckBox rapide;
-	
-	@FXML
-	private CheckBox corresp;
-	
-	@FXML
-	private CheckBox stop;
-	
-	@FXML
-	private TextField saisieStop;
-	
-	
-	@FXML 
-	private Label erreur;
-	
-	@FXML 
-	private TextArea result;
-	
-	@FXML 
-	private Button admin;
-	
-	@FXML 
-	private Button util;
-	
-	@FXML 
-	private Button ok;
-	
-	@FXML 
-	private TextField mdp;
-	
-	@FXML 
-	private Button incidentS;
-	
-	@FXML 
-	private Button incidentV;
-	
-	@FXML 
-	private ListView<String> listIncidents;
-	
-	@FXML 
-	private Button majIncidents;
-	
-	@FXML
-	public void initialize() {
-		// Afficher seulement les boutons deplacer1 et deplacer2 au départ
-		clean();
-		admin.setVisible(true);
-		util.setVisible(true);
-		
-	
-	}
+
+    @FXML
+    private Button deplacer1;
+
+    @FXML
+    private Button deplacer2;
+
+    @FXML
+    private Button valider;
+
+    @FXML
+    private TextField adresseD;
+
+    @FXML
+    private TextField adresseA;
+
+    @FXML
+    private ChoiceBox<String> statD;
+
+    @FXML
+    private ChoiceBox<String> statA;
+
+    @FXML
+    private Pane paneOptions;
+
+    @FXML
+    private CheckBox rapide;
+
+    @FXML
+    private CheckBox corresp;
+
+    @FXML
+    private CheckBox stop;
+
+    @FXML
+    private TextField saisieStop;
+
+    @FXML
+    private Label erreur;
+
+    @FXML
+    private TextArea result;
+
+    @FXML
+    private Button admin;
+
+    @FXML
+    private Button util;
+
+    @FXML
+    private Button ok;
+
+    @FXML
+    private PasswordField mdp;
+
+    @FXML
+    private Button incidentS;
+
+    @FXML
+    private Button incidentV;
+
+    @FXML
+    private ListView<String> listIncidents;
+
+    @FXML
+    private Button majIncidentsStat;
+    
+    @FXML 
+    private Button majIncidentsVoie;
+
+    @FXML
+    private ObservableList<String> stationNames;
+
+  
+    @FXML
+    public void initialize() {
+        // Afficher seulement les boutons deplacer1 et deplacer2 au départ
+        clean();
+        admin.setVisible(true);
+        util.setVisible(true);
+
+        // Récupérer la liste des stations depuis la classe ReseauMetro
+        List<Station> stations = ReseauMetro.listeStations;
+
+        // Créer une liste de noms de stations
+        ObservableList<String> stationNames = FXCollections.observableArrayList();
+        for (Station station : stations) {
+            stationNames.add(station.getNom());
+        }
+
+        // Configurer les ChoiceBox statA et statD
+        statA.setItems(stationNames);
+        statD.setItems(stationNames);
+    }
+
+
 	
 	@FXML 
 	public void connexionADMIN() {
@@ -164,8 +183,9 @@ public class Controlleur {
 	            stationNames.set(selectedIndex, updatedStationName);
 	        }
 	    });
-	    majIncidents.setVisible(true);
+	    majIncidentsStat.setVisible(true);
 	}
+
 
 
 	@FXML
@@ -203,19 +223,14 @@ public class Controlleur {
 	            voieNames.set(selectedIndex, updatedVoieName);
 	        }
 	    });
-	    majIncidents.setVisible(true);
+	    majIncidentsVoie.setVisible(true);
 	}
 	
 	@FXML
-	public void miseAjourIncidents() {
-	    miseAjourIncidentsStations();
-	    miseAjourIncidentsVoies();
-	}
-
-	private void miseAjourIncidentsStations() {
+	public void miseAjourIncidentsStations() {
 	    // Récupérer la liste des stations depuis la classe ReseauMetro
 	    List<Station> stations = ReseauMetro.listeStations;
-
+	   
 	    // Parcourir la liste des stations
 	    for (Station station : stations) {
 	        // Récupérer le nom de la station depuis la ListView
@@ -226,10 +241,15 @@ public class Controlleur {
 
 	        // Mettre à jour l'état de l'accident de la station
 	        station.setAccident(accident);
+	        
 	    }
+
+	   
 	}
 
-	private void miseAjourIncidentsVoies() {
+
+	@FXML
+	public void miseAjourIncidentsVoies() {
 	    // Récupérer la liste des voies depuis la liste "voies" dans ReseauMetro
 	    List<Voie> voiesList = ReseauMetro.voies;
 
@@ -246,34 +266,29 @@ public class Controlleur {
 	        
 	    }
 	    
-	    for(Voie voie : ReseauMetro.voies) {
-	    	System.out.println("Nom : "+voie.getStationDepart()+" | "+voie.getStationArrivee()+" | "+voie.getAccident());
-	    }
 	}
 
 
 	@FXML
 	public void onDeplacer1Clicked() {
-		// Afficher paneOp1 si l'utilisateur choisit deplacer1
-		
-		paneOptions.setVisible(false);
-		
-		statA.setVisible(true);
-		statD.setVisible(true);
-		adresseD.setVisible(false);
-		adresseA.setVisible(false);
-		
-		statD.textProperty().addListener((observable, oldValue, newValue) -> {
-		    updateOptionsVisibility();
-		});
+	    // Afficher paneOp1 si l'utilisateur choisit deplacer1
 
-		statA.textProperty().addListener((observable, oldValue, newValue) -> {
-		    updateOptionsVisibility();
-		});
-		
-		
-		
+	    paneOptions.setVisible(false);
+
+	    statA.setVisible(true);
+	    statD.setVisible(true);
+	    adresseD.setVisible(false);
+	    adresseA.setVisible(false);
+
+	    statD.valueProperty().addListener((observable, oldValue, newValue) -> {
+	        updateOptionsVisibility();
+	    });
+
+	    statA.valueProperty().addListener((observable, oldValue, newValue) -> {
+	        updateOptionsVisibility();
+	    });
 	}
+
 	
 	@FXML
 	public void onDeplacer2Clicked() {
@@ -302,25 +317,26 @@ public class Controlleur {
 	private void updateOptionsVisibility() {
 	    String adresseDText = adresseD.getText();
 	    String adresseAText = adresseA.getText();
-	    String statDText = statD.getText();
-		String statAText = statA.getText();
-		
-	    if (!adresseDText.isEmpty() && !adresseAText.isEmpty() || !statDText.isEmpty() && !statAText.isEmpty()) {
-	        // Afficher paneOptions si les champs adresseD et adresseA sont remplis
+	    String statDSelection = statD.getValue();
+	    String statASelection = statA.getValue();
+	    
+	    if (!adresseDText.isEmpty() && !adresseAText.isEmpty() || statDSelection != null && statASelection != null) {
+	        // Afficher paneOptions si les champs adresseD et adresseA sont remplis ou si les ChoiceBox sont sélectionnées
 	        paneOptions.setVisible(true);
 	        rapide.setVisible(true);
 	        corresp.setVisible(true);
 	        stop.setVisible(true);
 	        valider.setVisible(true);
 	    } else {
-	        // Cacher paneOptions si les champs sont vides
+	        // Cacher paneOptions si les champs sont vides ou si les ChoiceBox ne sont pas sélectionnées
 	        paneOptions.setVisible(false);
 	        rapide.setVisible(false);
 	        corresp.setVisible(false);
 	        stop.setVisible(false);
 	    }
-	    
 	}
+
+
 	
 	@FXML
 	public void onStopClicked() {
@@ -361,6 +377,7 @@ public class Controlleur {
 		incidentV.setVisible(false);
 		erreur.setVisible(false);
 		listIncidents.setVisible(false);
-		majIncidents.setVisible(false);
+		majIncidentsStat.setVisible(false);
+		majIncidentsVoie.setVisible(false);
 	}
 }
