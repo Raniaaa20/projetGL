@@ -1,7 +1,7 @@
 package fr.ul.miage;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -22,7 +22,7 @@ public class ReseauMetro {
 	public static List<Station> listeStations = new ArrayList<Station>();
 
 	public static List<Voie> voies = new ArrayList<Voie>();
-	
+
 	static List<String> lignesOptimalesParcourues;
 	static List<Station> stationsOptimalesParcourues;
 	static double tempsTrajetOptimal;
@@ -37,8 +37,6 @@ public class ReseauMetro {
 	public List<Voie> getVoiesOptimalesParcourus() {
 		return voiesOptimalesParcourus;
 	}
-
-	
 
 	public ReseauMetro() {
 
@@ -936,6 +934,126 @@ public class ReseauMetro {
 			tempsTrajetOptimal = 0;
 		}
 	}
+
+	public static List<Station> trouverCheminOptimal(String stationDepartNom, String stationArriveeNom) {
+		Station stationDepart = null;
+		Station stationArrivee = null;
+		for (Station station : listeStations) {
+			if (station.getNom().equals(stationDepartNom)) {
+				stationDepart = station;
+			}
+			if (station.getNom().equals(stationArriveeNom)) {
+				stationArrivee = station;
+			}
+		}
+
+		// Initialisation des distances
+		Map<Station, Double> distances = new HashMap<>();
+		Map<Station, Station> predecesseurs = new HashMap<>();
+		for (Station station : listeStations) {
+			distances.put(station, Double.POSITIVE_INFINITY);
+		}
+		distances.put(stationDepart, 0.0);
+
+		// Algorithme de Ford Bellman
+		for (int i = 0; i < listeStations.size() - 1; i++) {
+			for (Voie voie : voies) {
+				Station stationDepartVoie = voie.getStationDepart();
+				Station stationArriveeVoie = voie.getStationArrivee();
+				double poidsVoie = voie.gettempsParcours();
+				double poidsArret = stationArriveeVoie.getTempsArret();
+
+				// Vérification de l'accident dans la station
+				if (stationArriveeVoie.isAccident()) {
+					continue; // Passer à l'itération suivante sans mettre à jour les distances
+				}
+
+				// Vérification de l'accident dans la voie
+				if (voie.getAccident()) {
+					continue; // Passer à l'itération suivante sans mettre à jour les distances
+				}
+
+				if (distances.get(stationDepartVoie) + poidsVoie + poidsArret < distances.get(stationArriveeVoie)) {
+					distances.put(stationArriveeVoie, distances.get(stationDepartVoie) + poidsVoie + poidsArret);
+					predecesseurs.put(stationArriveeVoie, stationDepartVoie);
+				}
+			}
+		}
+
+		// Vérification des cycles de poids négatifs
+		for (int i = 0; i < listeStations.size() - 1; i++) {
+			for (Voie voie : voies) {
+				Station stationDepartVoie = voie.getStationDepart();
+				Station stationArriveeVoie = voie.getStationArrivee();
+				double poidsVoie = voie.gettempsParcours();
+				double poidsArret = stationArriveeVoie.getTempsArret();
+
+				// Vérification de l'accident dans la station
+				if (stationArriveeVoie.isAccident()) {
+					continue; // Passer à l'itération suivante sans vérifier les cycles de poids négatifs
+				}
+
+				// Vérification de l'accident dans la voie
+				if (voie.getAccident()) {
+					continue; // Passer à l'itération suivante sans vérifier les cycles de poids négatifs
+				}
+
+				if (distances.get(stationDepartVoie) + poidsVoie + poidsArret < distances.get(stationArriveeVoie)) {
+					System.out.println("Le réseau contient un cycle de poids négatifs, pas de solution optimale");
+					return null;
+				}
+			}
+		}
+
+		// Construction du chemin optimal
+		List<Station> cheminOptimal = new ArrayList<>();
+		Station stationActuelle = stationArrivee;
+		while (stationActuelle != null) {
+			cheminOptimal.add(stationActuelle);
+			stationActuelle = predecesseurs.get(stationActuelle);
+		}
+		Collections.reverse(cheminOptimal);
+
+		// Affichage du temps de parcours
+		tempsTrajetOptimal = distances.get(stationArrivee);
+
+		return cheminOptimal;
+	}
+	
+	public static List<Station> trouverCheminOptimalAvecIntermediaire(String stationDepartNom, String stationIntermediaireNom, String stationArriveeNom) {
+	    Station stationDepart = null;
+	    Station stationIntermediaire = null;
+	    Station stationArrivee = null;
+
+	    for (Station station : listeStations) {
+	        if (station.getNom().equals(stationDepartNom)) {
+	            stationDepart = station;
+	        } else if (station.getNom().equals(stationIntermediaireNom)) {
+	            stationIntermediaire = station;
+	        } else if (station.getNom().equals(stationArriveeNom)) {
+	            stationArrivee = station;
+	        }
+	    }
+
+	    if (stationDepart == null || stationIntermediaire == null || stationArrivee == null) {
+	        System.out.println("Station de départ, station intermédiaire ou station d'arrivée invalide");
+	        return null;
+	    }
+
+	    List<Station> cheminOptimalPart1 = trouverCheminOptimal(stationDepartNom, stationIntermediaireNom);
+	    List<Station> cheminOptimalPart2 = trouverCheminOptimal(stationIntermediaireNom, stationArriveeNom);
+
+	    if (cheminOptimalPart1 == null || cheminOptimalPart2 == null) {
+	        System.out.println("Aucun chemin optimal trouvé entre les stations");
+	        return null;
+	    }
+
+	    cheminOptimalPart1.remove(cheminOptimalPart1.size() - 1); // Supprimer la dernière station du premier chemin
+	    cheminOptimalPart1.addAll(cheminOptimalPart2); // Ajouter les stations du deuxième chemin à la suite du premier chemin
+
+	    return cheminOptimalPart1;
+	}
+
 
 	public static void trouverCheminOptimalInter(Station stationDepart, Station stationIntermediaire,
 			Station stationArrivee) {
