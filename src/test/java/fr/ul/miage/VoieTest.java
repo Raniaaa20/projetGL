@@ -34,12 +34,12 @@ public class VoieTest {
 
     @Test
     public void testIsAccident() {
-        assertFalse(voie.isAccident());
+        assertFalse(voie.getAccident());
     }
 
     @Test
     public void testSetAccident() {
         voie.setAccident(true);
-        assertTrue(voie.isAccident());
+        assertTrue(voie.getAccident());
     }
 }

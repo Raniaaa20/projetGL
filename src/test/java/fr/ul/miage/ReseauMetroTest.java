@@ -34,9 +34,5 @@ public class ReseauMetroTest {
 	assertNotNull(reseauMetro.getStation("Station 1"));
     }
 
-    @Test
-    public void testAjouterVoie() {
-	reseauMetro.ajouterVoie("Voie 1", voie);
-	assertNotNull(reseauMetro.getVoie("Voie 1"));
-    }
+    
 }

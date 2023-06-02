@@ -1,6 +1,7 @@
 package fr.ul.miage;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -112,7 +113,15 @@ public class Controlleur {
         // Configurer les ChoiceBox statA et statD
         statA.setItems(stationNames);
         statD.setItems(stationNames);
+
+        // Vérifier si la liste des stations n'est pas vide
+        if (!stations.isEmpty()) {
+            // Sélectionner la première et la dernière station possible
+            statD.setValue(stations.get(0).getNom());
+            statA.setValue(stations.get(stations.size() - 1).getNom());
+        }
     }
+
 
 
 	
@@ -324,8 +333,8 @@ public class Controlleur {
 	    String adresseAText = adresseA.getText();
 	    String statDSelection = statD.getValue();
 	    String statASelection = statA.getValue();
-	    
-	    if (!adresseDText.isEmpty() && !adresseAText.isEmpty() || statDSelection != null && statASelection != null) {
+
+	    if ((!adresseDText.isEmpty() && !adresseAText.isEmpty()) || (statDSelection != null && statASelection != null)) {
 	        // Afficher paneOptions si les champs adresseD et adresseA sont remplis ou si les ChoiceBox sont sélectionnées
 	        paneOptions.setVisible(true);
 	        rapide.setVisible(true);
@@ -342,6 +351,7 @@ public class Controlleur {
 	}
 
 
+
 	
 	@FXML
 	public void onStopClicked() {
@@ -354,27 +364,88 @@ public class Controlleur {
 	}
 
 	@FXML
-	public void onValiderClicked() {
+	public void onValiderClicked()  {
 	    result.setVisible(true);
 
+	    String stationDepartNom = "";
+	    String stationArriveeNom = "";
 	    // Réinitialisation du contenu de result si l'utilisateur clique à nouveau
 	    result.setText("");
 	    
-	    result.appendText("Trajet de : " + statD.getValue() + " à : " + statA.getValue() + "\n\n");
 	    
-	    List<Station> res = ReseauMetro.trouverCheminOptimal(statD.getValue(),statA.getValue());
+	    if (!adresseD.getText().isBlank() && !adresseA.getText().isBlank()) {
+	    	// Les champs adresseD et adresseA sont remplis
+	    	String Depart = adresseD.getText();
+		    String Arrivee = adresseA.getText();
+		    System.out.println(Depart+"  "+Arrivee);
+		 // ---------------Récupération des coordonnées de départ et d'arrivée-------------//
 
-	    if (res != null) {
-	        result.appendText("Vous allez passer par les stations suivantes :\n\n");
-	        for (Station station : res) {
-	            result.appendText(" | " + station.getNom() + "\n");
-	        }
+			try {
+				
+		    	List<Double> coordonnéesDepart = Station.setPosition(Depart);
+		    	
+				double latitudeDep = coordonnéesDepart.get(0);
+		        double longitudeDep = coordonnéesDepart.get(1);
+		        List<Double> coordonnéesDest = Station.setPosition(Arrivee);
+		        double latitudeDes = coordonnéesDest.get(0);
+		        double longitudeDes = coordonnéesDest.get(1);
+		        List<Station>listeStations = ReseauMetro.listeStations;
+		        Station stationDep = Station.findNearestStation(listeStations, latitudeDep, longitudeDep);
+		        Station stationDes = Station.findNearestStation(listeStations, latitudeDes, longitudeDes);
+		        
+		        stationDepartNom = stationDep.getNom();
+		        stationArriveeNom = stationDes.getNom();
+		       
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
+		    
+	        
+	        
 	    } else {
-	        result.appendText("Pas de chemin optimal trouvé.\n");
-	    }
-	    result.appendText("\n\nTemps de trajet estimé : "+ReseauMetro.tempsTrajetOptimal+"\n\n");
-	}
+	    	//if (!statD.getValue().isEmpty() && !statA.getValue().isEmpty()) 
+	        
+	     // Les champs statD et statA sont remplis
+	        stationDepartNom = statD.getValue();
+	        stationArriveeNom = statA.getValue();
+	        
+	    } 
+	    
 
+	    // Vérifier si la CheckBox "Rapide" est cochée ou aucune CheckBox n'est cochée
+	    boolean rapideSelected = rapide.isSelected() || (!rapide.isSelected() && !corresp.isSelected() && !stop.isSelected());
+
+	    // Appel de la méthode trouverCheminOptimal en fonction des options sélectionnées
+	    List<Station> res;
+	    if (rapideSelected) {
+	        result.appendText("Trajet de : " + stationDepartNom + " à : " + stationArriveeNom + "\n\n");
+	        res = ReseauMetro.trouverCheminOptimal(stationDepartNom, stationArriveeNom);
+	       
+	    } else {
+	        res = new ArrayList<>(); // Liste vide si l'option rapide n'est pas sélectionnée
+	    }
+
+	    
+
+	    // Vérifier si la CheckBox "Corresp" est cochée
+	    if (corresp.isSelected()) {
+	        // Appeler la méthode pour prendre en compte les correspondances
+	        // MethodeCorrespondances(stationDepartNom, stationArriveeNom);
+	    }
+
+	    // Vérifier si la CheckBox "Stop" est cochée
+	    if (stop.isSelected()) {
+	        String saisieStopText = saisieStop.getText();
+	        // Appeler la méthode pour prendre en compte l'arrêt spécifié
+	        // MethodeArret(saisieStopText);
+	    }
+
+	    result.appendText("\n\nTemps de trajet estimé : " + ReseauMetro.tempsTrajetOptimal + "\n\n");
+	}
+	
+	
 
 	
 	
