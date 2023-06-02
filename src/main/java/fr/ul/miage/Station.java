@@ -22,7 +22,7 @@ public class Station {
     double longitude;
     List<Voie> voies;
     private List<Ligne> lignes;
-    static List<Double> coordonnées = new ArrayList<>();
+    static List<Double> coordonnées = new ArrayList<Double>();
 
     // Constructeur
     public Station(String nom, int tempsArret, boolean accident) {
@@ -58,13 +58,13 @@ public class Station {
 	}
 
 	if (nearestStation != null) {
-	    System.out.println("La station de metro la plus proche est : " + nearestStation.getNom());
+	   // System.out.println("La station de metro la plus proche est : " + nearestStation.getNom());
 	}
 		return nearestStation;
     }
 
     static List<Double> setPosition(String streetName) throws IOException {
-	System.out.println("Entrez un nom de rue a Paris :");
+	
 	String encodedStreetName = URLEncoder.encode(streetName, StandardCharsets.UTF_8.toString());
 	String urlString = "https://nominatim.openstreetmap.org/search?street=" + encodedStreetName
 		+ "&city=Paris&country=France&format=json";
@@ -85,14 +85,10 @@ public class Station {
 	    Double longitude = jsonObject.getDouble("lon");
 	    coordonnées.add(latitude);
 	    coordonnées.add(longitude);
-	    System.out.println("Votre position actuelle est :");
-	    System.out.printf("Latitude: %.6f, Longitude: %.6f\n", latitude, longitude);
-	    return coordonnées;
-	} else {
-	    System.out.println(
-		    "La rue que vous avez saisie n'a pas ete trouvee. Veuillez verifier votre saisie et reessayer.");
-	    return coordonnées;
-	}
+	  //  System.out.println("Je suis dans setPosition");
+	    
+	} 
+	return coordonnées;
     }
 
     public double distanceTo(double latitude, double longitude) {
@@ -104,6 +100,8 @@ public class Station {
 	double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	return R * c;
     }
+    
+    
 
     public List<Voie> getVoies() {
 	return voies;
