@@ -19,7 +19,7 @@ public class ReseauMetro {
 
 	static List<Ligne> lignes = new ArrayList<>();
 	static Map<String, Station> stations;
-	static List<Station> listeStations = new ArrayList<>();
+	static List<Station> listeStations;
 	static List<String> lignesOptimalesParcourues;
 	static List<Station> stationsOptimalesParcourues;
 	static double tempsTrajetOptimal;
@@ -142,7 +142,6 @@ public class ReseauMetro {
 	public static void initialiserReseau() {
 
 		Ligne ligne1 = new Ligne(1, "Ligne 1");
-		List<Station> listeStations = new ArrayList<>();
 
 		Station defense = new Station("La Defense - Grande Arche", 1, false, 48.891922, 2.238375);
 		listeStations.add(defense);
@@ -902,71 +901,90 @@ public class ReseauMetro {
 		ajouterLigne(ligne3);
 
 	}
+	public static void trouverCheminOptimal(Station stationDepart, Station stationArrivee) {
+	    Graph<Station, DefaultWeightedEdge> graph = new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
 
-	public static void trouverCheminOptimal(double longitudeUtil, double latitudeUtil, double longitudeDestination,
-			double latitudeDestination) {
-		Graph<Station, DefaultWeightedEdge> graph = new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+	    for (Station station : listeStations) {
+	        graph.addVertex(station);
+	    }
 
-		for (Station station : listeStations) {
-			graph.addVertex(station);
-		}
+	    for (Ligne ligne : lignes) {
+	        for (Voie voie : ligne.getVoies()) {
+	            Station voieStationDepart = voie.getStationDepart();
+	            Station voieStationArrivee = voie.getStationArrivee();
+	            double poidsVoie = voie.gettempsParcours();
 
-		for (Ligne ligne : lignes) {
-			for (Voie voie : ligne.getVoies()) {
-				Station stationDepart = voie.getStationDepart();
-				Station stationArrivee = voie.getStationArrivee();
-				double poidsVoie = voie.gettempsParcours();
+	            DefaultWeightedEdge edge = graph.addEdge(voieStationDepart, voieStationArrivee);
+	            graph.setEdgeWeight(edge, poidsVoie);
+	        }
+	    }
 
-				DefaultWeightedEdge edge = graph.addEdge(stationDepart, stationArrivee);
-				graph.setEdgeWeight(edge, poidsVoie);
-			}
-		}
+	    BellmanFordShortestPath<Station, DefaultWeightedEdge> bellmanFord = new BellmanFordShortestPath<>(graph);
 
-		BellmanFordShortestPath<Station, DefaultWeightedEdge> bellmanFord = new BellmanFordShortestPath<>(graph);
+	    graph.addVertex(stationArrivee);
 
-		Station stationDepart = null;
-		double distanceDepartMin = Double.MAX_VALUE;
+	    List<Station> shortestPath = bellmanFord.getPath(stationDepart, stationArrivee).getVertexList();
 
-		for (Station station : listeStations) {
-			double distanceDepart = station.distanceTo(latitudeUtil, longitudeUtil);
+	    if (!shortestPath.isEmpty()) {
+	        List<String> lignesParcourues = determineLignesParcourues(shortestPath);
+	        double tempsTrajetEstime = bellmanFord.getPathWeight(stationDepart, stationArrivee);
 
-			if (distanceDepart < distanceDepartMin) {
-				distanceDepartMin = distanceDepart;
-				stationDepart = station;
-			}
-		}
-
-		Station destinationStation = null;
-		double distanceDestinationMin = Double.MAX_VALUE;
-
-		for (Station station : listeStations) {
-			double distanceDestination = station.distanceTo(latitudeDestination, longitudeDestination);
-
-			if (distanceDestination < distanceDestinationMin) {
-				distanceDestinationMin = distanceDestination;
-				destinationStation = station;
-			}
-		}
-
-		graph.addVertex(destinationStation);
-
-		List<Station> shortestPath = bellmanFord.getPath(stationDepart, destinationStation).getVertexList();
-
-		if (!shortestPath.isEmpty()) {
-			List<String> lignesParcourues = determineLignesParcourues(shortestPath);
-			double tempsTrajetEstime = bellmanFord.getPathWeight(stationDepart, destinationStation);
-
-			// Stockage des informations dans les variables statiques
-			lignesOptimalesParcourues = lignesParcourues;
-			stationsOptimalesParcourues = shortestPath;
-			tempsTrajetOptimal = tempsTrajetEstime;
-		} else {
-			// Aucun chemin optimal trouvé, réinitialisation des variables statiques
-			lignesOptimalesParcourues = null;
-			stationsOptimalesParcourues = null;
-			tempsTrajetOptimal = 0.0;
-		}
+	        // Stockage des informations dans les variables statiques
+	        lignesOptimalesParcourues = lignesParcourues;
+	        stationsOptimalesParcourues = shortestPath;
+	        tempsTrajetOptimal = (int) tempsTrajetEstime;
+	    } else {
+	        // Aucun chemin optimal trouvé, réinitialisation des variables statiques
+	        lignesOptimalesParcourues = null;
+	        stationsOptimalesParcourues = null;
+	        tempsTrajetOptimal = 0;
+	    }
 	}
+
+	public static void trouverCheminOptimal(Station stationDepart, Station stationIntermediaire, Station stationArrivee) {
+	    // Calcul du premier trajet entre la station de départ et la station intermédiaire
+	    trouverCheminOptimal(stationDepart, stationIntermediaire);
+
+	    // Vérification s'il existe un chemin optimal entre les deux stations
+	    if (stationsOptimalesParcourues == null) {
+	        return;
+	    }
+
+	    // Récupération des informations du premier trajet
+	    List<String> lignesPremierTrajet = lignesOptimalesParcourues;
+	    List<Station> stationsPremierTrajet = stationsOptimalesParcourues;
+	    double tempsTrajetPremierTrajet = tempsTrajetOptimal;
+
+	    // Calcul du deuxième trajet entre la station intermédiaire et la station d'arrivée
+	    trouverCheminOptimal(stationIntermediaire, stationArrivee);
+
+	    // Vérification s'il existe un chemin optimal entre les deux stations
+	    if (stationsOptimalesParcourues == null) {
+	        return;
+	    }
+
+	    // Récupération des informations du deuxième trajet
+	    List<String> lignesDeuxiemeTrajet = lignesOptimalesParcourues;
+	    List<Station> stationsDeuxiemeTrajet = stationsOptimalesParcourues;
+	    double tempsTrajetDeuxiemeTrajet = tempsTrajetOptimal;
+
+	    // Combinaison des deux trajets pour former le chemin optimal complet
+	    List<String> lignesParcourues = new ArrayList<>(lignesPremierTrajet);
+	    lignesParcourues.addAll(lignesDeuxiemeTrajet);
+	    List<Station> stationsParcourues = new ArrayList<>(stationsPremierTrajet);
+	    stationsParcourues.addAll(stationsDeuxiemeTrajet.subList(1, stationsDeuxiemeTrajet.size()));
+
+	    // Calcul du temps de trajet total
+	    double tempsTrajetTotal = tempsTrajetPremierTrajet + tempsTrajetDeuxiemeTrajet;
+
+	    // Stockage des informations dans les variables statiques
+	    lignesOptimalesParcourues = lignesParcourues;
+	    stationsOptimalesParcourues = stationsParcourues;
+	    tempsTrajetOptimal = tempsTrajetTotal;
+	}
+
+	
+
 
 	private static List<String> determineLignesParcourues(List<Station> stations) {
 		List<String> lignesParcourues = new ArrayList<>();
@@ -989,74 +1007,7 @@ public class ReseauMetro {
 		return lignesParcourues;
 	}
 
-	static void trouverCheminOptimalII(double longitudeUtil, double latitudeUtil, double longitudeDestination,
-			double latitudeDestination) {
-		// Variables pour stocker les informations du chemin optimal
-		List<List<Voie>> cheminsOptimaux = new ArrayList<>();
-		int tempsTrajetOptimal = Integer.MAX_VALUE;
-
-		// Parcourir toutes les lignes du réseau
-		for (Ligne ligne : lignes) {
-			System.out.println("FUUUUUUUUUUUUUUUUUCK");
-
-			// Trouver la station de départ la plus proche de la position de l'utilisateur
-			Station stationDepartPlusProche = null;
-			double distanceDepartMin = Integer.MAX_VALUE;
-			System.out.println("je suis dans la ligne" + ligne.getNom());
-
-			for (Voie voie : ligne.getVoies()) {
-				System.out.println("DDDDDDDDDDDDUUUUUUUUUUUUUUUUUCK");
-
-				Station station = voie.getStationDepart();
-				double distanceDepart = station.distanceTo(latitudeUtil, longitudeUtil);
-				System.out.println("je suis dans la station" + voie.getStationArrivee().getNom());
-
-				if (distanceDepart < distanceDepartMin) {
-					distanceDepartMin = distanceDepart;
-					stationDepartPlusProche = station;
-				}
-			}
-
-			// Trouver la station d'arrivée la plus proche de la destination
-			Station stationArriveePlusProche = null;
-			double distanceArriveeMin = Integer.MAX_VALUE;
-
-			for (Voie voie : ligne.getVoies()) {
-				Station station = voie.getStationDepart();
-				double distanceArrivee = station.distanceTo(longitudeDestination, latitudeDestination);
-
-				if (distanceArrivee < distanceArriveeMin) {
-					distanceArriveeMin = distanceArrivee;
-					stationArriveePlusProche = station;
-				}
-			}
-
-			// Calculer le temps de trajet
-
-			List<Voie> voiesParcourus = trouverVoiesEntreStations(ligne, stationDepartPlusProche,
-					stationArriveePlusProche);
-
-			int tempsTrajet = calculerTempsTrajet(voiesParcourus);
-			tempsTrajet += calculerTempsMarche(stationDepartPlusProche, latitudeUtil, longitudeUtil);
-			tempsTrajet += calculerTempsMarche(stationArriveePlusProche, latitudeDestination, longitudeDestination);
-			// Vérifier si le chemin est optimal
-			if (tempsTrajet < tempsTrajetOptimal) {
-
-				tempsTrajetOptimal = tempsTrajet;
-
-				cheminsOptimaux.clear();
-				cheminsOptimaux.add(voiesParcourus);
-
-				voiesOptimalesParcourus = cheminsOptimaux.get(0);
-
-				ligneOptimale = ligne;
-				tempsTrajetOptimal = tempsTrajet;
-			}
-
-		}
-
-	}
-
+	
 	static List<Voie> trouverVoiesEntreStations(Ligne ligne, Station stationDepart, Station stationArrivee) {
 		List<Voie> voiesEntreStations = new ArrayList<>();
 		boolean enregistrement = false;

@@ -180,7 +180,13 @@ public class Controlleur {
 	        double longitudeDes = coordonnéesDest.get(1);
 
 	        // -----------Calcul du chemin avec les méthodes de la classe RéseauMetro-----//
-	        ReseauMetro.trouverCheminOptimal(longitudeDep, latitudeDep, longitudeDes, latitudeDes);
+	        
+	        List<Station>listeStations = ReseauMetro.listeStations;
+	        Station stationDep = Station.findNearestStation(listeStations, latitudeDep, longitudeDep);
+	        Station stationDes = Station.findNearestStation(listeStations, latitudeDes, longitudeDes);
+
+	        
+	        ReseauMetro.trouverCheminOptimal (stationDep, stationDes);
 	        result.setVisible(true);
 	        result.setWrapText(true);
 
