@@ -13,13 +13,13 @@ import java.util.Set;
 
 public class ReseauMetro {
 
-    public List<Ligne> lignes;
-    public Map<String, Station> stations;
-    public List<Station> listeStations = new ArrayList<>();
+    static List<Ligne> lignes;
+    static Map<String, Station> stations;
+    static List<Station> listeStations = new ArrayList<>();
     
-    public Ligne ligneOptimale;
-    public List<Voie> voiesOptimalesParcourus;
-    public int tempsTrajetOptimal;
+    static Ligne ligneOptimale;
+    static List<Voie> voiesOptimalesParcourus;
+    static int tempsTrajetOptimal;
 
   
 
@@ -27,25 +27,19 @@ public class ReseauMetro {
 		return ligneOptimale;
 	}
 
-	public void setLigneOptimale(Ligne ligneOptimale) {
-		this.ligneOptimale = ligneOptimale;
-	}
+	
 
 	public List<Voie> getVoiesOptimalesParcourus() {
 		return voiesOptimalesParcourus;
 	}
 
-	public void setVoiesOptimalesParcourus(List<Voie> voiesOptimalesParcourus) {
-		this.voiesOptimalesParcourus = voiesOptimalesParcourus;
-	}
+	
 
 	public int getTempsTrajetOptimal() {
 		return tempsTrajetOptimal;
 	}
 
-	public void setTempsTrajetOptimal(int tempsTrajetOptimal) {
-		this.tempsTrajetOptimal = tempsTrajetOptimal;
-	}
+	
 
 
 	private Map<String, Voie> voies;
@@ -838,108 +832,9 @@ public class ReseauMetro {
 
     }
 
-    /*
-     * 
-     * // Creation des stations pour la ligne 4 Station porteDeClignancourt = new
-     * Station("Porte de Clignancourt", 4, false, 48.8998, 2.3446); Station simplon
-     * = new Station("Simplon", 4, false, 48.8921, 2.3483); Station
-     * marcadetPoissonniers = new Station("Marcadet - Poissonniers", 4, false,
-     * 48.8902, 2.3495); Station chateauRouge = new Station("Château Rouge", 4,
-     * false, 48.8885, 2.3507); Station gareDuNord = new Station("Gare du Nord", 4,
-     * false, 48.8805, 2.3553); Station gareDeLEstVerdun = new
-     * Station("Gare de l'Est (Verdun)", 4, false, 48.8772, 2.3582); Station
-     * chateauDEau = new Station("Château d'Eau", 4, false, 48.8728, 2.3542);
-     * Station strasbourgSaintDenis = new Station("Strasbourg - Saint-Denis", 4,
-     * false, 48.8696, 2.3543); Station etienneMarcel = new
-     * Station("etienne Marcel", 4, false, 48.8638, 2.3485); Station lesHalles = new
-     * Station("Les Halles", 4, false, 48.8616, 2.3471); Station cite = new
-     * Station("Cite", 4, false, 48.8554, 2.3474); Station saintMichel = new
-     * Station("Saint-Michel", 4, false, 48.8534, 2.3444); Station odeon = new
-     * Station("Odeon", 4, false, 48.8516, 2.3398); Station saintGermainDesPres =
-     * new Station("Saint-Germain-des-Pres", 4, false, 48.8516, 2.3333); Station
-     * saintSulpice = new Station("Saint-Sulpice", 4, false, 48.8507, 2.3332);
-     * Station saintPlacide = new Station("Saint-Placide", 4, false, 48.8465,
-     * 2.3279); Station montparnasseBienvenue = new
-     * Station("Montparnasse - Bienvenue", 4, false, 48.8421, 2.3219); Station vavin
-     * = new Station("Vavin", 4, false, 48.8405, 2.3329); Station raspail = new
-     * Station("Raspail", 4, false, 48.8381, 2.3314); Station denfertRochereau = new
-     * Station("Denfert-Rochereau (Colonel Rol-Tanguy)", 4, false, 48.8338, 2.3324);
-     * Station moutonDuvernet = new Station("Mouton-Duvernet", 4, false, 48.8317,
-     * 2.3306); Station alesia = new Station("Alesia", 4, false, 48.8284, 2.3285);
-     * Station porteDOrleansLeclerc = new
-     * Station("Porte d'Orleans (General Leclerc)", 4, false, 48.8231, 2.3257);
-     * Station mairieDeMontrouge = new Station("Mairie de Montrouge", 4, false,
-     * 48.8199, 2.3198);
-     * 
-     * // Creation des voies pour la ligne 4 Voie voie93 = new
-     * Voie(porteDeClignancourt, simplon, 4, false); Voie voie94 = new Voie(simplon,
-     * marcadetPoissonniers, 4, false); Voie voie95 = new Voie(marcadetPoissonniers,
-     * chateauRouge, 4, false); Voie voie96 = new Voie(chateauRouge, gareDuNord, 4,
-     * false); Voie voie97 = new Voie(gareDuNord, gareDeLEstVerdun, 4, false); Voie
-     * voie98 = new Voie(gareDeLEstVerdun, chateauDEau, 4, false); Voie voie99 = new
-     * Voie(chateauDEau, strasbourgSaintDenis, 4, false); Voie voie100 = new
-     * Voie(strasbourgSaintDenis, etienneMarcel, 4, false); Voie voie101 = new
-     * Voie(etienneMarcel, lesHalles, 4, false); Voie voie102 = new Voie(lesHalles,
-     * cite, 4, false); Voie voie103 = new Voie(cite, saintMichel, 4, false); Voie
-     * voie104 = new Voie(saintMichel, odeon, 4, false); Voie voie105 = new
-     * Voie(odeon, saintGermainDesPres, 4, false); Voie voie106 = new
-     * Voie(saintGermainDesPres, saintSulpice, 4, false); Voie voie107 = new
-     * Voie(saintSulpice, saintPlacide, 4, false); Voie voie108 = new
-     * Voie(saintPlacide, montparnasseBienvenue, 4, false); Voie voie109 = new
-     * Voie(montparnasseBienvenue, vavin, 4, false); Voie voie110 = new Voie(vavin,
-     * raspail, 4, false); Voie voie111 = new Voie(raspail, denfertRochereau, 4,
-     * false); Voie voie112 = new Voie(denfertRochereau, moutonDuvernet, 4, false);
-     * Voie voie113 = new Voie(moutonDuvernet, alesia, 4, false); Voie voie114 = new
-     * Voie(alesia, porteDOrleansLeclerc, 4, false); Voie voie115 = new
-     * Voie(porteDOrleansLeclerc, mairieDeMontrouge, 4, false);
-     * 
-     * // Ajout des voies aux stations porteDeClignancourt.addVoie(voie93);
-     * simplon.addVoie(voie93); simplon.addVoie(voie94);
-     * marcadetPoissonniers.addVoie(voie94); marcadetPoissonniers.addVoie(voie95);
-     * chateauRouge.addVoie(voie95); chateauRouge.addVoie(voie96);
-     * gareDuNord.addVoie(voie96); gareDuNord.addVoie(voie97);
-     * gareDeLEstVerdun.addVoie(voie97); gareDeLEstVerdun.addVoie(voie98);
-     * chateauDEau.addVoie(voie98); chateauDEau.addVoie(voie99);
-     * strasbourgSaintDenis.addVoie(voie99); strasbourgSaintDenis.addVoie(voie100);
-     * etienneMarcel.addVoie(voie100); etienneMarcel.addVoie(voie101);
-     * lesHalles.addVoie(voie101); lesHalles.addVoie(voie102);
-     * cite.addVoie(voie102); cite.addVoie(voie103); saintMichel.addVoie(voie103);
-     * saintMichel.addVoie(voie104); odeon.addVoie(voie104); odeon.addVoie(voie105);
-     * saintGermainDesPres.addVoie(voie105); saintGermainDesPres.addVoie(voie106);
-     * saintSulpice.addVoie(voie106); saintSulpice.addVoie(voie107);
-     * saintPlacide.addVoie(voie107); saintPlacide.addVoie(voie108);
-     * montparnasseBienvenue.addVoie(voie108);
-     * montparnasseBienvenue.addVoie(voie109); vavin.addVoie(voie109);
-     * vavin.addVoie(voie110); raspail.addVoie(voie110); raspail.addVoie(voie111);
-     * denfertRochereau.addVoie(voie111); denfertRochereau.addVoie(voie112);
-     * moutonDuvernet.addVoie(voie112); moutonDuvernet.addVoie(voie113);
-     * alesia.addVoie(voie113); alesia.addVoie(voie114);
-     * porteDOrleansLeclerc.addVoie(voie114); porteDOrleansLeclerc.addVoie(voie115);
-     * mairieDeMontrouge.addVoie(voie115);
-     * 
-     * // Ajout des stations a la ligne 4 ligne4.addStation(porteDeClignancourt);
-     * ligne4.addStation(simplon); ligne4.addStation(marcadetPoissonniers);
-     * ligne4.addStation(chateauRouge); ligne4.addStation(gareDuNord);
-     * ligne4.addStation(gareDeLEstVerdun); ligne4.addStation(chateauDEau);
-     * ligne4.addStation(strasbourgSaintDenis); ligne4.addStation(etienneMarcel);
-     * ligne4.addStation(lesHalles); ligne4.addStation(cite);
-     * ligne4.addStation(saintMichel); ligne4.addStation(odeon);
-     * ligne4.addStation(saintGermainDesPres); ligne4.addStation(saintSulpice);
-     * ligne4.addStation(saintPlacide); ligne4.addStation(montparnasseBienvenue);
-     * ligne4.addStation(vavin); ligne4.addStation(raspail);
-     * ligne4.addStation(denfertRochereau); ligne4.addStation(moutonDuvernet);
-     * ligne4.addStation(alesia); ligne4.addStation(porteDOrleansLeclerc);
-     * ligne4.addStation(mairieDeMontrouge);
-     * 
-     * // Ajout de la ligne au reseau metro this.ajouterLigne(ligne1);
-     * this.ajouterLigne(ligne2); this.ajouterLigne(ligne3);
-     * this.ajouterLigne(ligne4);
-     * 
-     * }
-     */
-}
 
-	public void trouverCheminOptimal(double longitudeUtil, double latitudeUtil, double longitudeDestination,
+
+	static void trouverCheminOptimal(double longitudeUtil, double latitudeUtil, double longitudeDestination,
 			double latitudeDestination) {
 		// Variables pour stocker les informations du chemin optimal
 		List<List<Voie>> cheminsOptimaux = new ArrayList<>();
@@ -1001,7 +896,7 @@ public class ReseauMetro {
 		
 	}
 
-	public List<Voie> trouverVoiesEntreStations(Ligne ligne, Station stationDepart, Station stationArrivee) {
+	static List<Voie> trouverVoiesEntreStations(Ligne ligne, Station stationDepart, Station stationArrivee) {
 		List<Voie> voiesEntreStations = new ArrayList<>();
 		boolean enregistrement = false;
 		for (Voie voie : ligne.getVoies()) {
@@ -1017,7 +912,7 @@ public class ReseauMetro {
 		}
 		return voiesEntreStations;
 	}
-	public int calculerTempsTrajet(List<Voie> voies) {
+	static int calculerTempsTrajet(List<Voie> voies) {
 		int tempsTrajetTotal = 0;
 		for (int i = 0; i < voies.size(); i++) {
 			Voie voie = voies.get(i);
@@ -1035,7 +930,7 @@ public class ReseauMetro {
 		}
 		return tempsTrajetTotal;
 	}
-	public double calculerTempsMarche(Station station, double latitude, double longitude) {
+	static double calculerTempsMarche(Station station, double latitude, double longitude) {
 		// Calculer la distance entre la position de l'utilisateur et la position de la
 		// station
 		double distance = station.distanceTo(latitude, longitude);
