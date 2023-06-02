@@ -36,8 +36,7 @@ public class Controlleur {
 
 	@FXML
 	private Button valider;
-	@FXML
-	private Button validerCh1;
+	
 	@FXML
 	private TextField adresseD;
 
@@ -64,7 +63,7 @@ public class Controlleur {
     private CheckBox stop;
 
     @FXML
-    private TextField saisieStop;
+    private ChoiceBox<String> saisieStop;
 
     @FXML
     private Label erreur;
@@ -122,6 +121,7 @@ public class Controlleur {
         // Configurer les ChoiceBox statA et statD
         statA.setItems(stationNames);
         statD.setItems(stationNames);
+        saisieStop.setItems(stationNames);
 
         // Vérifier si la liste des stations n'est pas vide
         if (!stations.isEmpty()) {
@@ -147,7 +147,7 @@ public class Controlleur {
 	public void connexionUtilisateur() {
 		// Afficher seulement les boutons deplacer1 et deplacer2 au départ
 
-		validerCh1.setVisible(false);
+		
 		clean();
 		deplacer1.setVisible(true);
 		deplacer2.setVisible(true);
@@ -321,7 +321,7 @@ public class Controlleur {
 	@FXML
 	public void onDeplacer2Clicked() {
 		// Afficher paneOp2 si l'utilisateur choisit deplacer2
-		validerCh1.setVisible(true);
+	
 		paneOptions.setVisible(false);
 		adresseD.setVisible(true);
 		adresseA.setVisible(true);
@@ -409,22 +409,19 @@ public class Controlleur {
 		        
 		        stationDepartNom = stationDep.getNom();
 		        stationArriveeNom = stationDes.getNom();
+		        
+		        System.out.println(stationDep.getNom());
+		        System.out.println(stationDes.getNom());
 		       
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	        
-		    
-	        
-	        
+        
 	    } else {
-	    	//if (!statD.getValue().isEmpty() && !statA.getValue().isEmpty()) 
-	        
 	     // Les champs statD et statA sont remplis
 	        stationDepartNom = statD.getValue();
 	        stationArriveeNom = statA.getValue();
-	        
 	    } 
 	    
 
@@ -433,8 +430,9 @@ public class Controlleur {
 
 	    // Appel de la méthode trouverCheminOptimal en fonction des options sélectionnées
 	    List<Station> res;
+	    result.appendText("Trajet de : " + stationDepartNom + " à : " + stationArriveeNom + "\n\n");
 	    if (rapideSelected) {
-	        result.appendText("Trajet de : " + stationDepartNom + " à : " + stationArriveeNom + "\n\n");
+	        
 	        res = ReseauMetro.trouverCheminOptimal(stationDepartNom, stationArriveeNom);
 	       
 	    } else {
@@ -451,10 +449,12 @@ public class Controlleur {
 
 	    // Vérifier si la CheckBox "Stop" est cochée
 	    if (stop.isSelected()) {
-	        String saisieStopText = saisieStop.getText();
+	        String stationIntermediaire = saisieStop.getValue();
 	        // Appeler la méthode pour prendre en compte l'arrêt spécifié
-	        // MethodeArret(saisieStopText);
+	        
+	        res = ReseauMetro.trouverCheminOptimalAvecIntermediaire(stationDepartNom,stationIntermediaire, stationArriveeNom);
 	    }
+	    
 
 	    result.appendText("\n\nTemps de trajet estimé : " + ReseauMetro.tempsTrajetOptimal + "\n\n");
 	}
@@ -462,56 +462,7 @@ public class Controlleur {
 	
 
 
-	public void getCheminOptimal() {
-	    String Depart = adresseD.getText();
-	    String Arrivee = adresseA.getText();
-	    try {
-
-	        // ---------------Récupération des coordonnées de départ et d'arrivée-------------//
-
-	        List<Double> coordonnéesDepart = Station.setPosition(Depart);
-	        double latitudeDep = coordonnéesDepart.get(0);
-	        double longitudeDep = coordonnéesDepart.get(1);
-	        List<Double> coordonnéesDest = Station.setPosition(Arrivee);
-	        double latitudeDes = coordonnéesDest.get(0);
-	        double longitudeDes = coordonnéesDest.get(1);
-
-	        // -----------Calcul du chemin avec les méthodes de la classe RéseauMetro-----//
-	        
-	        List<Station>listeStations = ReseauMetro.listeStations;
-	        Station stationDep = Station.findNearestStation(listeStations, latitudeDep, longitudeDep);
-	        Station stationDes = Station.findNearestStation(listeStations, latitudeDes, longitudeDes);
-
-	        
-	        ReseauMetro.trouverCheminOptimalBellman(stationDep, stationDes);
-	        result.setVisible(true);
-	        result.setWrapText(true);
-
-	        List<String> lignesOptimales = ReseauMetro.lignesOptimalesParcourues;
-	        List<Station> stationsOptimales = ReseauMetro.stationsOptimalesParcourues;
-	        double tempsTrajetOptimal = ReseauMetro.tempsTrajetOptimal;
-
-	        if (lignesOptimales != null && stationsOptimales != null) {
-	            result.appendText("Lignes par lesquelles vous allez passer : \n");
-	            for (String ligne : lignesOptimales) {
-	                result.appendText(ligne + "\n");
-	            }
-
-	            result.appendText("Stations par lesquelles vous allez passer : \n");
-	            for (Station station : stationsOptimales) {
-	                result.appendText(station.getNom() + "\n");
-	            }
-
-	            result.appendText("Temps de trajet estimé : " + tempsTrajetOptimal + "\n");
-	        } else {
-	            result.setText("Aucun chemin optimal trouvé.");
-	        }
-
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-	}
-
+	
 	
 	
 	public void clean() {

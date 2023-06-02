@@ -1027,6 +1027,7 @@ public class ReseauMetro {
 	            Station stationArriveeVoie = voie.getStationArrivee();
 	            double poidsVoie = voie.gettempsParcours();
 	            double poidsArret = stationArriveeVoie.getTempsArret();
+	            
 
 	            // Vérification de l'accident dans la station
 	            if (stationArriveeVoie.isAccident()) {
@@ -1059,6 +1060,31 @@ public class ReseauMetro {
 
 	    return cheminOptimal;
 	}
+	
+	public static List<Station> trouverCheminOptimalAvecIntermediaire(String stationDepartNom, String stationIntermediaireNom, String stationArriveeNom) {
+	    List<Station> cheminDepartIntermediaire = new ArrayList<Station>();
+	    cheminDepartIntermediaire = trouverCheminOptimal(stationDepartNom, stationIntermediaireNom);
+	    System.out.println(cheminDepartIntermediaire.size());
+	    List<Station> cheminIntermediaireArrivee = new ArrayList<Station>();
+	    cheminIntermediaireArrivee = trouverCheminOptimal(stationIntermediaireNom, stationArriveeNom);
+	    System.out.println(cheminIntermediaireArrivee.size());
+	    // Vérification des chemins
+	    if (cheminDepartIntermediaire == null || cheminIntermediaireArrivee == null) {
+	        // L'un des chemins n'est pas trouvé, retourner null pour indiquer l'absence de solution optimale
+	        return null;
+	    }
+
+	    // Concaténer les deux chemins en mettant à jour le temps de trajet optimal
+	    List<Station> cheminOptimal = new ArrayList<>();
+	    cheminOptimal.addAll(cheminDepartIntermediaire);
+	    cheminOptimal.addAll(cheminIntermediaireArrivee.subList(1, cheminIntermediaireArrivee.size())); // Exclure la première station du deuxième chemin (station intermédiaire)
+
+	    // Mettre à jour le temps de trajet optimal
+	    tempsTrajetOptimal = cheminDepartIntermediaire.get(cheminDepartIntermediaire.size() - 1).getTempsArret() + cheminIntermediaireArrivee.get(0).getTempsArret();
+
+	    return cheminOptimal;
+	}
+
 
 
 
