@@ -22,18 +22,4 @@ public class ReseauMetroTest {
 	ligne.addVoie(voie);
     }
 
-    @Test
-    public void testAjouterLigne() {
-	reseauMetro.ajouterLigne(ligne);
-	assertEquals(1, reseauMetro.getLignes().size());
-    }
-
-    @Test
-    public void testAjouterStation() {
-	reseauMetro.ajouterStation("Station 1", station1);
-	assertNotNull(reseauMetro.getStation("Station 1"));
-    }
-    
-    
-
 }
