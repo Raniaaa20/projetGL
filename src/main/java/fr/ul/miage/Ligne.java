@@ -43,7 +43,6 @@ public class Ligne {
 	    this.voies.add(voie);
 	}
 
-    
     public void afficherLigne() {
 	    System.out.println("Stations de la ligne " + numero + ":");
 	    for (Station station : stations) {
