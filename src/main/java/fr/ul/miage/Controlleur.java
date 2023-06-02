@@ -377,6 +377,51 @@ public class Controlleur {
 	    String Arrivee = adresseA.getText();
 	    try {
 
+	        // ---------------Récupération des coordonnées de départ et d'arrivée-------------//
+
+	        List<Double> coordonnéesDepart = Station.setPosition(Depart);
+	        double latitudeDep = coordonnéesDepart.get(0);
+	        double longitudeDep = coordonnéesDepart.get(1);
+	        List<Double> coordonnéesDest = Station.setPosition(Arrivee);
+	        double latitudeDes = coordonnéesDest.get(0);
+	        double longitudeDes = coordonnéesDest.get(1);
+
+	        // -----------Calcul du chemin avec les méthodes de la classe RéseauMetro-----//
+	        
+	        List<Station>listeStations = ReseauMetro.listeStations;
+	        Station stationDep = Station.findNearestStation(listeStations, latitudeDep, longitudeDep);
+	        Station stationDes = Station.findNearestStation(listeStations, latitudeDes, longitudeDes);
+
+	        
+	        ReseauMetro.trouverCheminOptimalBellman(stationDep, stationDes);
+	        result.setVisible(true);
+	        result.setWrapText(true);
+
+	        List<String> lignesOptimales = ReseauMetro.lignesOptimalesParcourues;
+	        List<Station> stationsOptimales = ReseauMetro.stationsOptimalesParcourues;
+	        double tempsTrajetOptimal = ReseauMetro.tempsTrajetOptimal;
+
+	        if (lignesOptimales != null && stationsOptimales != null) {
+	            result.appendText("Lignes par lesquelles vous allez passer : \n");
+	            for (String ligne : lignesOptimales) {
+	                result.appendText(ligne + "\n");
+	            }
+
+	            result.appendText("Stations par lesquelles vous allez passer : \n");
+	            for (Station station : stationsOptimales) {
+	                result.appendText(station.getNom() + "\n");
+	            }
+
+	            result.appendText("Temps de trajet estimé : " + tempsTrajetOptimal + "\n");
+	        } else {
+	            result.setText("Aucun chemin optimal trouvé.");
+	        }
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
 	
 	
 	public void clean() {
