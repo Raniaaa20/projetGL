@@ -3,6 +3,8 @@ package fr.ul.miage;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gluonhq.charm.glisten.control.AutoCompleteTextField;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -179,7 +181,7 @@ public class Controlleur {
 	    // Créer une liste observable pour les noms des voies avec les booléens d'accidents
 	    ObservableList<String> voieNames = FXCollections.observableArrayList();
 	    for (Voie voie : voiesList) {
-	        String voieName = voie.getStationDepart().getNom() + " - " + voie.getStationArrivee().getNom() + " - " + (voie.isAccident() ? "Accident" : "Pas d'accident");
+	        String voieName = voie.getStationDepart().getNom() + " - " + voie.getStationArrivee().getNom() + " - " + (voie.getAccident() ? "Accident" : "Pas d'accident");
 	        voieNames.add(voieName);
 	    }
 
@@ -194,10 +196,10 @@ public class Controlleur {
 	            // Récupérer la voie correspondante
 	            Voie selectedVoie = voiesList.get(selectedIndex);
 	            // Inverser l'état d'accident de la voie
-	            selectedVoie.setAccident(!selectedVoie.isAccident());
+	            selectedVoie.setAccident(!selectedVoie.getAccident());
 
 	            // Mettre à jour le nom de la voie dans la liste observable
-	            String updatedVoieName = selectedVoie.getStationDepart().getNom() + " - " + selectedVoie.getStationArrivee().getNom() + " - " + (selectedVoie.isAccident() ? "Accident" : "Pas d'accident");
+	            String updatedVoieName = selectedVoie.getStationDepart().getNom() + " - " + selectedVoie.getStationArrivee().getNom() + " - " + (selectedVoie.getAccident() ? "Accident" : "Pas d'accident");
 	            voieNames.set(selectedIndex, updatedVoieName);
 	        }
 	    });
@@ -211,43 +213,44 @@ public class Controlleur {
 	}
 
 	private void miseAjourIncidentsStations() {
-	  /*  // Récupérer la liste des stations depuis la classe ReseauMetro
+	    // Récupérer la liste des stations depuis la classe ReseauMetro
 	    List<Station> stations = ReseauMetro.listeStations;
 
 	    // Parcourir la liste des stations
-	    for (int i = 0; i < stations.size(); i++) {
+	    for (Station station : stations) {
 	        // Récupérer le nom de la station depuis la ListView
-	        String stationName = listIncidents.getItems().get(i);
+	        String stationName = listIncidents.getItems().get(stations.indexOf(station));
 
 	        // Vérifier si la station a un accident
 	        boolean accident = stationName.endsWith("Accident");
 
 	        // Mettre à jour l'état de l'accident de la station
-	        Station station = stations.get(i);
 	        station.setAccident(accident);
-	    }*/
+	    }
 	}
 
 	private void miseAjourIncidentsVoies() {
-	  /*  // Récupérer la liste des voies depuis la liste "voies" dans ReseauMetro
+	    // Récupérer la liste des voies depuis la liste "voies" dans ReseauMetro
 	    List<Voie> voiesList = ReseauMetro.voies;
 
 	    // Parcourir la liste des voies
-	    for (int i = 0; i < voiesList.size(); i++) {
+	    for (Voie voie : voiesList) {
 	        // Récupérer le nom de la voie depuis la ListView
-	        String voieName = listIncidents.getItems().get(i);
+	        String voieName = listIncidents.getItems().get(voiesList.indexOf(voie));
 
 	        // Vérifier si la voie a un accident
 	        boolean accident = voieName.endsWith("Accident");
 
 	        // Mettre à jour l'état de l'accident de la voie
-	        Voie voie = voiesList.get(i);
 	        voie.setAccident(accident);
-	    }*/
+	        
+	    }
+	    
+	    for(Voie voie : ReseauMetro.voies) {
+	    	System.out.println("Nom : "+voie.getStationDepart()+" | "+voie.getStationArrivee()+" | "+voie.getAccident());
+	    }
 	}
 
-
-	
 
 	@FXML
 	public void onDeplacer1Clicked() {

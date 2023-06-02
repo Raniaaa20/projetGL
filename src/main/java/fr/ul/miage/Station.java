@@ -40,31 +40,7 @@ public class Station {
 
     }
 
-    // Getters et setters
-    public String getNom() {
-	return nom;
-    }
-
-    public void setNom(String nom) {
-	this.nom = nom;
-    }
-
-    public boolean isAccident() {
-	return accident;
-    }
-
-    public void setAccident(boolean accident) {
-	this.accident = accident;
-    }
-
-    public int getTempsArret() {
-	return tempsArret;
-    }
-
-    public void setTempsArret(int tempsArret) {
-	this.tempsArret = tempsArret;
-    }
-
+   
     public static Station findNearestStation(List<Station> stations, double latitude, double longitude) {
 	Station nearestStation = null;
 	double minDistance = Double.MAX_VALUE;
@@ -79,7 +55,7 @@ public class Station {
 	if (nearestStation != null) {
 	    System.out.println("La station de metro la plus proche est : " + nearestStation.getNom());
 	}
-	return nearestStation;
+		return nearestStation;
     }
 
     void setPosition(Scanner scanner) throws IOException {
@@ -141,5 +117,31 @@ public class Station {
     public void setLigne(Ligne l) {
 	this.lignes.add(l);
     }
+    
+    // Getters et setters
+    public String getNom() {
+	return nom;
+    }
+
+    public void setNom(String nom) {
+	this.nom = nom;
+    }
+
+    public boolean isAccident() {
+	return accident;
+    }
+
+    public void setAccident(boolean accident) {
+	this.accident = accident;
+    }
+
+    public int getTempsArret() {
+	return tempsArret;
+    }
+
+    public void setTempsArret(int tempsArret) {
+	this.tempsArret = tempsArret;
+    }
+
 
 }

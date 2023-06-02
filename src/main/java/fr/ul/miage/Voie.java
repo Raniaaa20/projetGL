@@ -50,7 +50,7 @@ public class Voie {
 	}
 
 
-	public boolean isAccident() {
+	public boolean getAccident() {
 		return accident;
 	}
 
